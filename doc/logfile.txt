@@ -1,0 +1,51 @@
+Class documentation
+<---- javadoc command: ---->
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/JDK/Home/bin/javadoc
+-author
+-version
+-nodeprecated
+-tag
+precondition:a:Precondition:
+-tag
+postcondition:a:Postcondition:
+-tag
+param
+-tag
+return
+-package
+-noindex
+-notree
+-nohelp
+-nonavbar
+-source
+1.8
+-classpath
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/bluejcore.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/junit-4.8.2.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-core.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/gridworld.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-gpio-extension.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-service.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/KarelJRobot.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-device.jar:/Users/22aaronl/Desktop/Aaron 2/Surviv
+-d
+/Users/22aaronl/Desktop/Aaron 2/Surviv/doc
+-encoding
+UTF-8
+-charset
+UTF-8
+-docletpath
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/bjdoclet.jar
+-doclet
+bluej.doclet.doclets.formats.html.HtmlDoclet
+/Users/22aaronl/Desktop/Aaron 2/Surviv/Bullet.java
+<---- end of javadoc command ---->
+Loading source file /Users/22aaronl/Desktop/Aaron 2/Surviv/Bullet.java...
+Constructing Javadoc information...
+Standard Doclet version 1.8.0_66
+Building tree for all the packages and classes...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/Bullet.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/package-frame.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/package-summary.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/constant-values.html...
+Building index for all the packages and classes...
+Building index for all classes...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/allclasses-frame.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/allclasses-noframe.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/index.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/stylesheet.css...
+Note: Custom tags that could override future standard tags:  @precondition, @postcondition. To avoid potential overrides, use at least one period character (.) in custom tag names.
+Note: Custom tags that were not seen:  @precondition, @postcondition
