@@ -106,7 +106,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     play.setHealth(-b.doDamage());
                     if(play.getHealth() <= 0)
                     {
-                        System.out.println("CHIRAG, FIX THIS");
+                        System.out.println("CHIRAG, FIX THIS AT GAME AROUND LINE 110");
                     }
                     it.remove();
                 }
