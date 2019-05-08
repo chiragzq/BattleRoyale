@@ -75,6 +75,102 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         players.put(id, player);
         thisPlayer = player;
     }
+    
+    public void moveBullets()
+    {
+        Iterator<Bullet> it = bullets.iterator();
+        while(it.hasNext())
+        {
+            Bullet b = it.next();
+            if(!b.move())
+                it.remove();
+            else
+            {
+                int x = b.getX();
+                int y = b.getY();
+                Obstacle ob = isCollisionObstacle(x, y);
+                Player play= isCollisionPlayer(x, y);
+                if(ob!=null)
+                {
+                    ob.setHealth(-b.doDamage());
+                    it.remove();
+                }
+                else if(play!=null)
+                {
+                    play.setHealth(-b.doDamage());
+                    if(play.getHealth() <= 0)
+                    {
+                        System.out.println("CHIRAG, FIX THIS");
+                    }
+                    it.remove();
+                }
+
+            }
+
+        }
+    }
+
+//     /**
+//      * Removes the player
+//      */
+//     public void removePlayer(Player play)
+//     {
+//         Iterator<Player> it = players.iterator();
+//         while(it.hasNext())
+//         {
+//             if(it.next().equals(play))
+//                 it.remove();
+//         }
+//     }
+
+    /**
+     * checks if collids with obstacles
+     * @param x x
+     * @param y y
+     * @return the obstacle if colliding, otherwise false
+     */
+    public Obstacle isCollisionObstacle(int x, int y)
+    {
+        for(Obstacle ob : obstacles)
+        {
+            int xLoc = ob.getX();
+            int yLoc = ob.getY();
+            int size = ob.getSize()/2;
+
+            int xTry = (int)Math.pow(x - xLoc, 2);
+            int yTry = (int)Math.pow(y - yLoc, 2);
+            int sizeTry = (int)Math.pow(size, 2);
+
+            if(xTry + yTry <= sizeTry)
+                return ob;
+        }
+        return null;
+    }
+
+    /**
+     * checks if collids with player
+     * @param x x
+     * @param y y
+     * @return the player if colliding, otherwise false
+     */
+    public Player isCollisionPlayer(int x, int y)
+    {
+        Collection<Player> p = players.values();
+        for(Player play: p)
+        {
+            int xLoc = play.getX();
+            int yLoc = play.getY();
+            int size = PLAYER_SIZE/2;
+
+            int xTry = (int)Math.pow(x - xLoc, 2);
+            int yTry = (int)Math.pow(y - yLoc, 2);
+            int sizeTry = (int)Math.pow(size, 2);
+
+            if(xTry + yTry <= sizeTry)
+                return play;
+        }
+        return null;
+    }
 
     public Player getPlayer() {
         return thisPlayer;
@@ -98,7 +194,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
-        network.
+        
     }
 
     public void mouseReleased(MouseEvent e)
@@ -179,10 +275,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
     }
 
-    public void moveBullets()
-    {
-        bullets.forEach((bullet) -> bullet.move());
-    }
 
     public static int getMouseX()
     {

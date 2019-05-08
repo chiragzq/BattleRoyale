@@ -40,6 +40,14 @@ public class Player
 
         gun = null;//new Rifle(this);
     }
+    
+    /**
+     * gets healet
+     */
+    public int getHealth()
+    {
+        return health;
+    }
 
     /**
      * Gets the gun

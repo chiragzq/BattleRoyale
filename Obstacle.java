@@ -26,6 +26,7 @@ public abstract class Obstacle
         health = health2;
     }
     
+    
     public int getX()
     {
         return x;
@@ -47,4 +48,6 @@ public abstract class Obstacle
     }
 
     public abstract void draw(Graphics g);
+    
+    public abstract int getSize();
 }
