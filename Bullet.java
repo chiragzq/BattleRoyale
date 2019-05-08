@@ -52,6 +52,11 @@ public class Bullet
         return true;
     }
     
+    public int doDamage()
+    {
+        return DAMAGE;
+    }
+    
     
     /**
      * This gives the back end of the bullet

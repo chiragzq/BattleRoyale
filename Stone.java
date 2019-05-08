@@ -22,6 +22,11 @@ public class Stone extends Obstacle
         // initialise instance variables
         super(col, row, HEALTH);
     }
+    
+    public int getSize()
+    {
+        return (int)(SIZE * Math.sqrt((double)getHealth()/100));
+    }
 
     
     public void draw(Graphics g)
