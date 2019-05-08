@@ -20,13 +20,8 @@ public class Pistol extends Gun
         g2.setColor(new Color(0, 0, 0));
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        int x2 = Game.getMouseX();
-        int y2 = Game.getMouseY();
-        
-        double t = Math.atan2(y2 - y, x2 - x);
-        
         g2.setStroke(new BasicStroke(10));
-        g2.drawLine(x, y, (int)(Math.cos(t)*BARREL_LENGTH) + x, (int)(Math.sin(t)*BARREL_LENGTH) + y);
+        g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*BARREL_LENGTH) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*BARREL_LENGTH) + y);
     }
     
     /**
