@@ -194,7 +194,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
-        System.out.println("p");
         bullets.add(thisPlayer.getGun().fire());
     }
 
@@ -241,11 +240,19 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             bullets.forEach((bullet) -> bullet.draw(g));
         }
         //Draws the Bullets
-
+        List<Obstacle> temp = new ArrayList<Obstacle>();
+        for(int i = 0; i < obstacles.size(); i++)
+        {
+            Obstacle a = obstacles.get(i);
+            if(a.getHealth() < 25)
+                a.draw(g);
+            else
+                temp.add(a);
+        }
+        //Draw the obstacle
         players.values().forEach((player) -> player.draw(g));
 
-        obstacles.forEach((obstacle)-> obstacle.draw(g));
-        //Draw the obstacle
+        temp.forEach((obstacle)-> obstacle.draw(g));
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {

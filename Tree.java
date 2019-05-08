@@ -25,6 +25,7 @@ public class Tree extends Obstacle
     {
         return (int)(SIZE * Math.sqrt((double)getHealth()/100));
     }
+    
 
     public void draw(Graphics g)
     {
