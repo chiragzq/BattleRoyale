@@ -1,0 +1,1 @@
+java -cp .:build/:lib/engine.io.jar:lib/json.jar:lib/okhttp.jar:lib/socket.io-client-1.0.0.jar:lib/okio.jar:lib/kotlin.jar Game

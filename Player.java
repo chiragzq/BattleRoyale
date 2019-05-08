@@ -3,6 +3,7 @@ import java.awt.*;
 /**
  * The Player the person controls
  * @author Aaron Lo
+ * @author Chirag Kaushik
  * @version 5-6-19
  */
 public class Player
@@ -28,14 +29,14 @@ public class Player
      * @param xLoc the x location
      * @param yLoc the y location
      */
-    public Player(int xLoc, int yLoc)
+    public Player(int xLoc, int yLoc, int direction, int health)
     {
-        x = xLoc;
-        y = yLoc;
-        direction = 20;
+        this.x = xLoc;
+        this.y = yLoc;
+        this.direction = direction;
         //The location
-
-        health = 100;
+        
+        this.health = health;
         //The health of the player
 
         gun = new Pistol(this);
@@ -47,42 +48,6 @@ public class Player
     public Gun getGun()
     {
         return gun;
-    }
-
-    /**
-     * Moves in the x-axis direction
-     * @param xDirection how far the player moves in the xDirection
-     */
-    public void xMove(int xDirection)
-    {
-        x += xDirection;
-    }
-
-    /**
-     * Moves in the y-axis direction
-     * @param yDirection how far the player moves in the yDirection
-     */
-    public void yMove(int yDirection)
-    {
-        y += yDirection;
-    }
-
-    /**
-     * This returns the x loc
-     * @return the x location
-     */
-    public int getX()
-    {
-        return x;
-    }
-
-    /**
-     * This returns the y loc
-     * @return the y location
-     */
-    public int getY()
-    {
-        return y;
     }
 
     /**
@@ -215,7 +180,6 @@ public class Player
         int rightXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.cos(rightDir));
         int rightYOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.sin(rightDir));
 
-        // System.out.println(x + leftXOff + " " + (y + leftYOff));
         Game.fillCircle(g, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
         Game.fillCircle(g, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
 
@@ -224,5 +188,39 @@ public class Player
         g2.setColor(new Color(0x322819));
         Game.drawCircle(g2, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
         Game.drawCircle(g2, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
+    }
+
+    /**
+     * This returns the x loc
+     * @return the x location
+     */
+    public int getX()
+    {
+        return x;
+    }
+    
+    /**
+     * This returns the y loc
+     * @return the y location
+     */
+    public int getY()
+    {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }
