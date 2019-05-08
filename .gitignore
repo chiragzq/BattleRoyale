@@ -1,2 +1,4 @@
 *.ctxt
 *.class
+build/
+server/node_modules/

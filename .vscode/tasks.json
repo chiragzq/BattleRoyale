@@ -4,16 +4,19 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "echo",
+            "label": "compile",
             "type": "shell",
             "command": "javac",
             "args": [
                 "-d",
                 "build",
+                "-cp",
+                ".:lib/socket.io-client-1.0.0.jar:lib/json.jar:lib/okhttp.jar:lib/engine.io.jar:lib/okio.jar:lib/kotlin.jar",
                 "Bullet.java",
                 "ControlListener.java",
                 "Game.java",
-                "Player.java"
+                "Player.java",
+                "Network.java"
             ],
             "group": {
                 "kind": "build",
