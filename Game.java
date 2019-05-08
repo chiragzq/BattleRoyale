@@ -194,7 +194,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
-        
+        System.out.println("p");
+        bullets.add(thisPlayer.getGun().fire());
     }
 
     public void mouseReleased(MouseEvent e)

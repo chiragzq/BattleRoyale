@@ -8,7 +8,7 @@ import java.awt.*;
 public abstract class Gun
 {
     private final static int BARREL_LENGTH = 80;
-    private final static int EXTENSION = 20;
+    private final static int EXTENSION = 0;
     private int capacity;
     private int spread;
     private int direction;
