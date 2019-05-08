@@ -8,24 +8,23 @@ import java.util.*;
 import java.util.Timer;
 import java.awt.MouseInfo;
 
-public class Game extends JComponent implements KeyListener{
+public class Game extends JComponent implements KeyListener, MouseListener{
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 1080;
     public static final double GAME_SCALE = 1;
 
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
-    public static final int HAND_SIZE = (int)(20 * GAME_SCALE);
-    
+    public static final int HAND_SIZE = (int)(18 * GAME_SCALE);
+
     private static int screenLocationX;
     private static int screenLocationY;
 
     private JFrame frame;
     private List<Player> players;
-    
-    
 
-    
-    
+    private List<Bullet> bullets;
+
+
     
     public Game() {
         final Game self = this;
@@ -51,12 +50,35 @@ public class Game extends JComponent implements KeyListener{
                 public void run() {
                     repaint();
                     updateScreenLocation();
+                    bullets.forEach((bullet) -> bullet.move());
                 }
-            }, 100, 100);
+            }, 100, 1000/30);
 
         players = new ArrayList<Player>();
         players.add(new Player(500, 500));
-        
+        bullets = new ArrayList<Bullet>();
+        this.addMouseListener(this);
+    }
+
+    public void mouseClicked(MouseEvent e)
+    {
+    }
+
+    public void mouseEntered(MouseEvent e)
+    {
+    }
+
+    public void mouseExited(MouseEvent e)
+    {
+    }
+
+    public void mousePressed(MouseEvent e)
+    {
+        bullets.add(players.get(0).getGun().fire());
+    }
+
+    public void mouseReleased(MouseEvent e)
+    {
     }
 
     @Override
@@ -87,7 +109,10 @@ public class Game extends JComponent implements KeyListener{
     public void paintComponent(Graphics g) {
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
-
+        if(bullets.size() != 0)
+        {
+            bullets.forEach((bullet) -> bullet.draw(g));
+        }
         players.forEach((player) -> player.draw(g));
     }
 
