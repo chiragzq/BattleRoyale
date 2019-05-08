@@ -22,7 +22,6 @@ public class Player
     private boolean isCurrentlyPunching;
     private boolean isRightPunching;
     private Gun gun;
-    private boolean isHoldingGun = true;
 
     /**
      * Constructs Player at location(x, y)
@@ -39,7 +38,7 @@ public class Player
         this.health = health;
         //The health of the player
 
-        gun = new Rifle(this);
+        gun = null;//new Rifle(this);
     }
 
     /**
@@ -103,7 +102,9 @@ public class Player
      * @param g the graphics
      */
     public void draw(Graphics g) {
-        gun.draw(g);
+        if(gun != null) {
+            gun.draw(g);
+        }
 
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
@@ -117,7 +118,7 @@ public class Player
 
         isCurrentlyPunching = false;
 
-        if(!isHoldingGun)
+        if(gun == null)
         {
 
             if(isRightPunching)
