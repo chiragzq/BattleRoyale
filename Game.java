@@ -15,7 +15,10 @@ public class Game extends JComponent implements KeyListener {
     public static final int HAND_SIZE = (int)(20 * GAME_SCALE);
 
     private JFrame frame;
-    private List<Player> players;
+    private Map<Integer, Player> players;
+    private Player thisPlayer;
+
+    private Network network;
 
     public Game() {
         final Game self = this;
@@ -41,10 +44,23 @@ public class Game extends JComponent implements KeyListener {
             public void run() {
                 repaint();
             }
-        }, 100);
-        players = new ArrayList<Player>();
-        players.add(new Player(0, 0));
-        players.add(new Player(500, 500));
+        }, 0, 1000/60);
+
+        players = new HashMap<Integer, Player>();
+
+        network = new Network("http://localhost:3000", this);
+    }
+
+    public void setPlayer(Player player, int id) {
+        players.put(id, player);
+    }
+
+    public Player getPlayer() {
+        return thisPlayer;
+    }
+
+    public Map<Integer, Player> getPlayers() {
+        return players;
     }
 
     @Override
@@ -52,23 +68,29 @@ public class Game extends JComponent implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W)
+            network.wReleased();
+        else if (code == KeyEvent.VK_A)
+            network.aReleased();
+        else if (code == KeyEvent.VK_S)
+            network.sReleased();
+        else if (code == KeyEvent.VK_D)
+            network.dReleased();
     }
+    
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // if (listener == null)
-        //     return;
-        // int code = e.getKeyCode();
-        // if (code == KeyEvent.VK_LEFT)
-        //     listener.leftPressed();
-        // else if (code == KeyEvent.VK_RIGHT)
-        //     listener.rightPressed();
-        // else if (code == KeyEvent.VK_DOWN)
-        //     listener.downPressed();
-        // else if (code == KeyEvent.VK_UP)
-        //     listener.upPressed();
-        // else if (code == KeyEvent.VK_SPACE)
-        //     listener.spacePressed();
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W)
+            network.wPressed();
+        else if (code == KeyEvent.VK_A)
+            network.aPressed();
+        else if (code == KeyEvent.VK_S)
+            network.sPressed();
+        else if (code == KeyEvent.VK_D)
+            network.dPressed();
     }
 
     @Override
@@ -76,7 +98,7 @@ public class Game extends JComponent implements KeyListener {
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        players.forEach((player) -> player.draw(g));
+        players.values().forEach((player) -> player.draw(g));
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
