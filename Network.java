@@ -114,4 +114,11 @@ public class Network {
     public void dReleased() {
         socket.emit("d_released", nil);
     }
+
+    public void mouseLocation(int x, int y) {
+        JSONObject coordinates = new JSONObject();
+        coordinates.put("x", x);
+        coordinates.put("y", y);
+        socket.emit("mouse_loc", coordinates);
+    }
 }
