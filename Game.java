@@ -20,10 +20,13 @@ public class Game extends JComponent implements KeyListener, MouseListener{
     private static int screenLocationY;
 
     private JFrame frame;
-    private List<Player> players;
+    private Map<Integer, Player> players;
+    private Player thisPlayer;
+
+    private Network network;
     private List<Obstacle> obstacles;
     private List<Bullet> bullets;
-
+     
     public Game() {
         final Game self = this;
         SwingUtilities.invokeLater(new Runnable() {
@@ -44,7 +47,7 @@ public class Game extends JComponent implements KeyListener, MouseListener{
                 }
             });
         new Timer().schedule(new TimerTask(){
-                @Override
+          @Override
                 public void run() {
                     repaint();
                     updateScreenLocation();
@@ -52,13 +55,26 @@ public class Game extends JComponent implements KeyListener, MouseListener{
                 }
             }, 100, 1000/30);
 
-        players = new ArrayList<Player>();
-        players.add(new Player(500, 500));
         bullets = new ArrayList<Bullet>();
         obstacles = new ArrayList<Obstacle>();
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         this.addMouseListener(this);
+        players = new HashMap<Integer, Player>();
+
+        network = new Network("http://localhost:3000", this);
+    }
+
+    public void setPlayer(Player player, int id) {
+        players.put(id, player);
+    }
+
+    public Player getPlayer() {
+        return thisPlayer;
+    }
+
+    public Map<Integer, Player> getPlayers() {
+        return players;
     }
 
     public void mouseClicked(MouseEvent e)
@@ -87,23 +103,29 @@ public class Game extends JComponent implements KeyListener, MouseListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W)
+            network.wReleased();
+        else if (code == KeyEvent.VK_A)
+            network.aReleased();
+        else if (code == KeyEvent.VK_S)
+            network.sReleased();
+        else if (code == KeyEvent.VK_D)
+            network.dReleased();
     }
+    
 
     @Override
     public void keyPressed(KeyEvent e) {
-        // if (listener == null)
-        //     return;
-        // int code = e.getKeyCode();
-        // if (code == KeyEvent.VK_LEFT)
-        //     listener.leftPressed();
-        // else if (code == KeyEvent.VK_RIGHT)
-        //     listener.rightPressed();
-        // else if (code == KeyEvent.VK_DOWN)
-        //     listener.downPressed();
-        // else if (code == KeyEvent.VK_UP)
-        //     listener.upPressed();
-        // else if (code == KeyEvent.VK_SPACE)
-        //     listener.spacePressed();
+        int code = e.getKeyCode();
+        if (code == KeyEvent.VK_W)
+            network.wPressed();
+        else if (code == KeyEvent.VK_A)
+            network.aPressed();
+        else if (code == KeyEvent.VK_S)
+            network.sPressed();
+        else if (code == KeyEvent.VK_D)
+            network.dPressed();
     }
 
     @Override
@@ -116,12 +138,10 @@ public class Game extends JComponent implements KeyListener, MouseListener{
         }
         //Draws the Bullets
 
-        players.forEach((player) -> player.draw(g));
-        // Draws the player with guns
+        players.values().forEach((player) -> player.draw(g));
 
         obstacles.forEach((obstacle)-> obstacle.draw(g));
         //Draw the obstacle
-
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
