@@ -11,7 +11,7 @@ public abstract class Gun
     private final static int EXTENSION = 0;
     private int capacity;
     private int spread;
-    private int direction;
+    private double direction;
     private Player player;
     private int numberInCarbine = 999;
     /**
@@ -83,7 +83,7 @@ public abstract class Gun
         return BARREL_LENGTH;
     }
 
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 
