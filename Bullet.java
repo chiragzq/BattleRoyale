@@ -16,7 +16,7 @@ public class Bullet
     private int distance;
     //How far the bullet goes
     private static final int LENGTH = 100;
-    private static final int SPEED = 10;
+    private static final int SPEED = 20;
     private static final int DAMAGE = 10;
     private int thicknessOfBullet;
     
@@ -33,7 +33,7 @@ public class Bullet
         direction = direc;
         findTheBackEndOfTheBullet();
         
-        distance = 10;
+        distance = 100;
         thicknessOfBullet = 5;
     }
     
@@ -58,8 +58,8 @@ public class Bullet
      */
     public void findTheBackEndOfTheBullet()
     {
-        backY = y - (int)(Math.sin(Math.toRadians(direction)) * LENGTH);
-        backX = x - (int)(Math.cos(Math.toRadians(direction)) * LENGTH);
+        backY = y + (int)(Math.sin(Math.toRadians(direction)) * LENGTH);
+        backX = x + (int)(Math.cos(Math.toRadians(direction)) * LENGTH);
     }
     
     

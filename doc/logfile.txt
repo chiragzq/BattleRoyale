@@ -1,6 +1,6 @@
 Class documentation
 <---- javadoc command: ---->
-/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/JDK/Home/bin/javadoc
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/JDK/Home/bin/javadoc
 -author
 -version
 -nodeprecated
@@ -20,7 +20,7 @@ return
 -source
 1.8
 -classpath
-/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/bluejcore.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/junit-4.8.2.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-core.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/gridworld.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-gpio-extension.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-service.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/KarelJRobot.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-device.jar:/Users/22aaronl/Desktop/Aaron 2/Surviv
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/bluejcore.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/junit-4.8.2.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-core.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/gridworld.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-gpio-extension.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-service.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/KarelJRobot.jar:/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/userlib/pi4j-device.jar:/Users/22aaronl/Desktop/Aaron 2/Surviv
 -d
 /Users/22aaronl/Desktop/Aaron 2/Surviv/doc
 -encoding
@@ -28,16 +28,16 @@ UTF-8
 -charset
 UTF-8
 -docletpath
-/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/7789913A-A393-4214-96EC-9B5250E96E11/d/BlueJ.app/Contents/Resources/Java/bjdoclet.jar
+/private/var/folders/vn/glk8tbwx747f6ck8p1b5pjmh0000gn/T/AppTranslocation/EE7714EB-5E31-41A7-BA0A-96A25C27CF7A/d/BlueJ.app/Contents/Resources/Java/bjdoclet.jar
 -doclet
 bluej.doclet.doclets.formats.html.HtmlDoclet
-/Users/22aaronl/Desktop/Aaron 2/Surviv/Bullet.java
+/Users/22aaronl/Desktop/Aaron 2/Surviv/Player.java
 <---- end of javadoc command ---->
-Loading source file /Users/22aaronl/Desktop/Aaron 2/Surviv/Bullet.java...
+Loading source file /Users/22aaronl/Desktop/Aaron 2/Surviv/Player.java...
 Constructing Javadoc information...
 Standard Doclet version 1.8.0_66
 Building tree for all the packages and classes...
-Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/Bullet.html...
+Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/Player.html...
 Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/package-frame.html...
 Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/package-summary.html...
 Generating /Users/22aaronl/Desktop/Aaron 2/Surviv/doc/constant-values.html...
