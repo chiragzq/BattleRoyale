@@ -1,50 +1,62 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
+import java.awt.MouseInfo;
 
-public class Game extends JComponent implements KeyListener {
+public class Game extends JComponent implements KeyListener{
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 1080;
     public static final double GAME_SCALE = 1;
 
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
     public static final int HAND_SIZE = (int)(20 * GAME_SCALE);
+    
+    private static int screenLocationX;
+    private static int screenLocationY;
 
     private JFrame frame;
     private List<Player> players;
+    
+    
 
+    
+    
+    
     public Game() {
         final Game self = this;
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                frame = new JFrame();
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().add(self);
-                frame.addKeyListener(self);
+                public void run() {
+                    frame = new JFrame();
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.getContentPane().add(self);
+                    frame.addKeyListener(self);
 
-                //Display the window.
-                self.setPreferredSize(new Dimension(
-                        (int)(GAME_WIDTH * GAME_SCALE), (int)(GAME_HEIGHT * GAME_SCALE)
-                    ));
+                    //Display the window.
+                    self.setPreferredSize(new Dimension(
+                            (int)(GAME_WIDTH * GAME_SCALE), (int)(GAME_HEIGHT * GAME_SCALE)
+                        ));
 
-                frame.pack();
-                frame.setVisible(true);
-                frame.setTitle("Battle Royale");
-            }
-        });
+                    frame.pack();
+                    frame.setVisible(true);
+                    frame.setTitle("Battle Royale");
+                }
+            });
         new Timer().schedule(new TimerTask(){
-            @Override
-            public void run() {
-                repaint();
-            }
-        }, 100);
+                @Override
+                public void run() {
+                    repaint();
+                    updateScreenLocation();
+                }
+            }, 100, 100);
+
         players = new ArrayList<Player>();
-        players.add(new Player(0, 0));
         players.add(new Player(500, 500));
+        
     }
 
     @Override
@@ -93,6 +105,28 @@ public class Game extends JComponent implements KeyListener {
         x = x - r / 2;
         y = y - r / 2;
         g.drawOval(x, y, r, r);
+    }
+
+    public void updateScreenLocation()
+    {
+        try
+        {
+            screenLocationX = (int) getLocationOnScreen().getX();
+            screenLocationY = (int) getLocationOnScreen().getY();
+        }
+        catch(java.awt.IllegalComponentStateException e)
+        {
+        }
+    }
+
+    public static int getMouseX()
+    {
+        return (int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX;
+    }
+
+    public static int getMouseY()
+    {
+        return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 
     public static void main(String... args) {

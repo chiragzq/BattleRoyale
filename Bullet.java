@@ -58,8 +58,8 @@ public class Bullet
      */
     public void findTheBackEndOfTheBullet()
     {
-        backY = y - (int)Math.sin(Math.toRadians(direction)) * LENGTH;
-        backX = x - (int)Math.cos(Math.toRadians(direction)) * LENGTH;
+        backY = y - (int)(Math.sin(Math.toRadians(direction)) * LENGTH);
+        backX = x - (int)(Math.cos(Math.toRadians(direction)) * LENGTH);
     }
     
     
