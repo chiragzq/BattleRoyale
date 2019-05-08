@@ -65,6 +65,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles = new ArrayList<Obstacle>();
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
+        obstacles.add(new Bush(300, 300));
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
 
@@ -92,8 +93,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                 Player play= isCollisionPlayer(x, y);
                 if(ob!=null)
                 {
+                    
                     ob.setHealth(-b.doDamage());
-                    it.remove();
+                   
+                    if(!(ob instanceof Bush))
+                    {
+                        it.remove();
+                    }
                 }
                 else if(play!=null)
                 {
@@ -240,7 +246,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         for(int i = 0; i < obstacles.size(); i++)
         {
             Obstacle a = obstacles.get(i);
-            if(a.getHealth() < 25)
+            if(!(a instanceof Bush) && a.getHealth() < 25)
+                a.draw(g);
+            else if(a.getHealth() < 0)
                 a.draw(g);
             else
                 temp.add(a);
