@@ -7,6 +7,8 @@ import java.awt.*;
  */
 public abstract class Gun
 {
+    private final static int BARREL_LENGTH = 80;
+    private final static int EXTENSION = 20;
     private int capacity;
     private int spread;
     private Player player;
@@ -66,9 +68,17 @@ public abstract class Gun
         int x = getPlayer().getX();
         int y = getPlayer().getY();
         double t = Math.atan2(y2 - y, x2 - x);
-        Bullet b = new Bullet( (int)(Math.cos(t)*80) + player.getX(), (int)(Math.sin(t)*80) + player.getY(), xSide + change);
+        Bullet b = new Bullet( (int)(Math.cos(t)*(BARREL_LENGTH+EXTENSION)) + player.getX(), (int)(Math.sin(t)*(BARREL_LENGTH+ EXTENSION)) + player.getY(), xSide + change);
         numberInCarbine--;
         return b;
+    }
+    
+    /**
+     * Gets the barrelLength
+     */
+    public int getBarrelLength()
+    {
+        return BARREL_LENGTH;
     }
     
     /**

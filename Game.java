@@ -21,11 +21,9 @@ public class Game extends JComponent implements KeyListener, MouseListener{
 
     private JFrame frame;
     private List<Player> players;
-
+    private List<Obstacle> obstacles;
     private List<Bullet> bullets;
 
-
-    
     public Game() {
         final Game self = this;
         SwingUtilities.invokeLater(new Runnable() {
@@ -50,13 +48,16 @@ public class Game extends JComponent implements KeyListener, MouseListener{
                 public void run() {
                     repaint();
                     updateScreenLocation();
-                    bullets.forEach((bullet) -> bullet.move());
+                    moveBullets();
                 }
             }, 100, 1000/30);
 
         players = new ArrayList<Player>();
         players.add(new Player(500, 500));
         bullets = new ArrayList<Bullet>();
+        obstacles = new ArrayList<Obstacle>();
+        obstacles.add(new Stone(200, 200));
+        obstacles.add(new Tree(400, 400));
         this.addMouseListener(this);
     }
 
@@ -113,7 +114,14 @@ public class Game extends JComponent implements KeyListener, MouseListener{
         {
             bullets.forEach((bullet) -> bullet.draw(g));
         }
+        //Draws the Bullets
+
         players.forEach((player) -> player.draw(g));
+        // Draws the player with guns
+
+        obstacles.forEach((obstacle)-> obstacle.draw(g));
+        //Draw the obstacle
+
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
@@ -142,6 +150,11 @@ public class Game extends JComponent implements KeyListener, MouseListener{
         catch(java.awt.IllegalComponentStateException e)
         {
         }
+    }
+
+    public void moveBullets()
+    {
+        bullets.forEach((bullet) -> bullet.move());
     }
 
     public static int getMouseX()
