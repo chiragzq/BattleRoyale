@@ -15,8 +15,8 @@ public class Bullet
     private int direction;
     private int distance;
     //How far the bullet goes
-    private static final int LENGTH = 100;
-    private static final int SPEED = 20;
+    private static final int LENGTH = 75;
+    private static final int SPEED = 35;
     private static final int DAMAGE = 10;
     private int thicknessOfBullet;
     
@@ -34,7 +34,7 @@ public class Bullet
         findTheBackEndOfTheBullet();
         
         distance = 100;
-        thicknessOfBullet = 5;
+        thicknessOfBullet = 4;
     }
     
     /**
