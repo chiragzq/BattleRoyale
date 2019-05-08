@@ -16,7 +16,8 @@ public class Player
     private int x;
     private int y;
     private int health;
-    private int direction;
+    private double direc;
+    private double direction;
     private int bulletLoad;
     private long lastPunchTime;
     private boolean isCurrentlyPunching;
@@ -85,8 +86,10 @@ public class Player
 
         double xSide = xMouse - x;
         double ySide = yMouse - y;
-
-        direction = (int)(Math.atan2(ySide, xSide) / Math.PI * 180);
+        
+        
+        direc = Math.atan2(ySide, xSide);
+        direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
     }
 
     /**
@@ -119,11 +122,11 @@ public class Player
 
         double handExtendRight = 0;
         double handExtendLeft = 0;
-
-        double directionRad = direction * Math.PI / 180;
+        
+        double directionRad = direc;
         double rightDir = directionRad + Math.PI / 4.5;
         double leftDir = directionRad - Math.PI / 4.5;
-
+        
         isCurrentlyPunching = false;
 
         if(gun == null)
@@ -187,6 +190,7 @@ public class Player
         int rightXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.cos(rightDir));
         int rightYOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.sin(rightDir));
 
+        
         Game.fillCircle(g, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
         Game.fillCircle(g, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
 
@@ -215,7 +219,7 @@ public class Player
         return y;
     }
 
-    public int getDirection() {
+    public double getDirection() {
         return direction;
     }
 

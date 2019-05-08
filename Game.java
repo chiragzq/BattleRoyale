@@ -235,11 +235,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public void paintComponent(Graphics g) {
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
-        if(bullets.size() != 0)
-        {
-            bullets.forEach((bullet) -> bullet.draw(g));
-        }
-        //Draws the Bullets
+        
         List<Obstacle> temp = new ArrayList<Obstacle>();
         for(int i = 0; i < obstacles.size(); i++)
         {
@@ -249,6 +245,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             else
                 temp.add(a);
         }
+        
+        if(bullets.size() != 0)
+        {
+            bullets.forEach((bullet) -> bullet.draw(g));
+        }
+        //Draws the Bullets
         //Draw the obstacle
         players.values().forEach((player) -> player.draw(g));
 
