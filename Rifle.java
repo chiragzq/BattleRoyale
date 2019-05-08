@@ -19,13 +19,9 @@ public class Rifle extends Gun
         Graphics2D g2 = (Graphics2D) g;
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        int x2 = Game.getMouseX();
-        int y2 = Game.getMouseY();
-        
-        double t = Math.atan2(y2 - y, x2 - x);
         
         g2.setStroke(new BasicStroke(10));
-        g2.drawLine(x, y, (int)(Math.cos(t)*getBarrelLength()) + x, (int)(Math.sin(t)*getBarrelLength()) + y);
+        g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
         
     }
     

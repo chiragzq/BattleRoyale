@@ -8,7 +8,7 @@ class Game {
     }
 
     update() {
-        console.log(this.players)
+        //console.log(this.players)
         this.players.forEach((player) => {
             if(player && player.update()) {
                 this.updates.push({

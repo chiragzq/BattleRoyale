@@ -39,7 +39,7 @@ public class Player
         this.health = health;
         //The health of the player
 
-        gun = new Pistol(this);
+        gun = new Rifle(this);
     }
 
     /**
@@ -103,8 +103,6 @@ public class Player
      * @param g the graphics
      */
     public void draw(Graphics g) {
-        faceCursor();
-
         gun.draw(g);
 
         g.setColor(new Color(0xFAC47F));
@@ -206,6 +204,10 @@ public class Player
     public int getY()
     {
         return y;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 
     public void setX(int x) {

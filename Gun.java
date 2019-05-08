@@ -11,6 +11,7 @@ public abstract class Gun
     private final static int EXTENSION = 20;
     private int capacity;
     private int spread;
+    private int direction;
     private Player player;
     private int numberInCarbine = 999;
     /**
@@ -23,6 +24,7 @@ public abstract class Gun
         player = player2;
         capacity = cap;
         spread = spre;
+        direction = player2.getDirection();
     }
     
     /**
@@ -79,6 +81,20 @@ public abstract class Gun
     public int getBarrelLength()
     {
         return BARREL_LENGTH;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void faceCursor() {
+        int xMouse = Game.getMouseX();
+        int yMouse = Game.getMouseY();
+
+        double xSide = xMouse - player.getX();
+        double ySide = yMouse - player.getY();
+
+        direction = (int)(Math.atan2(ySide, xSide) / Math.PI * 180);
     }
     
     /**

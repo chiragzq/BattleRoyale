@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.Timer;
 import java.awt.MouseInfo;
 
-public class Game extends JComponent implements KeyListener, MouseListener{
+public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 1080;
     public static final double GAME_SCALE = 1;
@@ -49,9 +49,15 @@ public class Game extends JComponent implements KeyListener, MouseListener{
         new Timer().schedule(new TimerTask(){
           @Override
                 public void run() {
-                    repaint();
+                    if(thisPlayer != null) {
+                        thisPlayer.faceCursor();
+                        if(thisPlayer.getGun() != null) {
+                            thisPlayer.getGun().faceCursor();
+                        }
+                    }
                     updateScreenLocation();
                     moveBullets();
+                    repaint();
                 }
             }, 100, 1000/30);
 
@@ -67,6 +73,7 @@ public class Game extends JComponent implements KeyListener, MouseListener{
 
     public void setPlayer(Player player, int id) {
         players.put(id, player);
+        thisPlayer = player;
     }
 
     public Player getPlayer() {
@@ -91,7 +98,7 @@ public class Game extends JComponent implements KeyListener, MouseListener{
 
     public void mousePressed(MouseEvent e)
     {
-        bullets.add(players.get(0).getGun().fire());
+        bullets.add(thisPlayer.getGun().fire());
     }
 
     public void mouseReleased(MouseEvent e)
