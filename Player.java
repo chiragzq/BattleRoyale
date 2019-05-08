@@ -38,7 +38,7 @@ public class Player
         health = 100;
         //The health of the player
 
-        gun = new Rifle(this);
+        gun = new Pistol(this);
     }
 
     /**
