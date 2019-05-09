@@ -8,9 +8,9 @@ import java.awt.*;
  */
 public class Player
 {
-    private static final int TOTAL_PUNCH_TIME = 300;
+    private static final int TOTAL_PUNCH_TIME = (int)(Game.GAME_SCALE *300);
     //In Milli seconds
-    private static final int TOTAL_ARM_EXTEND = 25;
+    private static final int TOTAL_ARM_EXTEND = (int)(Game.GAME_SCALE *25);
     private static final int DEGREE_ARM_MOVES_IN = 60;
 
     private int x;
@@ -46,7 +46,7 @@ public class Player
         this.health = health;
         //The health of the player
         punch = new Punch(this);
-        gun = null; //new Rifle(this);
+        gun = new Shotgun(this);
     }
     
     /**
