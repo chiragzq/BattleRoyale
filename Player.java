@@ -16,7 +16,7 @@ public class Player
     private int x;
     private int y;
     private int health;
-    private double direc;
+    private double direcRadian;
     private double direction;
     private int bulletLoad;
     private long lastPunchTime;
@@ -88,7 +88,7 @@ public class Player
         double ySide = yMouse - y;
         
         
-        direc = Math.atan2(ySide, xSide);
+        direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
     }
 
@@ -123,7 +123,7 @@ public class Player
         double handExtendRight = 0;
         double handExtendLeft = 0;
         
-        double directionRad = direc;
+        double directionRad = direcRadian;
         double rightDir = directionRad + Math.PI / 4.5;
         double leftDir = directionRad - Math.PI / 4.5;
         
@@ -237,5 +237,6 @@ public class Player
 
     public void setDirection(int direction) {
         this.direction = direction;
+        direcRadian = Math.toRadians(direction);
     }
 }
