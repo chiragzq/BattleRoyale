@@ -22,7 +22,14 @@ public class Player
     private long lastPunchTime;
     private boolean isCurrentlyPunching;
     private boolean isRightPunching;
+    private int xPunch;
+    //The x of the punch
+    private int yPunch;
+    //The y of the punch
+    private boolean isExtended;
+    //Whether the hand has been exteded
     private Gun gun;
+    private Punch punch;
 
     /**
      * Constructs Player at location(x, y)
@@ -38,8 +45,8 @@ public class Player
         
         this.health = health;
         //The health of the player
-
-        gun = new Shotgun(this);
+        punch = new Punch(this);
+        gun = null; //new Rifle(this);
     }
     
     /**
@@ -49,7 +56,12 @@ public class Player
     {
         return health;
     }
-
+    
+    public Punch getPunch()
+    {
+        return punch;
+    }
+    
     /**
      * Gets the gun
      */
@@ -84,6 +96,8 @@ public class Player
         int xMouse = Game.getMouseX();
         int yMouse = Game.getMouseY();
 
+       
+        
         double xSide = xMouse - x;
         double ySide = yMouse - y;
         
@@ -91,6 +105,40 @@ public class Player
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
     }
+    
+    /**
+     * Gets if the player is punching or not
+     */
+    public boolean isPunching()
+    {
+        return isCurrentlyPunching;
+    }
+    
+    /**
+     * Gets the x of the hand punching
+     */
+    public int xPunch()
+    {
+        return xPunch;
+    }
+    
+    /**
+     * Gets the y of the hand punching
+     */
+    public int yPunch()
+    {
+        return yPunch;
+    }
+    
+    /**
+     * gets if the arm is extended
+     */
+    public boolean isExtended()
+    {
+        System.out.println(isExtended);
+        return isExtended;
+    }
+    
 
     /**
      * Punches
@@ -182,7 +230,14 @@ public class Player
             handExtendLeft = gun.extendLeft();
             handExtendRight = gun.extendRight();
         }
-
+        
+        if(isCurrentlyPunching)
+        {
+            if(isRightPunching)
+                rightDir -= Math.PI * handExtendRight / TOTAL_ARM_EXTEND / 4.5;
+            else
+                leftDir += Math.PI * handExtendLeft / TOTAL_ARM_EXTEND / 4.5;
+        }
         
         int leftXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendLeft) * Math.cos(leftDir));
         int leftYOff= (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendLeft) * Math.sin(leftDir));
@@ -190,6 +245,25 @@ public class Player
         int rightXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.cos(rightDir));
         int rightYOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendRight) * Math.sin(rightDir));
 
+        int constant = 4;
+        if(isRightPunching)
+        {
+            xPunch = x + rightXOff;
+            yPunch = y + rightYOff;
+            if(handExtendRight < TOTAL_ARM_EXTEND + TOTAL_PUNCH_TIME/Game.FRAME_RATE/4 && handExtendRight > TOTAL_ARM_EXTEND - TOTAL_PUNCH_TIME/Game.FRAME_RATE/4)
+                isExtended = true;
+            else
+                isExtended = false;
+        }
+        else
+        {
+            xPunch = x + leftXOff;
+            yPunch = y + leftYOff;
+            if(handExtendLeft < TOTAL_ARM_EXTEND + TOTAL_PUNCH_TIME/Game.FRAME_RATE/4 && handExtendLeft > TOTAL_ARM_EXTEND - TOTAL_PUNCH_TIME/Game.FRAME_RATE/4)
+                isExtended = true;
+            else
+                isExtended = false;
+        }
         
         Game.fillCircle(g, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
         Game.fillCircle(g, x + rightXOff, y + rightYOff, Game.HAND_SIZE);

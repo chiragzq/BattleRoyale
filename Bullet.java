@@ -37,6 +37,12 @@ public class Bullet
         thicknessOfBullet = 4;
     }
     
+    public int getDirection()
+    {
+        return direction;
+    }
+    
+    
     /**
      * Moves the Bullet
      * @return false if the bullet should not be moving anymore; true if it can

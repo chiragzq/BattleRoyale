@@ -68,8 +68,9 @@ public abstract class Gun implements Weapon
     {
         if(numberInCarbine == 0)
             return null;
-        int xSide = (int)(Math.atan2(Game.getMouseY() - player.getY(), Game.getMouseX() - player.getX()) * 180 /Math.PI);
         int change = (int)((int)(Math.random() * spread) - (double)spread/2);
+        int xSide = (int)(Math.atan2(Game.getMouseY() - player.getY(), Game.getMouseX() - player.getX()) * 180 /Math.PI);
+        
         int x2 = Game.getMouseX();
         int y2 = Game.getMouseY();
         int x = getPlayer().getX();

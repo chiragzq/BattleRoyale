@@ -7,6 +7,7 @@
  */
 public class Punch implements Weapon
 {
+    private static final int DAMAGE = 20;
     private Player player;
     
     public Punch(Player play)
@@ -17,5 +18,30 @@ public class Punch implements Weapon
     public void punch()
     {
         player.punch();
+    }
+    
+    public int getX()
+    {
+        return player.xPunch();
+    }
+    
+    public int getY()
+    {
+        return player.yPunch();
+    }
+    
+    public boolean isPunching()
+    {
+        return player.isPunching();
+    }
+    
+    public int doDamage()
+    {
+        return DAMAGE;
+    }
+    
+    public boolean isExtended()
+    {
+        return player.isExtended();
     }
 }
