@@ -14,7 +14,21 @@ public class Shotgun extends Gun
     
     public Bullet[] shotgunFire()
     {
+        setNum(5);
         
+        Bullet a = fire();
+        Bullet b = fire();
+        Bullet c = fire();
+        Bullet d = fire();
+        Bullet e = fire();
+        
+        Bullet[] temp = new Bullet[5];
+        temp[0] = a;
+        temp[1] = b;
+        temp[2] = c;
+        temp[3] = d;
+        temp[4] = e;
+        return temp;
     }
     
     public void draw(Graphics g)
@@ -24,7 +38,7 @@ public class Shotgun extends Gun
         int x = getPlayer().getX();
         int y = getPlayer().getY();
         
-        g2.setStroke(new BasicStroke(10));
+        g2.setStroke(new BasicStroke(13));
         g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
         
     }

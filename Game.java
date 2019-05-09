@@ -211,6 +211,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
+        Gun g = thisPlayer.getGun();
+        Bullet[] a = ((Shotgun)g).shotgunFire();
+        for(int i = 0; i < a.length; i++)
+        {
+            bullets.add(a[i]);
+        }
     }
 
     public void mouseReleased(MouseEvent e)
@@ -253,13 +259,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        bullets.forEach((bullet) -> bullet.draw(g));
-        //Draws the Bullets
-        players.values().forEach((player) -> player.draw(g));
-
-        obstacles.forEach((obstacle)-> obstacle.draw(g));
-        //Draw the obstacle
-        lock.readLock().unlock();
+        
         
         List<Obstacle> temp = new ArrayList<Obstacle>();
         for(int i = 0; i < obstacles.size(); i++)
@@ -272,6 +272,16 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             else
                 temp.add(a);
         }
+        //Draw the obstacle
+        bullets.forEach((bullet) -> bullet.draw(g));
+        
+        players.values().forEach((player) -> player.draw(g));
+
+        
+        lock.readLock().unlock();
+        
+        //Draws the Bullets
+        
 
         temp.forEach((obstacle)-> obstacle.draw(g));
     }

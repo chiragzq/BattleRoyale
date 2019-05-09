@@ -55,6 +55,11 @@ public abstract class Gun
         }
     }
     
+    public void setNum(int nums)
+    {
+        numberInCarbine += nums;
+    }
+    
     /**
      * Fires a bullet
      * @return the bullet fired; null if can not fire
