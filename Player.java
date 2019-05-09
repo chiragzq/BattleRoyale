@@ -131,7 +131,6 @@ public class Player
 
         if(gun == null)
         {
-
             if(isRightPunching)
             {
                 //This moves the right hand forward
@@ -238,5 +237,8 @@ public class Player
     public void setDirection(int direction) {
         this.direction = direction;
         direcRadian = Math.toRadians(direction);
+        if(gun != null) {
+            gun.setDirection(direction);
+        }
     }
 }

@@ -97,6 +97,10 @@ public abstract class Gun
         direction = (int)(Math.atan2(ySide, xSide) / Math.PI * 180);
     }
     
+    public void setDirection(int dir) {
+        direction = dir;
+    }
+
     /**
      * Draws the gun
      * @param g the gun

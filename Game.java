@@ -78,7 +78,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                 moveBullets();
                 repaint();
             }
-        }, 100, 1000/20);
+        }, 100, 1000/30);
   
     }
 

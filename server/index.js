@@ -3,6 +3,7 @@ const gameLib = require("./game")
 
 const Game = gameLib.Game;
 const Player = gameLib.Player;
+const Bullet = gameLib.Bullet;
 
 const game = new Game();
 

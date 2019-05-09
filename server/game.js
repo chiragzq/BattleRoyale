@@ -84,6 +84,15 @@ class Player {
     }
 }
 
+class Bullet {
+    constructor(x, y, direction) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+    }
+}
+
 
 module.exports.Game = Game;
 module.exports.Player = Player;
+module.exports.Bullet = Bullet;
