@@ -5,7 +5,7 @@ import java.awt.*;
  * @author Aaron Lo
  * @version 5-7-19
  */
-public abstract class Gun
+public abstract class Gun implements Weapon
 {
     private final static int BARREL_LENGTH = 80;
     private final static int EXTENSION = 0;
