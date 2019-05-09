@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
         player.moveR = true;
     });
 
-    socket.on("w_released", (data) => {
+    socket.on("w_released", (data ) => {
         player.moveU = false;
     });
 
@@ -71,6 +71,10 @@ io.on('connection', (socket) => {
         player.moveR = false;
     });
 
+    socket.on("mouse_loc", (data) => {
+        player.mouse = data;
+    })
+    
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];
