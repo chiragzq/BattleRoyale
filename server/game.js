@@ -48,26 +48,38 @@ class Player {
         this.moveR = false;
 
         this.speed = 10;
+
+        this.mouse = {
+            x: 0,
+            y: 0
+        }
     }
 
     update() {
         let updated = false;
-        if(this.moveU) {
-            this.y -= this.speed;
+        
+        let xd = 0;
+        let yd = 0;
+        yd -= this.speed * this.moveU;
+        yd += this.speed * this.moveD;
+        xd -= this.speed * this.moveL;
+        xd += this.speed * this.moveR;
+        const dir = Math.atan2(yd, xd);
+        
+        if(xd || yd) {
+            this.x += Math.round(this.speed * Math.cos(dir));
+            this.y += Math.round(this.speed * Math.sin(dir));
             updated = true;
         }
-        if(this.moveD) {
-            this.y += this.speed;
+
+        const dx = this.mouse.x - this.x;
+        const dy = this.mouse.y - this.y;
+        const direction = Math.round(Math.atan2(dy, dx) * 180 / Math.PI);
+        if(direction != this.direction) {
+            this.direction = direction;
             updated = true;
         }
-        if(this.moveL) {
-            this.x -= this.speed;
-            updated = true;
-        }
-        if(this.moveR) {
-            this.x += this.speed;
-            updated = true;
-        }
+
         return updated;
     }
 }

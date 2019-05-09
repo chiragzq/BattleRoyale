@@ -38,7 +38,7 @@ public class Player
         this.health = health;
         //The health of the player
 
-        gun = null;//new Rifle(this);
+        gun = new Rifle(this);//new Rifle(this);
     }
 
     /**

@@ -6,6 +6,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.awt.MouseInfo;
 
 public class Game extends JComponent implements KeyListener, MouseListener {
@@ -26,6 +29,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private Network network;
     private List<Obstacle> obstacles;
     private List<Bullet> bullets;
+
+    private ReadWriteLock lock;
      
     public Game() {
         final Game self = this;
@@ -46,20 +51,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     frame.setTitle("Battle Royale");
                 }
             });
-        new Timer().schedule(new TimerTask(){
-          @Override
-                public void run() {
-                    if(thisPlayer != null) {
-                        thisPlayer.faceCursor();
-                        if(thisPlayer.getGun() != null) {
-                            thisPlayer.getGun().faceCursor();
-                        }
-                    }
-                    updateScreenLocation();
-                    moveBullets();
-                    repaint();
-                }
-            }, 100, 1000/30);
+
+        lock = new ReentrantReadWriteLock();
 
         bullets = new ArrayList<Bullet>();
         obstacles = new ArrayList<Obstacle>();
@@ -68,7 +61,24 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
 
-        network = new Network("http://localhost:3000", this);
+        network = new Network("http://localhost:3000", this, lock);
+
+        new Timer().schedule(new TimerTask(){
+            @Override
+            public void run() {
+                if(thisPlayer != null) {
+                    thisPlayer.faceCursor();
+                    if(thisPlayer.getGun() != null) {
+                        thisPlayer.getGun().faceCursor();
+                    }
+                }
+                network.mouseLocation(Game.getMouseX(), Game.getMouseY());
+                updateScreenLocation();
+                moveBullets();
+                repaint();
+            }
+        }, 100, 1000/20);
+  
     }
 
     public void setPlayer(Player player, int id) {
@@ -98,7 +108,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
-        network.
     }
 
     public void mouseReleased(MouseEvent e)
@@ -137,18 +146,17 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void paintComponent(Graphics g) {
+        lock.readLock().lock();
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
-        if(bullets.size() != 0)
-        {
-            bullets.forEach((bullet) -> bullet.draw(g));
-        }
-        //Draws the Bullets
 
+        bullets.forEach((bullet) -> bullet.draw(g));
+        //Draws the Bullets
         players.values().forEach((player) -> player.draw(g));
 
         obstacles.forEach((obstacle)-> obstacle.draw(g));
         //Draw the obstacle
+        lock.readLock().unlock();
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
@@ -197,4 +205,16 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static void main(String... args) {
         new Game();
     }  
+
+    public void _wait() {
+        try {
+            wait();
+        } catch(InterruptedException e) {
+            // do nothing;
+        }
+    }
+
+    public void _notify() {
+        notifyAll();
+    }
 }
