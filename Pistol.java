@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class Pistol extends Gun
 {
-    private static final int BARREL_LENGTH = 55;
+    private static final int BARREL_LENGTH =(int)( 55 * Game.GAME_SCALE);
     public Pistol(Player play)
     {
         super(play, 30, 20);
@@ -20,7 +20,7 @@ public class Pistol extends Gun
         g2.setColor(new Color(0, 0, 0));
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        g2.setStroke(new BasicStroke(10));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
         g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*BARREL_LENGTH) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*BARREL_LENGTH) + y);
     }
     

@@ -8,11 +8,11 @@ import java.awt.*;
 public class Bush extends Obstacle
 {
     // instance variables - replace the example below with your own
-    private static final int SIZE = 100;
-    private static final int LEAVE_SIZE = 100;
+    private static final int SIZE = (int)(Game.GAME_SCALE *100);
+    private static final int LEAVE_SIZE = (int)(Game.GAME_SCALE *100);
     private static final int BORDER = 0;
     private static final int HEALTH = 70;
-    private static final int SIZE_WHEN_DEAD = 20;
+    private static final int SIZE_WHEN_DEAD = (int)(Game.GAME_SCALE *20);
     private static final int OPACITY = 235;
 
     public Bush(int x, int y)
