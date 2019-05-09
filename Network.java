@@ -1,3 +1,6 @@
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,11 +13,14 @@ public class Network {
     private Game game;
 
     private int playerId;
+    
+    private ReadWriteLock lock;
 
     private Object nil = new Object();
 
-    public Network(String server, Game game) {
+    public Network(String server, Game game, ReadWriteLock lock) {
         this.game = game;
+        this.lock = lock;
         try {
             initializeSocket(server);
         } catch(Exception e) {
@@ -34,50 +40,74 @@ public class Network {
         socket.on("player_info", new Emitter.Listener(){
             @Override
             public void call(Object... arg) {
-                JSONObject info = (JSONObject) arg[0];
-                Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
-                game.setPlayer(player, info.getInt("id"));
-                playerId = info.getInt("id");
+                lock.writeLock().lock();
+                try {
+                    JSONObject info = (JSONObject) arg[0];
+                    Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
+                    game.setPlayer(player, info.getInt("id"));
+                    playerId = info.getInt("id");                }catch(Exception e){e.printStackTrace();
+
+                } finally {
+                    lock.writeLock().unlock();
+                }
             }
         });
         socket.on("new_player", new Emitter.Listener(){
             @Override
             public void call(Object... arg) {
-                JSONObject info = (JSONObject) arg[0];
-                System.out.println(info.getInt("id") + " " + playerId);
-                if(info.getInt("id") == playerId) {
-                    return;
+                lock.writeLock().lock();
+                try {
+                    JSONObject info = (JSONObject) arg[0];
+                    System.out.println(info.getInt("id") + " " + playerId);
+                    if(info.getInt("id") == playerId) {
+                        return;
+                    }
+                    Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
+                    game.getPlayers().put(info.getInt("id"), player);                }catch(Exception e){e.printStackTrace();
+
+                } finally {
+                    lock.writeLock().unlock();
                 }
-                Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
-                game.getPlayers().put(info.getInt("id"), player);
             }
         });
         socket.on("update", new Emitter.Listener(){
             @Override
             public void call(Object... objsa) {
-                JSONArray objs = (JSONArray)objsa[0];
-                JSONObject[] updates = new JSONObject[objs.length()];
-                for(int i = 0;i < objs.length();i ++) {
-                    updates[i] = (JSONObject) objs.getJSONObject(i);
-                }
-                for(JSONObject update : updates) {
-                    if(update.getString("type").equals("player")) {
-                        Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
-                        updatedPlayer.setX(update.getInt("x"));
-                        updatedPlayer.setY(update.getInt("y"));
-                        updatedPlayer.setDirection(update.getInt("dir"));
-                        updatedPlayer.setHealth(update.getInt("health"));
-                    } else {
-                        throw new RuntimeException("Unknown Update Type! " + update.getString("type"));
+                lock.writeLock().lock();
+                try {
+                    JSONArray objs = (JSONArray)objsa[0];
+                    JSONObject[] updates = new JSONObject[objs.length()];
+                    for(int i = 0;i < objs.length();i ++) {
+                        updates[i] = (JSONObject) objs.getJSONObject(i);
                     }
+                    for(JSONObject update : updates) {
+                        if(update.getString("type").equals("player")) {
+                            Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
+                            updatedPlayer.setX(update.getInt("x"));
+                            updatedPlayer.setY(update.getInt("y"));
+                            updatedPlayer.setDirection(update.getInt("dir"));
+                            updatedPlayer.setHealth(update.getInt("health"));
+                        } else {
+                            throw new RuntimeException("Unknown Update Type! " + update.getString("type"));
+                        }
+                    }
+                }catch(Exception e){e.printStackTrace();
+                } finally {
+                    lock.writeLock().unlock();
                 }
             }
         });
         socket.on("delete_player", new Emitter.Listener(){
             @Override
             public void call(Object... arg0) {
-                int id = (int)arg0[0];
-                game.getPlayers().remove(id);
+                lock.writeLock().lock();
+                try {
+                    int id = (int)arg0[0];
+                    game.getPlayers().remove(id);                }catch(Exception e){e.printStackTrace();
+
+                } finally {
+                    lock.writeLock().unlock();
+                }
             }
         });
         socket.connect();
