@@ -58,6 +58,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles = new ArrayList<Obstacle>();
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
+        obstacles.add(new Bush(300, 300));
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
 
@@ -84,6 +85,107 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public void setPlayer(Player player, int id) {
         players.put(id, player);
         thisPlayer = player;
+    }
+    
+    public void moveBullets()
+    {
+        Iterator<Bullet> it = bullets.iterator();
+        while(it.hasNext())
+        {
+            Bullet b = it.next();
+            if(!b.move())
+                it.remove();
+            else
+            {
+                int x = b.getX();
+                int y = b.getY();
+                Obstacle ob = isCollisionObstacle(x, y);
+                Player play= isCollisionPlayer(x, y);
+                if(ob!=null)
+                {
+                    
+                    ob.setHealth(-b.doDamage());
+                   
+                    if(!(ob instanceof Bush))
+                    {
+                        it.remove();
+                    }
+                }
+                else if(play!=null)
+                {
+                    play.setHealth(-b.doDamage());
+                    if(play.getHealth() <= 0)
+                    {
+                        System.out.println("CHIRAG, FIX THIS AT GAME AROUND LINE 110");
+                    }
+                    it.remove();
+                }
+
+            }
+
+        }
+    }
+
+//     /**
+//      * Removes the player
+//      */
+//     public void removePlayer(Player play)
+//     {
+//         Iterator<Player> it = players.iterator();
+//         while(it.hasNext())
+//         {
+//             if(it.next().equals(play))
+//                 it.remove();
+//         }
+//     }
+
+    /**
+     * checks if collids with obstacles
+     * @param x x
+     * @param y y
+     * @return the obstacle if colliding, otherwise false
+     */
+    public Obstacle isCollisionObstacle(int x, int y)
+    {
+        for(Obstacle ob : obstacles)
+        {
+            int xLoc = ob.getX();
+            int yLoc = ob.getY();
+            int size = ob.getSize()/2;
+
+            int xTry = (int)Math.pow(x - xLoc, 2);
+            int yTry = (int)Math.pow(y - yLoc, 2);
+            int sizeTry = (int)Math.pow(size, 2);
+
+            if(xTry + yTry <= sizeTry)
+                return ob;
+        }
+        return null;
+    }
+
+    /**
+     * checks if collids with player
+     * @param x x
+     * @param y y
+     * @return the player if colliding, otherwise false
+     */
+    public Player isCollisionPlayer(int x, int y)
+    {
+        Collection<Player> p = players.values();
+        for(Player play: p)
+        {
+            int xLoc = play.getX();
+            int yLoc = play.getY();
+            int size = PLAYER_SIZE/2;
+
+            int xTry = (int)Math.pow(x - xLoc, 2);
+            int yTry = (int)Math.pow(y - yLoc, 2);
+            int sizeTry = (int)Math.pow(size, 2);
+
+            if(xTry + yTry <= sizeTry)
+                return play;
+        }
+        return null;
     }
 
     public Player getPlayer() {
@@ -157,6 +259,20 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles.forEach((obstacle)-> obstacle.draw(g));
         //Draw the obstacle
         lock.readLock().unlock();
+        
+        List<Obstacle> temp = new ArrayList<Obstacle>();
+        for(int i = 0; i < obstacles.size(); i++)
+        {
+            Obstacle a = obstacles.get(i);
+            if(!(a instanceof Bush) && a.getHealth() < 25)
+                a.draw(g);
+            else if(a.getHealth() < 0)
+                a.draw(g);
+            else
+                temp.add(a);
+        }
+
+        temp.forEach((obstacle)-> obstacle.draw(g));
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
@@ -187,10 +303,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
     }
 
-    public void moveBullets()
-    {
-        bullets.forEach((bullet) -> bullet.move());
-    }
 
     public static int getMouseX()
     {
