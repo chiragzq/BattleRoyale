@@ -10,7 +10,7 @@ public class Rifle extends Gun
     // instance variables - replace the example below with your own
     public Rifle(Player play)
     {
-        super(play, 30, 10);
+        super(play, 30, 0);
     }
     
     public void draw(Graphics g)
@@ -19,7 +19,7 @@ public class Rifle extends Gun
         Graphics2D g2 = (Graphics2D) g;
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        
+
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
         g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
         
