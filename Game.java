@@ -60,7 +60,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         obstacles.add(new Bush(300, 300));
-
+        
+        
+        makeObstacles(4, 4, 4);
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
 
@@ -83,6 +85,63 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                 }
             }, 100, 1000/FRAME_RATE);
 
+    }
+
+    public void makeObstacles(int numOfTrees, int numOfStones, int numOfBushes)
+    {
+        makeTrees(numOfTrees);
+        makeStones(numOfStones);
+        makeBushes(numOfBushes);
+    }
+
+    public void makeTrees(int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            int width = (int)(Math.random() * GAME_WIDTH);
+            int height = (int)(Math.random() * GAME_HEIGHT);
+            while(!isOccupied(width, height))
+            {
+                width = (int)(Math.random() * GAME_WIDTH);
+                height = (int)(Math.random() * GAME_HEIGHT);
+            }
+            obstacles.add(new Tree(width, height));
+        }
+    }
+    
+    public void makeStones(int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            int width = (int)(Math.random() * GAME_WIDTH);
+            int height = (int)(Math.random() * GAME_HEIGHT);
+            while(!isOccupied(width, height))
+            {
+                width = (int)(Math.random() * GAME_WIDTH);
+                height = (int)(Math.random() * GAME_HEIGHT);
+            }
+            obstacles.add(new Stone(width, height));
+        }
+    }
+    
+    public void makeBushes(int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            int width = (int)(Math.random() * GAME_WIDTH);
+            int height = (int)(Math.random() * GAME_HEIGHT);
+            while(!isOccupied(width, height))
+            {
+                width = (int)(Math.random() * GAME_WIDTH);
+                height = (int)(Math.random() * GAME_HEIGHT);
+            }
+            obstacles.add(new Bush(width, height));
+        }
+    }
+
+    public boolean isOccupied(int x, int y)
+    {
+        return isCollisionObstacle(x, y) == null;
     }
 
     public void setPlayer(Player player, int id) {
@@ -235,14 +294,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void mousePressed(MouseEvent e)
     {
-        thisPlayer.getPunch().punch();
-        //         Gun g = thisPlayer.getGun();
-        //         bullets.add(g.fire());
-        //         Bullet[] a = ((Shotgun)g).shotgunFire();
-        //         for(int i = 0; i < a.length; i++)
-        //         {
-        //             bullets.add(a[i]);
-        //         }
+        //thisPlayer.getPunch().punch();
+        Gun g = thisPlayer.getGun();
+        Bullet[] a = g.fire();
+        for(int i = 0; i < a.length; i++)
+        {
+            bullets.add(a[i]);
+        }
     }
 
     public void mouseReleased(MouseEvent e)
