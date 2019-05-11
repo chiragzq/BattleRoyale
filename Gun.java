@@ -122,13 +122,10 @@ public abstract class Gun implements Weapon
 
         direction = (int)(Math.atan2(ySide, xSide) / Math.PI * 180);
     }
-<<<<<<< HEAD
     
     public void setDirection(int dir) {
         direction = dir;
     }
-=======
->>>>>>> 6a96a6e10372a6797727b779fc39d7a210c06d59
 
     /**
      * Draws the gun
