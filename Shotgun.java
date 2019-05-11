@@ -1,29 +1,41 @@
 import java.awt.*;
 /**
- * Write a description of class Pistol here.
+ * Write a description of class Shotgun here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Pistol extends Gun
+public class Shotgun extends Gun
 {
-    private static final int BARREL_LENGTH =(int)( 55 * Game.GAME_SCALE);
-    public Pistol(Player play)
+    public Shotgun(Player play)
     {
-        super(play, 30, 20);
+        super(play, 5, 20);
+    }
+
+    public Bullet[] fire()
+    {
+        setNum(5);
+
+        Bullet[] a = new Bullet[5];
+        for(int i = 0; i < 5; i++)
+        {
+            a[i] = firing();
+        }
+        return a;
     }
 
     public void draw(Graphics g)
     {
-        
+        g.setColor(new Color(0, 0, 0));
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(0, 0, 0));
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
-        g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*BARREL_LENGTH) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*BARREL_LENGTH) + y);
+
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *13)));
+        g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
+
     }
-    
+
     /**
      * Location of Right hand
      * @param directionRad the direction
@@ -31,9 +43,9 @@ public class Pistol extends Gun
      */
     public double getRightDir(double directionRad)
     {
-        return directionRad;
+        return directionRad + Math.PI / 23;
     }
-    
+
     /**
      * Location of Left hand
      * @param directionRad the direction
@@ -41,9 +53,9 @@ public class Pistol extends Gun
      */
     public double getLeftDir(double directionRad)
     {
-        return directionRad;
+        return directionRad + Math.PI / 33;
     }
-    
+
     /**
      * How far to extend right hand
      * @return the pixels
@@ -52,13 +64,13 @@ public class Pistol extends Gun
     {
         return 0;
     }
-    
+
     /**
      * How far to extend left hand
      * @return the pixels
      */
     public int extendLeft()
     {
-        return 0;
+        return 30;
     }
 }

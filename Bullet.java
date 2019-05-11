@@ -15,8 +15,8 @@ public class Bullet
     private int direction;
     private int distance;
     //How far the bullet goes
-    private static final int LENGTH = 75;
-    private static final int SPEED = 35;
+    private static final int LENGTH = (int)(75* Game.GAME_SCALE);
+    private static final int SPEED = (int)(35 * Game.GAME_SCALE);
     private static final int DAMAGE = 10;
     private int thicknessOfBullet;
     
@@ -36,6 +36,12 @@ public class Bullet
         distance = 100;
         thicknessOfBullet = 4;
     }
+    
+    public int getDirection()
+    {
+        return direction;
+    }
+    
     
     /**
      * Moves the Bullet

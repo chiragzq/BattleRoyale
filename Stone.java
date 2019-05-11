@@ -8,10 +8,10 @@ import java.awt.*;
 public class Stone extends Obstacle
 {
     // instance variables - replace the example below with your own
-    private static final int SIZE = 60;
-    private static final int BORDER = 5;
+    private static final int SIZE = (int)(60 * Game.GAME_SCALE);
+    private static final int BORDER = (int)(5* Game.GAME_SCALE);
     private static final int HEALTH = 100;
-    private static final int SIZE_WHEN_DEAD = 20;
+    private static final int SIZE_WHEN_DEAD = (int)(20* Game.GAME_SCALE);
 
     /**
      * Constructor for objects of class Stone

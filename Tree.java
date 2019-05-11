@@ -7,11 +7,11 @@ import java.awt.*;
  */
 public class Tree extends Obstacle
 {
-    private static final int SIZE = 60;
-    private static final int LEAVE_SIZE = 200;
+    private static final int SIZE = (int)(Game.GAME_SCALE *60);
+    private static final int LEAVE_SIZE = (int)(Game.GAME_SCALE *200);
     private static final int BORDER = 5;
     private static final int HEALTH = 100;
-    private static final int SIZE_WHEN_DEAD = 25;
+    private static final int SIZE_WHEN_DEAD = (int)(Game.GAME_SCALE *25);
 
     /**
      * Constructor for objects of class Tree
