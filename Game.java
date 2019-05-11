@@ -102,13 +102,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                 width = (int)(Math.random() * GAME_WIDTH);
                 height = (int)(Math.random() * GAME_HEIGHT);
             }
-<<<<<<< HEAD
-        }, 100, 1000/30);
-  
-=======
             obstacles.add(new Tree(width, height));
         }
-    }
+  
+            
+        }
+    
 
     public void makeStones(int num)
     {
@@ -143,7 +142,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public boolean isOccupied(int x, int y)
     {
         return isCollisionObstacle(x, y) == null;
->>>>>>> 6a96a6e10372a6797727b779fc39d7a210c06d59
     }
 
     public void setPlayer(Player player, int id) {
