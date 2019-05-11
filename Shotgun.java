@@ -14,10 +14,11 @@ public class Shotgun extends Gun
 
     public Bullet[] fire()
     {
-        setNum(5);
+        
 
-        Bullet[] a = new Bullet[5];
-        for(int i = 0; i < 5; i++)
+        Bullet[] a = new Bullet[100];
+        setNum(a.length);
+        for(int i = 0; i < a.length; i++)
         {
             a[i] = firing();
         }

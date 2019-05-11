@@ -57,12 +57,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         bullets = new ArrayList<Bullet>();
         obstacles = new ArrayList<Obstacle>();
-        obstacles.add(new Stone(200, 200));
-        obstacles.add(new Tree(400, 400));
-        obstacles.add(new Bush(300, 300));
-        
-        
-        makeObstacles(4, 4, 4);
+
+        makeObstacles(0, 0, 0);
+
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
 
@@ -112,7 +109,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             obstacles.add(new Tree(width, height));
         }
     }
-    
+
     public void makeStones(int num)
     {
         for(int i = 0; i < num; i++)
@@ -127,7 +124,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             obstacles.add(new Stone(width, height));
         }
     }
-    
+
     public void makeBushes(int num)
     {
         for(int i = 0; i < num; i++)
@@ -177,18 +174,19 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public void moveBullets()
     {
-        Iterator<Bullet> it = bullets.iterator();
-        while(it.hasNext())
+        int i = 0;
+        while(i < bullets.size())
         {
-            Bullet b = it.next();
+            Bullet b = bullets.get(i);
             if(!b.move())
-                it.remove();
+                bullets.remove(i);
             else
             {
                 int x = b.getX();
                 int y = b.getY();
                 Obstacle ob = isCollisionObstacle(x, y);
                 Player play= isCollisionPlayer(x, y);
+
                 if(ob!=null)
                 {
 
@@ -196,12 +194,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
                     if(!(ob instanceof Bush))
                     {
-                        it.remove();
+                        bullets.remove(i);
                     }
                 }
                 else if(play!=null)
                 {
-                    it.remove();
+                    bullets.remove(i);
                     play.setHealth(-b.doDamage());
                     if(play.getHealth() <= 0)
                     {
@@ -209,6 +207,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     }
 
                 }
+                else
+                    i++;
+
 
             }
 
@@ -251,6 +252,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
         return null;
     }
+
+
 
     /**
      * checks if collids with player
@@ -300,6 +303,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public void mousePressed(MouseEvent e)
     {
         //thisPlayer.getPunch().punch();
+        
+        System.out.println("(" + e.getX() + ", " + e.getY() + ")");
         Gun g = thisPlayer.getGun();
         Bullet[] a = g.fire();
         for(int i = 0; i < a.length; i++)

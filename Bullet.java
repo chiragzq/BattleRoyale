@@ -92,6 +92,16 @@ public class Bullet
         return y;
     }
     
+    public int getBackX()
+    {
+        return backX;
+    }
+    
+    public int getBackY()
+    {
+        return backY;
+    }
+    
     /**
      * Draws the Bullet
      * @param g the graphics
