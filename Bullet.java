@@ -14,7 +14,7 @@ public class Bullet
     private int backY;
     private int direction;
     private int distance;
-    //How far the bullet goes
+    //How far the bullet traveled
     private static final int LENGTH = (int)(75* Game.GAME_SCALE);
     private static final int SPEED = (int)(35 * Game.GAME_SCALE);
     private static final int DAMAGE = 10;
@@ -33,8 +33,8 @@ public class Bullet
         direction = direc;
         findTheBackEndOfTheBullet();
         
-        distance = 100;
-        thicknessOfBullet = 4;
+        distance = 0;
+        thicknessOfBullet = 3;
     }
     
     public int getDirection()
@@ -92,6 +92,18 @@ public class Bullet
         return y;
     }
     
+    public void setX(int x) {
+        int diff = x - this.x;
+        this.x = x;
+        backX += diff;
+    }
+
+    public void setY(int y) {
+        int diff = y - this.y;
+        this.y = y;
+        backY += diff;
+    }
+
     /**
      * Draws the Bullet
      * @param g the graphics

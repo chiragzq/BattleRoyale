@@ -46,7 +46,7 @@ public class Player
         this.health = health;
         //The health of the player
         punch = new Punch(this);
-        gun = new Shotgun(this);
+        gun = new Rifle(this);
     }
     
     /**
@@ -179,21 +179,19 @@ public class Player
 
         if(gun == null)
         {
+            double interval = TOTAL_PUNCH_TIME / 20;
+            double extend = (double)TOTAL_ARM_EXTEND / 10;
             if(isRightPunching)
             {
                 //This moves the right hand forward
                 if((double)(System.currentTimeMillis() - lastPunchTime) < TOTAL_PUNCH_TIME/2)
                 {
-                    double interval = TOTAL_PUNCH_TIME / 20;
-                    double extend = (double)TOTAL_ARM_EXTEND / 10;
                     handExtendRight = ((double)(System.currentTimeMillis() - lastPunchTime) / interval * extend);
                     isCurrentlyPunching = true;
                     //This half animates the arm going forward
                 }
                 else if((double)(System.currentTimeMillis() - lastPunchTime) < TOTAL_PUNCH_TIME)
                 {
-                    double interval = TOTAL_PUNCH_TIME / 20;
-                    double extend = (double)TOTAL_ARM_EXTEND / 10;
                     handExtendRight = (((TOTAL_PUNCH_TIME - (double)(System.currentTimeMillis() - lastPunchTime))/interval) * extend);
                     isCurrentlyPunching = true;
                     //This half animates the arm going backwards
@@ -205,16 +203,12 @@ public class Player
                 //This moves the left hand forward
                 if((double)(System.currentTimeMillis() - lastPunchTime) < TOTAL_PUNCH_TIME/2)
                 {
-                    double interval = TOTAL_PUNCH_TIME / 20;
-                    double extend = (double)TOTAL_ARM_EXTEND / 10;
                     handExtendLeft = ((double)(System.currentTimeMillis() - lastPunchTime) / interval * extend);
                     isCurrentlyPunching = true;
                     //This half animates the arm going forward
                 }
                 else if((double)(System.currentTimeMillis() - lastPunchTime) < TOTAL_PUNCH_TIME)
                 {
-                    double interval = TOTAL_PUNCH_TIME / 20;
-                    double extend = (double)TOTAL_ARM_EXTEND / 10;
                     handExtendLeft = (((TOTAL_PUNCH_TIME - (double)(System.currentTimeMillis() - lastPunchTime))/interval) * extend);
                     isCurrentlyPunching = true;
                     //This half animates the arm going backwards

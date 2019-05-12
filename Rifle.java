@@ -24,8 +24,6 @@ public class Rifle extends Gun
         g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
     }
     
-    
-    
     /**
      * Location of Right hand
      * @param directionRad the direction

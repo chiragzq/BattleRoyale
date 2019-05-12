@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.*;
@@ -26,12 +27,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private JFrame frame;
     private Map<Integer, Player> players;
     private Player thisPlayer;
-
-    private Network network;
+    
     private List<Obstacle> obstacles;
-    private List<Bullet> bullets;
-
+    private Map<Integer, Bullet> bullets;
+    
+    private Network network;
     private ReadWriteLock lock;
+    private int ping;
 
     public Game() {
         final Game self = this;
@@ -55,22 +57,21 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         lock = new ReentrantReadWriteLock();
 
-        bullets = new ArrayList<Bullet>();
         obstacles = new ArrayList<Obstacle>();
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         obstacles.add(new Bush(300, 300));
         
-        
-        makeObstacles(4, 4, 4);
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
+        bullets = new HashMap<Integer, Bullet>();
 
         network = new Network("http://localhost:3000", this, lock);
 
         new Timer().schedule(new TimerTask(){
                 @Override
                 public void run() {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                     if(thisPlayer != null) {
                         thisPlayer.faceCursor();
                         if(thisPlayer.getGun() != null) {
@@ -79,202 +80,18 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     }
                     network.mouseLocation(Game.getMouseX(), Game.getMouseY());
                     updateScreenLocation();
-                    moveBullets();
-                    checkPunch();
                     repaint();
                 }
             }, 100, 1000/FRAME_RATE);
-
     }
 
-    public void makeObstacles(int numOfTrees, int numOfStones, int numOfBushes)
-    {
-        makeTrees(numOfTrees);
-        makeStones(numOfStones);
-        makeBushes(numOfBushes);
-    }
-
-    public void makeTrees(int num)
-    {
-        for(int i = 0; i < num; i++)
-        {
-            int width = (int)(Math.random() * GAME_WIDTH);
-            int height = (int)(Math.random() * GAME_HEIGHT);
-            while(!isOccupied(width, height))
-            {
-                width = (int)(Math.random() * GAME_WIDTH);
-                height = (int)(Math.random() * GAME_HEIGHT);
-            }
-<<<<<<< HEAD
-        }, 100, 1000/30);
-  
-=======
-            obstacles.add(new Tree(width, height));
-        }
-    }
-    
-    public void makeStones(int num)
-    {
-        for(int i = 0; i < num; i++)
-        {
-            int width = (int)(Math.random() * GAME_WIDTH);
-            int height = (int)(Math.random() * GAME_HEIGHT);
-            while(!isOccupied(width, height))
-            {
-                width = (int)(Math.random() * GAME_WIDTH);
-                height = (int)(Math.random() * GAME_HEIGHT);
-            }
-            obstacles.add(new Stone(width, height));
-        }
-    }
-    
-    public void makeBushes(int num)
-    {
-        for(int i = 0; i < num; i++)
-        {
-            int width = (int)(Math.random() * GAME_WIDTH);
-            int height = (int)(Math.random() * GAME_HEIGHT);
-            while(!isOccupied(width, height))
-            {
-                width = (int)(Math.random() * GAME_WIDTH);
-                height = (int)(Math.random() * GAME_HEIGHT);
-            }
-            obstacles.add(new Bush(width, height));
-        }
-    }
-
-    public boolean isOccupied(int x, int y)
-    {
-        return isCollisionObstacle(x, y) == null;
->>>>>>> 6a96a6e10372a6797727b779fc39d7a210c06d59
+    public void setPing(int millis) {
+        this.ping = millis;
     }
 
     public void setPlayer(Player player, int id) {
         players.put(id, player);
         thisPlayer = player;
-    }
-
-    public void checkPunch()
-    {
-        Collection<Player> p = players.values();
-        for(Player play: p)
-        {
-            if(play.getPunch().isPunching() && play.getPunch().isExtended())
-            {
-                int x = play.getPunch().getX();
-                int y = play.getPunch().getY();
-                Obstacle ob = isCollisionObstacle(x, y);
-                Player playering = isCollisionPlayer(x, y);
-                if(ob!= null)
-                {
-                    ob.setHealth(-play.getPunch().doDamage());
-                }
-                else if(playering != null && !thisPlayer.equals(playering))
-                    playering.setHealth(-play.getPunch().doDamage());
-            }
-        }
-    }
-
-    public void moveBullets()
-    {
-        Iterator<Bullet> it = bullets.iterator();
-        while(it.hasNext())
-        {
-            Bullet b = it.next();
-            if(!b.move())
-                it.remove();
-            else
-            {
-                int x = b.getX();
-                int y = b.getY();
-                Obstacle ob = isCollisionObstacle(x, y);
-                Player play= isCollisionPlayer(x, y);
-                if(ob!=null)
-                {
-
-                    ob.setHealth(-b.doDamage());
-
-                    if(!(ob instanceof Bush))
-                    {
-                        it.remove();
-                    }
-                }
-                else if(play!=null)
-                {
-                    it.remove();
-                    play.setHealth(-b.doDamage());
-                    if(play.getHealth() <= 0)
-                    {
-                        System.out.println("CHIRAG, FIX THIS AT GAME AROUND LINE 110");
-                    }
-
-                }
-
-            }
-
-        }
-    }
-
-    //     /**
-    //      * Removes the player
-    //      */
-    //     public void removePlayer(Player play)
-    //     {
-    //         Iterator<Player> it = players.iterator();
-    //         while(it.hasNext())
-    //         {
-    //             if(it.next().equals(play))
-    //                 it.remove();
-    //         }
-    //     }
-
-    /**
-     * checks if collids with obstacles
-     * @param x x
-     * @param y y
-     * @return the obstacle if colliding, otherwise false
-     */
-    public Obstacle isCollisionObstacle(int x, int y)
-    {
-        for(Obstacle ob : obstacles)
-        {
-            int xLoc = ob.getX();
-            int yLoc = ob.getY();
-            int size = ob.getSize()/2;
-
-            int xTry = (int)Math.pow(x - xLoc, 2);
-            int yTry = (int)Math.pow(y - yLoc, 2);
-            int sizeTry = (int)Math.pow(size, 2);
-
-            if(xTry + yTry <= sizeTry)
-                return ob;
-        }
-        return null;
-    }
-
-    /**
-     * checks if collids with player
-     * @param x x
-     * @param y y
-     * @return the player if colliding, otherwise false
-     */
-    public Player isCollisionPlayer(int x, int y)
-    {
-        Collection<Player> p = players.values();
-        for(Player play: p)
-        {
-            int xLoc = play.getX();
-            int yLoc = play.getY();
-            int size = PLAYER_SIZE/2;
-
-            int xTry = (int)Math.pow(x - xLoc, 2);
-            int yTry = (int)Math.pow(y - yLoc, 2);
-            int sizeTry = (int)Math.pow(size, 2);
-
-            if(xTry + yTry <= sizeTry)
-                return play;
-        }
-        return null;
     }
 
     public Player getPlayer() {
@@ -285,31 +102,18 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         return players;
     }
 
-    public void mouseClicked(MouseEvent e)
-    {
+    public Map<Integer, Bullet> getBullets() {
+        return bullets;
     }
 
-    public void mouseEntered(MouseEvent e)
-    {
-    }
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {} 
+    public void mouseExited(MouseEvent e) {} 
+    public void mouseReleased(MouseEvent e){}
 
-    public void mouseExited(MouseEvent e)
-    {
-    }
-
-    public void mousePressed(MouseEvent e)
-    {
-        //thisPlayer.getPunch().punch();
-        Gun g = thisPlayer.getGun();
-        Bullet[] a = g.fire();
-        for(int i = 0; i < a.length; i++)
-        {
-            bullets.add(a[i]);
-        }
-    }
-
-    public void mouseReleased(MouseEvent e)
-    {
+    @Override
+    public void mousePressed(MouseEvent e) {
+        network.click();    
     }
 
     @Override
@@ -347,27 +151,15 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        List<Obstacle> temp = new ArrayList<Obstacle>();
-        for(int i = 0; i < obstacles.size(); i++)
-        {
-            Obstacle a = obstacles.get(i);
-            if(!(a instanceof Bush) && a.getHealth() < 25)
-                a.draw(g);
-            else if(a.getHealth() < 0)
-                a.draw(g);
-            else
-                temp.add(a);
-        }
         //Draw the obstacle
-        bullets.forEach((bullet) -> bullet.draw(g));
-
+        bullets.values().forEach((bullet) -> bullet.draw(g));
+        
         players.values().forEach((player) -> player.draw(g));
+        
+        obstacles.forEach((obstacle) -> obstacle.draw(g));
+        g.drawString("Ping: " + ping, 0, 20);
 
         lock.readLock().unlock();
-        //Draws the Bullets
-
-        temp.forEach((obstacle)-> obstacle.draw(g));
-
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
@@ -410,17 +202,5 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static void main(String... args) {
         new Game();
-    }  
-
-    public void _wait() {
-        try {
-            wait();
-        } catch(InterruptedException e) {
-            // do nothing;
-        }
-    }
-
-    public void _notify() {
-        notifyAll();
     }
 }

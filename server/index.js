@@ -10,7 +10,7 @@ const game = new Game();
 io.on('connection', (socket) => {
     console.log("New user connected");
 
-    const player = new Player(100, 100, game.players.length);
+    const player = new Player(game, 100, 100, game.players.length);
 
     socket.emit("player_info", {
         id: game.players.length,
@@ -75,11 +75,16 @@ io.on('connection', (socket) => {
     socket.on("mouse_loc", (data) => {
         player.mouse = data;
     })
+
+    socket.on("click", () => {
+        player.click();
+    })
     
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];
     });
+
 });
 
 io.listen(3000);

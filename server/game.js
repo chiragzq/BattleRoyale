@@ -1,9 +1,16 @@
+const _weapon = require("./weapon");
+
+const Rifle = _weapon.Rifle;
+const Bullet = _weapon.Bullet;
+
 /**
  * Manages the state of the game and manage updates between previous game states.
  */
 class Game {
     constructor() {
         this.players = [];
+        this.bullets = [];
+        
         this.updates = [];
     }
 
@@ -21,20 +28,38 @@ class Game {
                 })
             }
         });
+        this.bullets.forEach((bullet, index) => {
+            if(!bullet) return;
+            bullet.move();
+            this.updates.push({
+                type: "bullet",
+                id: index,
+                x: bullet.x,
+                y: bullet.y
+            })
+        });
     }
 
     getUpdates() {
+        if(this.updates.length) {
+            this.updates.push({
+                type: "ping",
+                t: Date.now(),
+            });
+        }
         const ret = this.updates;
         this.updates = [];
         if(ret.length) {
-            console.log(ret);
+            //console.log(ret);
         }
         return ret;
     }
 }
 
 class Player {
-    constructor(x, y, index) {
+    constructor(game, x, y, index) {
+        this.game = game;
+
         this.x = x;
         this.y = y;
         this.index = index; 
@@ -53,6 +78,12 @@ class Player {
             x: 0,
             y: 0
         }
+
+        this.weapons = [new Rifle(this)];
+        this.equippedWeapon = 0;
+
+        this.lastPunchTime = 0;
+        this.punchTime = 300;
     }
 
     update() {
@@ -82,17 +113,32 @@ class Player {
 
         return updated;
     }
-}
 
-class Bullet {
-    constructor(x, y, direction) {
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
+    click() {
+        if(this.weapons[this.equippedWeapon]) { //fired a gun
+            const bullets = this.weapons[this.equippedWeapon].fire();
+            bullets.forEach((bullet) => {
+                this.game.updates.push({
+                    type: "new_bullet",
+                    id: this.game.bullets.length,
+                    x: bullet.x,
+                    y: bullet.y,
+                    dir: bullet.direction
+                });
+                this.game.bullets.push(bullet);
+            });
+        } else { //using fists
+            if(Date.now() - this.punchTime > this.lastPunchTime) {
+                this.game.updates.push({
+                    type: "punch",
+                    id: this.index,
+                });
+                this.lastPunchTime = Date.now();
+            }
+        }
     }
 }
 
 
 module.exports.Game = Game;
 module.exports.Player = Player;
-module.exports.Bullet = Bullet;

@@ -14,6 +14,7 @@ public abstract class Gun implements Weapon
     private double direction;
     private Player player;
     private int numberInCarbine = 999;
+    
     /**
      * Constructor
      * @param player2 the player
@@ -85,7 +86,6 @@ public abstract class Gun implements Weapon
 
     public Bullet firing()
     {
-
         if(numberInCarbine == 0)
             return null;
         int change = (int)((int)(Math.random() * spread) - (double)spread/2);
