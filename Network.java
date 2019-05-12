@@ -162,6 +162,18 @@ public class Network {
         socket.emit("click", nil);
     }
 
+    public void num1() {
+        socket.emit("1", nil);
+    }
+
+    public void num2() {
+        socket.emit("2", nil);
+    }
+
+    public void num3() {
+        socket.emit("3", nil);
+    }
+ 
     public void mouseLocation(int x, int y) {
         JSONObject coordinates = new JSONObject();
         coordinates.put("x", x);

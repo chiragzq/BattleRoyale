@@ -80,7 +80,7 @@ class Player {
         }
 
         this.weapons = [new Rifle(this)];
-        this.equippedWeapon = 0;
+        this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
         this.punchTime = 300;

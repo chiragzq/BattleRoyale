@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.*;
 
 /**
  * The Player the person controls
@@ -10,8 +11,7 @@ public class Player
 {
     private static final int TOTAL_PUNCH_TIME = (int)(Game.GAME_SCALE *300);
     //In Milli seconds
-    private static final int TOTAL_ARM_EXTEND = (int)(Game.GAME_SCALE *25);
-    private static final int DEGREE_ARM_MOVES_IN = 60;
+    private static final int TOTAL_ARM_EXTEND = (int)(Game.GAME_SCALE *20);
 
     private int x;
     private int y;
@@ -28,8 +28,8 @@ public class Player
     //The y of the punch
     private boolean isExtended;
     //Whether the hand has been exteded
-    private Gun gun;
-    private Punch punch;
+    private Map<Integer, Gun> guns;
+    private int equipped; //-1 for fists
 
     /**
      * Constructs Player at location(x, y)
@@ -45,47 +45,24 @@ public class Player
         
         this.health = health;
         //The health of the player
-        punch = new Punch(this);
-        gun = new Rifle(this);
-    }
-    
-    /**
-     * gets healet
-     */
-    public int getHealth()
-    {
-        return health;
-    }
-    
-    public Punch getPunch()
-    {
-        return punch;
-    }
-    
-    /**
-     * Gets the gun
-     */
-    public Gun getGun()
-    {
-        return gun;
+        guns = new HashMap<Integer, Gun>();
+        equipped = -1;
     }
 
     /**
-     * Gets how many bullets
-     * @return the number of bullets
+     * Punches
      */
-    public int getBullets()
+    public void punch()
     {
-        return bulletLoad;
-    }
-
-    /**
-     * Sets the number of bullets
-     * @param remove how many to add
-     */
-    public void setBullets(int remove)
-    {
-        bulletLoad += remove;
+        if(!isCurrentlyPunching)
+        {
+            lastPunchTime = System.currentTimeMillis();
+            int d = (int)(Math.random() * 2);
+            if(d == 0)
+                isRightPunching = false;
+            else
+                isRightPunching = true;
+        }
     }
 
     /**
@@ -105,79 +82,32 @@ public class Player
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
     }
-    
-    /**
-     * Gets if the player is punching or not
-     */
-    public boolean isPunching()
-    {
-        return isCurrentlyPunching;
-    }
-    
-    /**
-     * Gets the x of the hand punching
-     */
-    public int xPunch()
-    {
-        return xPunch;
-    }
-    
-    /**
-     * Gets the y of the hand punching
-     */
-    public int yPunch()
-    {
-        return yPunch;
-    }
-    
-    /**
-     * gets if the arm is extended
-     */
-    public boolean isExtended()
-    {
-        System.out.println(isExtended);
-        return isExtended;
-    }
-    
-
-    /**
-     * Punches
-     */
-    public void punch()
-    {
-        if(!isCurrentlyPunching)
-        {
-            lastPunchTime = System.currentTimeMillis();
-            int d = (int)(Math.random() * 2);
-            if(d == 0)
-                isRightPunching = false;
-            else
-                isRightPunching = true;
-        }
-    }
 
     /**
      * This draws the player
      * @param g the graphics
      */
     public void draw(Graphics g) {
-        if(gun != null) {
-            gun.draw(g);
+        if(equipped != -1) {
+            guns.get(equipped).draw(g);
         }
 
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
+    }
 
+    public void drawHands(Graphics g) {
+        g.setColor(new Color(0xFAC47F));
         double handExtendRight = 0;
         double handExtendLeft = 0;
         
         double directionRad = direcRadian;
-        double rightDir = directionRad + Math.PI / 4.5;
-        double leftDir = directionRad - Math.PI / 4.5;
+        double rightDir = directionRad + Math.PI / 5;
+        double leftDir = directionRad - Math.PI / 5;
         
         isCurrentlyPunching = false;
 
-        if(gun == null)
+        if(equipped == -1)
         {
             double interval = TOTAL_PUNCH_TIME / 20;
             double extend = (double)TOTAL_ARM_EXTEND / 10;
@@ -218,6 +148,7 @@ public class Player
         }
         else
         {
+            Gun gun = guns.get(equipped);
             rightDir = gun.getRightDir(directionRad);
             leftDir = gun.getLeftDir(directionRad);
             handExtendLeft = gun.extendLeft();
@@ -227,9 +158,9 @@ public class Player
         if(isCurrentlyPunching)
         {
             if(isRightPunching)
-                rightDir -= Math.PI * handExtendRight / TOTAL_ARM_EXTEND / 4.5;
+                rightDir -= Math.PI * handExtendRight / TOTAL_ARM_EXTEND / 6;
             else
-                leftDir += Math.PI * handExtendLeft / TOTAL_ARM_EXTEND / 4.5;
+                leftDir += Math.PI * handExtendLeft / TOTAL_ARM_EXTEND / 6;
         }
         
         int leftXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendLeft) * Math.cos(leftDir));
@@ -268,6 +199,18 @@ public class Player
         Game.drawCircle(g2, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
     }
 
+    public void drawWeaponSelections(Graphics g) {
+        g.setColor(Color.BLACK);
+        for(int i = 1;i <= 3;i ++) {
+            g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
+            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 170)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 120)));
+        }
+
+        int index = equipped == -1 ? 3 : equipped;
+        g.setColor(new Color(0, 0, 0, 0.3f));
+        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - index * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
+    }
+
     /**
      * This returns the x loc
      * @return the x location
@@ -290,6 +233,68 @@ public class Player
         return direction;
     }
 
+    /**
+     * gets healet
+     */
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    /**
+     * Gets how many bullets
+     * @return the number of bullets
+     */
+    public int getBullets()
+    {
+        return bulletLoad;
+    }
+    
+    /**
+     * Gets if the player is punching or not
+     */
+    public boolean isPunching()
+    {
+        return isCurrentlyPunching;
+    }
+    
+    /**
+     * Gets the x of the hand punching
+     */
+    public int xPunch()
+    {
+        return xPunch;
+    }
+    
+    /**
+     * Gets the y of the hand punching
+     */
+    public int yPunch()
+    {
+        return yPunch;
+    }
+    
+    /**
+     * gets if the arm is extended
+     */
+    public boolean isExtended()
+    {
+        System.out.println(isExtended);
+        return isExtended;
+    }
+
+    /**
+     * Gets the gun that the player has equipped.
+     * @return the equipped gun, or null if the player is wielding fists
+     */
+    public Gun getEquippedGun() {
+        return guns.get(equipped);
+    }
+
+    public void setEquippedIndex(int index) {
+        equipped = index == 3 ? -1 : index;
+    }
+
     public void setX(int x) {
         this.x = x;
     }
@@ -302,11 +307,21 @@ public class Player
         this.health = health;
     }
 
+    /**
+     * Sets the number of bullets
+     * @param remove how many to add
+     */
+    public void setBullets(int remove)
+    {
+        bulletLoad += remove;
+    }
+
+
     public void setDirection(int direction) {
         this.direction = direction;
         direcRadian = Math.toRadians(direction);
-        if(gun != null) {
-            gun.setDirection(direction);
+        if(equipped != -1) {
+            guns.get(equipped).setDirection(direction);
         }
     }
 }

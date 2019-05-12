@@ -15,7 +15,7 @@ import java.awt.MouseInfo;
 public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 1080;
-    public static final double GAME_SCALE = 1;
+    public static final double GAME_SCALE = 0.5;
     public static final int FRAME_RATE = 30;
 
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
@@ -74,8 +74,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                     if(thisPlayer != null) {
                         thisPlayer.faceCursor();
-                        if(thisPlayer.getGun() != null) {
-                            thisPlayer.getGun().faceCursor();
+                        if(thisPlayer.getEquippedGun() != null) {
+                            thisPlayer.getEquippedGun().faceCursor();
                         }
                     }
                     network.mouseLocation(Game.getMouseX(), Game.getMouseY());
@@ -148,6 +148,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     @Override
     public void paintComponent(Graphics g) {
         lock.readLock().lock();
+        
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -157,6 +158,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         players.values().forEach((player) -> player.draw(g));
         
         obstacles.forEach((obstacle) -> obstacle.draw(g));
+
+        players.values().forEach((player) -> {
+            player.drawHands(g); 
+            player.drawWeaponSelections(g);
+        });
+
+        g.setColor(Color.RED);
         g.drawString("Ping: " + ping, 0, 20);
 
         lock.readLock().unlock();
