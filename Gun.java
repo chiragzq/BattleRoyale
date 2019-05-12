@@ -14,7 +14,7 @@ public abstract class Gun implements Weapon
     private double direction;
     private Player player;
     private int numberInCarbine = 999;
-    
+
     /**
      * Constructor
      * @param player2 the player
