@@ -1,9 +1,15 @@
-const io = require('socket.io')();
-const gameLib = require("./game")
+const socketIO = require('socket.io');
+const gameLib = require("./game");
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+    res.end("");
+}).listen(process.env.PORT || 3000);
+
+const io = socketIO(server);
 
 const Game = gameLib.Game;
 const Player = gameLib.Player;
-const Bullet = gameLib.Bullet;
 
 const game = new Game();
 
@@ -98,8 +104,6 @@ io.on('connection', (socket) => {
     });
 
 });
-
-io.listen(process.env.PORT || 3000);
 
 setInterval(() => {
     game.update();
