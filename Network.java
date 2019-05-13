@@ -64,8 +64,8 @@ public class Network {
                         return;
                     }
                     Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
-                    game.getPlayers().put(info.getInt("id"), player);                }catch(Exception e){e.printStackTrace();
-
+                    player.setEquippedIndex(info.getInt("equip"));
+                    game.getPlayers().put(info.getInt("id"), player);               }catch(Exception e){e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }

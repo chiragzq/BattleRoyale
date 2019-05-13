@@ -18,7 +18,6 @@ public class Player
     private int health;
     private double direcRadian;
     private double direction;
-    private int bulletLoad;
     private long lastPunchTime;
     private boolean isCurrentlyPunching;
     private boolean isRightPunching;
@@ -243,15 +242,6 @@ public class Player
     }
     
     /**
-     * Gets how many bullets
-     * @return the number of bullets
-     */
-    public int getBullets()
-    {
-        return bulletLoad;
-    }
-    
-    /**
      * Gets if the player is punching or not
      */
     public boolean isPunching()
@@ -307,16 +297,6 @@ public class Player
     public void setHealth(int health) {
         this.health = health;
     }
-
-    /**
-     * Sets the number of bullets
-     * @param remove how many to add
-     */
-    public void setBullets(int remove)
-    {
-        bulletLoad += remove;
-    }
-
 
     public void setDirection(int direction) {
         this.direction = direction;

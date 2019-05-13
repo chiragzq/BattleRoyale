@@ -32,7 +32,8 @@ io.on('connection', (socket) => {
             x: p.x,
             y: p.y,
             dir: p.direction,
-            health: p.health
+            health: p.health,
+            equip: p.equippedWeapon
         });
     });
 
