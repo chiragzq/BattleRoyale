@@ -29,7 +29,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 15, 12, 100, 80);
+        super("Rifle", player, 30, 15, 12, 90, 80);
     }
 
     fire() {
@@ -57,7 +57,7 @@ class Bullet {
     }
 
     isOffScreen() {
-        return this.x < 0 || 1080 < this.x || this.y < 0 || 1080 < this.y;
+        return this.x < -200 || 1280 < this.x || this.y < -200 || 1280 < this.y;
     }
 
     /**

@@ -165,8 +165,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         players.values().forEach((player) -> {
             player.drawHands(g); 
-            player.drawWeaponSelections(g);
         });
+
+        if(thisPlayer != null) {
+            thisPlayer.drawWeaponSelections(g);
+        }
+
 
         g.setColor(Color.RED);
         g.drawString("Ping: " + ping, 0, 20);
