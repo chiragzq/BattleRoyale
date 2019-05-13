@@ -56,6 +56,10 @@ class Bullet {
         this.distance += this.speed
     }
 
+    isOffScreen() {
+        return this.x < 0 || 1080 < this.x || this.y < 0 || 1080 < this.y;
+    }
+
     /**
      * Returns the damage of the bullet, taking into account the distance it traveled
      */

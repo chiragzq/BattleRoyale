@@ -104,6 +104,8 @@ public class Network {
                         } else if(type.equals("equip")) {
                             Player equipPlayer = game.getPlayers().get(update.getInt("id"));
                             equipPlayer.setEquippedIndex(update.getInt("index"));
+                        } else if(type.equals("remove_bullet")) {
+                            game.getBullets().remove(update.get("id"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }

@@ -31,12 +31,20 @@ class Game {
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
             bullet.move();
-            this.updates.push({
-                type: "bullet",
-                id: index,
-                x: bullet.x,
-                y: bullet.y
-            })
+            if(bullet.isOffScreen()) {
+                this.updates.push({
+                    type: "remove_bullet",
+                    id: index
+                });
+                this.bullets[index] = null;
+            } else {
+                this.updates.push({
+                    type: "bullet",
+                    id: index,
+                    x: bullet.x,
+                    y: bullet.y
+                })
+            }
         });
     }
 
