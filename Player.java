@@ -46,6 +46,7 @@ public class Player
         this.health = health;
         //The health of the player
         guns = new HashMap<Integer, Gun>();
+        guns.put(1, new Rifle(this));
         equipped = -1;
     }
 
@@ -208,7 +209,7 @@ public class Player
 
         int index = equipped == -1 ? 3 : equipped;
         g.setColor(new Color(0, 0, 0, 0.3f));
-        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - index * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
+        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
     }
 
     /**

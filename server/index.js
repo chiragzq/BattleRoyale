@@ -79,7 +79,19 @@ io.on('connection', (socket) => {
     socket.on("click", () => {
         player.click();
     })
-    
+
+    socket.on("1", () => {
+        player.newEquip = 1;
+    });
+
+    socket.on("2", () => {
+        player.newEquip = 2;
+    });
+
+    socket.on("3", () => {
+        player.newEquip = -1;
+    });
+
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];

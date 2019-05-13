@@ -50,7 +50,7 @@ class Game {
         const ret = this.updates;
         this.updates = [];
         if(ret.length) {
-            //console.log(ret);
+            console.log(ret);
         }
         return ret;
     }
@@ -111,12 +111,22 @@ class Player {
             updated = true;
         }
 
+        if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
+            this.equippedWeapon = this.newEquip;
+            this.game.updates.push({
+                type: "equip",
+                id: this.index,
+                index: this.equippedWeapon
+            });
+            this.newEquip = 0;
+        }
+
         return updated;
     }
 
     click() {
-        if(this.weapons[this.equippedWeapon]) { //fired a gun
-            const bullets = this.weapons[this.equippedWeapon].fire();
+        if(this.weapons[this.equippedWeapon - 1]) { //fired a gun
+            const bullets = this.weapons[this.equippedWeapon - 1].fire();
             bullets.forEach((bullet) => {
                 this.game.updates.push({
                     type: "new_bullet",

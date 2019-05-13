@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -7,15 +6,14 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import java.util.Timer;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;;
+import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.awt.MouseInfo;
 
 public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int GAME_WIDTH = 1080;
     public static final int GAME_HEIGHT = 1080;
-    public static final double GAME_SCALE = 0.5;
+    public static final double GAME_SCALE = 1;
     public static final int FRAME_RATE = 30;
 
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
@@ -143,12 +141,18 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.sPressed();
         else if (code == KeyEvent.VK_D)
             network.dPressed();
+        else if (code == KeyEvent.VK_1)
+            network.num1();
+        else if (code == KeyEvent.VK_2)
+            network.num2();
+        else if (code == KeyEvent.VK_3)
+            network.num3();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         lock.readLock().lock();
-        
+
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 

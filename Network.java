@@ -82,26 +82,30 @@ public class Network {
                         updates[i] = (JSONObject) objs.getJSONObject(i);
                     }
                     for(JSONObject update : updates) {
-                        if(update.getString("type").equals("ping")) {
+                        String type = update.getString("type");
+                        if(type.equals("ping")) {
                             game.setPing((int)(System.currentTimeMillis() - update.getLong("t")));
-                        } else if(update.getString("type").equals("player")) {
+                        } else if(type.equals("player")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.setX(update.getInt("x"));
                             updatedPlayer.setY(update.getInt("y"));
                             updatedPlayer.setDirection(update.getInt("dir"));
                             updatedPlayer.setHealth(update.getInt("health"));
-                        } else if(update.getString("type").equals("punch")) {
+                        } else if(type.equals("punch")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.punch();
-                        } else if(update.getString("type").equals("new_bullet")) {
+                        } else if(type.equals("new_bullet")) {
                             Bullet newBullet = new Bullet(update.getInt("x"), update.getInt("y"), update.getInt("dir"));
                             game.getBullets().put(update.getInt("id"), newBullet);
-                        } else if(update.getString("type").equals("bullet")) {
+                        } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));
                             updatedBullet.setX(update.getInt("x"));
                             updatedBullet.setY(update.getInt("y"));
+                        } else if(type.equals("equip")) {
+                            Player equipPlayer = game.getPlayers().get(update.getInt("id"));
+                            equipPlayer.setEquippedIndex(update.getInt("index"));
                         } else {
-                            throw new RuntimeException("Unknown Update Type! " + update.getString("type"));
+                            throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }
                 }catch(Exception e){e.printStackTrace();
