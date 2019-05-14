@@ -103,7 +103,6 @@ public class Player
 
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
-        drawReload(g);
     }
     
     public void reload()
