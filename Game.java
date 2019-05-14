@@ -184,6 +184,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         if(thisPlayer != null) {
             thisPlayer.drawWeaponSelections(g);
             thisPlayer.drawReload(g);
+            
         }
 
         
@@ -230,6 +231,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static int getMouseY()
     {
+        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY);
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 

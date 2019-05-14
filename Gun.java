@@ -28,6 +28,11 @@ public abstract class Gun implements Weapon
         spread = spre;
         direction = player2.getDirection();
     }
+    
+    public int getAmmo()
+    {
+        return numberInCarbine;
+    }
 
     /**
      * gets player

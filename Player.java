@@ -101,6 +101,7 @@ public class Player
             guns.get(equipped).draw(g);
         }
 
+        drawAmmoCount(g);
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
     }
@@ -145,6 +146,21 @@ public class Player
              g2.setColor(Color.WHITE);
              g2.drawString("Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
          }
+    }
+    
+    public void drawAmmoCount(Graphics g)
+    {
+        if(equipped != -1)
+        {
+
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setColor(new Color(61, 68, 68, 100));
+            int boxSize = 100;
+            g2.fillRect(Game.GAME_WIDTH/2 - boxSize, Game.GAME_HEIGHT - 250, boxSize, 100);
+            g2.setFont(new Font("Arial", 20, 30));
+            g2.setColor(Color.WHITE);
+            g2.drawString(""+guns.get(1).getAmmo(), Game.GAME_WIDTH/2 - boxSize, Game.GAME_HEIGHT - 225);
+        }
     }
 
     public void drawHands(Graphics g) {
