@@ -32,7 +32,7 @@ public class Player
     
     private long lastReloadTime;
     //Milliseconds
-    private int reloadDuration = 5000;
+    private int reloadDuration;
     //Milliseconds
     private boolean isReloading;
     
@@ -55,6 +55,9 @@ public class Player
         guns.put(1, new Rifle(this));
         guns.put(2, new Shotgun(this));
         equipped = -1;
+
+        lastReloadTime = 0;
+        reloadDuration = 0;
     }
     
 
@@ -103,11 +106,6 @@ public class Player
 
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
-    }
-    
-    public void reload()
-    {
-        lastReloadTime = System.currentTimeMillis();
     }
     
     public void drawReload(Graphics g)
@@ -331,6 +329,15 @@ public class Player
      */
     public Gun getEquippedGun() {
         return guns.get(equipped);
+    }
+
+    public void setReloading(int duration) {
+        lastReloadTime = System.currentTimeMillis();
+        reloadDuration = duration;
+    }
+
+    public void stopReloading() {
+        lastReloadTime = 0;
     }
 
     public void setEquippedIndex(int index) {

@@ -1,5 +1,5 @@
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength) {
+    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime) {
         this.name = name;
         this.player = player;
 
@@ -12,6 +12,8 @@ class Gun {
         this.speed = bulletSpeed;
 
         this.barrelLength = barrelLength;
+
+        this.reloadTime = reloadTime;
     }
 
     fireBullet(direction) {
@@ -29,7 +31,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 15, 12, 90, 80);
+        super("Rifle", player, 30, 15, 12, 90, 80, 3200);
     }
 
     fire() {
