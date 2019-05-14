@@ -46,7 +46,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     self.setPreferredSize(new Dimension(
                             (int)(GAME_WIDTH * GAME_SCALE), (int)(GAME_HEIGHT * GAME_SCALE)
                         ));
-
+                    frame.setFocusable(true);
                     frame.pack();
                     frame.setVisible(true);
                     frame.setTitle("Battle Royale");
@@ -111,6 +111,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        thisPlayer.reload();
         network.click();    
     }
 
@@ -119,6 +120,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        System.out.println("release");
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W)
             network.wReleased();
@@ -132,6 +134,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("pressed");
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W)
             network.wPressed();
@@ -151,8 +154,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void paintComponent(Graphics g) {
+        
         lock.readLock().lock();
 
+       
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 

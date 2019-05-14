@@ -12,18 +12,6 @@ public class Shotgun extends Gun
         super(play, 5, 20);
     }
 
-    public Bullet[] fire()
-    {
-        
-
-        Bullet[] a = new Bullet[100];
-        setNum(a.length);
-        for(int i = 0; i < a.length; i++)
-        {
-            a[i] = firing();
-        }
-        return a;
-    }
 
     public void draw(Graphics g)
     {

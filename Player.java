@@ -29,6 +29,13 @@ public class Player
     //Whether the hand has been exteded
     private Map<Integer, Gun> guns;
     private int equipped; //-1 for fists
+    
+    private long lastReloadTime;
+    //Milliseconds
+    private int reloadDuration = 5000;
+    //Milliseconds
+    private boolean isReloading;
+    
 
     /**
      * Constructs Player at location(x, y)
@@ -46,8 +53,10 @@ public class Player
         //The health of the player
         guns = new HashMap<Integer, Gun>();
         guns.put(1, new Rifle(this));
+        guns.put(2, new Shotgun(this));
         equipped = -1;
     }
+    
 
     /**
      * Punches
@@ -94,6 +103,49 @@ public class Player
 
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
+        drawReload(g);
+    }
+    
+    public void reload()
+    {
+        lastReloadTime = System.currentTimeMillis();
+    }
+    
+    public void drawReload(Graphics g)
+    {
+         long k = System.currentTimeMillis() - lastReloadTime;
+         if(k < reloadDuration)
+         {
+             g.setFont(new Font("Arial", 20, 20));
+             
+             int x = Game.GAME_WIDTH/2;
+             int y= Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/5;
+             int width = 60;
+             int height = 60;
+             
+             double a = (double)(reloadDuration -k);
+             double angle = a/reloadDuration * 360;
+             
+             int stroke = 5;
+             
+             Graphics2D g2 = (Graphics2D)g;
+             g2.setColor(new Color(61, 68, 68, 100));
+             g2.fillOval((int)(x - width/5), (int)(y -(int)((double) height/6 * 3.9) + stroke/2), width - stroke/4, height - stroke / 4);
+             g.setColor(Color.WHITE);
+             g.drawString("" + ((double)((int)((double)(reloadDuration -k)/100)))/10, x + width/13, y - height/40);
+             
+             g2.setStroke(new BasicStroke(stroke));
+             g2.drawArc(x - width/5, y -(int)((double) height/6 * 3.9), width, height, 90, -360 + (int)angle);
+             
+             int widthRect = 100;
+             int heightRect = 30;
+             g2.setColor(new Color(61, 68, 68, 100));
+              
+             g2.fillRect(x - (int)((double)widthRect / 3.7), y + (int)((double)1.6*heightRect), widthRect, heightRect);
+             g.setFont(new Font("Arial", 20, 17));
+             g2.setColor(Color.WHITE);
+             g2.drawString("Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
+         }
     }
 
     public void drawHands(Graphics g) {
