@@ -99,6 +99,10 @@ io.on('connection', (socket) => {
         player.newEquip = -1;
     });
 
+    socket.on("r", () => {
+        player.reload();
+    });
+
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];

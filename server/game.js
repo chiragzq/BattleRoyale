@@ -92,6 +92,8 @@ class Player {
 
         this.lastPunchTime = 0;
         this.punchTime = 300;
+
+        this.lastReloadTime = 0;
     }
 
     update() {
@@ -119,20 +121,21 @@ class Player {
             updated = true;
         }
 
-        if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
+        if(!this.isReloading() && this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             this.game.updates.push({
                 type: "equip",
                 id: this.index,
                 index: this.equippedWeapon
             });
-            this.newEquip = 0;
         }
+        this.newEquip = 0;
 
         return updated;
     }
 
     click() {
+        if(this.isReloading()) return;
         if(this.weapons[this.equippedWeapon - 1]) { //fired a gun
             const bullets = this.weapons[this.equippedWeapon - 1].fire();
             bullets.forEach((bullet) => {
@@ -155,8 +158,22 @@ class Player {
             }
         }
     }
-}
 
+    isReloading() {
+        if(!this.weapons[this.equippedWeapon - 1]) return false;
+        return Date.now() - this.lastReloadTime < this.weapons[this.equippedWeapon - 1].reloadTime;
+    }
+
+    reload() {
+        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading()) return;
+        console.log("re");
+        this.lastReloadTime = Date.now();
+        this.game.updates.push({
+            type: "reload",
+            t: this.weapons[this.equippedWeapon - 1].reloadTime,
+        });
+    }
+}
 
 module.exports.Game = Game;
 module.exports.Player = Player;
