@@ -105,7 +105,10 @@ public class Network {
                             Player equipPlayer = game.getPlayers().get(update.getInt("id"));
                             equipPlayer.setEquippedIndex(update.getInt("index"));
                         } else if(type.equals("remove_bullet")) {
-                            game.getBullets().remove(update.get("id"));
+                            game.getBullets().remove(update.getInt("id"));
+                        } else if(type.equals("reload")) {
+                            System.out.println(type);
+                            game.getPlayer().setReloading(update.getInt("t"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
@@ -162,6 +165,10 @@ public class Network {
 
     public void dReleased() {
         socket.emit("d_released", nil);
+    }
+
+    public void rPressed() {
+        socket.emit("r", nil);
     }
 
     public void click() {

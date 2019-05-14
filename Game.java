@@ -111,7 +111,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        thisPlayer.reload();
         network.click();    
     }
 
@@ -120,7 +119,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("release");
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W)
             network.wReleased();
@@ -134,7 +132,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("pressed");
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W)
             network.wPressed();
@@ -150,6 +147,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.num2();
         else if (code == KeyEvent.VK_3)
             network.num3();
+        else if (code == KeyEvent.VK_R)
+            network.rPressed();
     }
 
     @Override
