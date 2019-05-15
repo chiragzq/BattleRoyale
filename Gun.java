@@ -11,6 +11,7 @@ public abstract class Gun implements Weapon
     private double direction;
     private Player player;
     private int numberInCarbine;
+    private int totalNumberBullet = 100;
     private int spare;
 
     /**
@@ -30,6 +31,11 @@ public abstract class Gun implements Weapon
     public int getAmmo()
     {
         return numberInCarbine;
+    }
+    
+    public int getTotalAmmo()
+    {
+        return totalNumberBullet;
     }
 
     /**

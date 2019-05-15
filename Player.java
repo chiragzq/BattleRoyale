@@ -29,13 +29,12 @@ public class Player
     //Whether the hand has been exteded
     private Map<Integer, Gun> guns;
     private int equipped; //-1 for fists
-    
+
     private long lastReloadTime;
     //Milliseconds
     private int reloadDuration;
     //Milliseconds
     private boolean isReloading;
-    
 
     /**
      * Constructs Player at location(x, y)
@@ -48,7 +47,7 @@ public class Player
         this.y = yLoc;
         this.direction = direction;
         //The location
-        
+
         this.health = health;
         //The health of the player
         guns = new HashMap<Integer, Gun>();
@@ -59,7 +58,6 @@ public class Player
         lastReloadTime = 0;
         reloadDuration = 0;
     }
-    
 
     /**
      * Punches
@@ -85,12 +83,9 @@ public class Player
         int xMouse = Game.getMouseX();
         int yMouse = Game.getMouseY();
 
-       
-        
         double xSide = xMouse - x;
         double ySide = yMouse - y;
-        
-        
+
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
     }
@@ -104,72 +99,131 @@ public class Player
             guns.get(equipped).draw(g);
         }
 
-        drawAmmoCount(g);
+
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
     }
     
+    public void drawEssentials(Graphics g)
+    {
+        drawWeaponSelections(g);
+        drawReload(g);
+        drawHealth(g);
+        drawAmmoCount(g);
+    }
+
     public void drawReload(Graphics g)
     {
-         long k = System.currentTimeMillis() - lastReloadTime;
-         if(k < reloadDuration)
-         {
-             g.setFont(new Font("Arial", 20, 20));
-             
-             int x = Game.GAME_WIDTH/2;
-             int y= Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/5;
-             int width = 60;
-             int height = 60;
-             
-             double a = (double)(reloadDuration -k);
-             double angle = a/reloadDuration * 360;
-             
-             int stroke = 5;
-             
-             Graphics2D g2 = (Graphics2D)g;
-             g2.setColor(new Color(61, 68, 68, 100));
-             g2.fillOval((int)(x - width/5), (int)(y -(int)((double) height/6 * 3.9) + stroke/2), width - stroke/4, height - stroke / 4);
-             g.setColor(Color.WHITE);
-             g.drawString("" + ((double)((int)((double)(reloadDuration -k)/100)))/10, x + width/13, y - height/40);
-             
-             g2.setStroke(new BasicStroke(stroke));
-             g2.drawArc(x - width/5, y -(int)((double) height/6 * 3.9), width, height, 90, -360 + (int)angle);
-             
-             int widthRect = 100;
-             int heightRect = 30;
-             g2.setColor(new Color(61, 68, 68, 100));
-              
-             g2.fillRect(x - (int)((double)widthRect / 3.7), y + (int)((double)1.6*heightRect), widthRect, heightRect);
-             g.setFont(new Font("Arial", 20, 17));
-             g2.setColor(Color.WHITE);
-             g2.drawString("Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
-         }
+        long k = System.currentTimeMillis() - lastReloadTime;
+        if(k < reloadDuration)
+        {
+            g.setFont(new Font("Arial", 20, 20));
+
+            int x = Game.GAME_WIDTH/2;
+            int y= Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/5;
+            int width = 60;
+            int height = 60;
+
+            double a = (double)(reloadDuration -k);
+            double angle = a/reloadDuration * 360;
+
+            int stroke = 5;
+
+            Graphics2D g2 = (Graphics2D)g;
+            g2.setColor(new Color(61, 68, 68, 100));
+            g2.fillOval((int)(x - width/5), (int)(y -(int)((double) height/6 * 3.9) + stroke/2), width - stroke/4, height - stroke / 4);
+            g.setColor(Color.WHITE);
+            g.drawString("" + ((double)((int)((double)(reloadDuration -k)/100)))/10, x + width/13, y - height/40);
+
+            g2.setStroke(new BasicStroke(stroke));
+            g2.drawArc(x - width/5, y -(int)((double) height/6 * 3.9), width, height, 90, -360 + (int)angle);
+
+            int widthRect = 100;
+            int heightRect = 30;
+            g2.setColor(new Color(61, 68, 68, 100));
+
+            g2.fillRect(x - (int)((double)widthRect / 3.7), y + (int)((double)1.6*heightRect), widthRect, heightRect);
+            g.setFont(new Font("Arial", 20, 17));
+            g2.setColor(Color.WHITE);
+            g2.drawString("Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
+        }
     }
-    
+
+    public void drawHealth(Graphics g)
+    {
+        int healthBarWidth = 400;
+        int healthBarHeight = 30;
+        int x = Game.GAME_WIDTH/2;
+        int y = Game.GAME_HEIGHT - Game.GAME_HEIGHT/30;
+
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(new Color(61, 68, 68, 100));
+
+        g2.fillRect(x - healthBarWidth/2, y - healthBarHeight/2, healthBarWidth, healthBarHeight);
+        
+        int outline = 5;
+        
+        int length = (int)((double)health/100 * (healthBarWidth - outline * 2));
+        g2.setColor(Color.WHITE);
+        g2.fillRect(x - healthBarWidth/2 + outline, y - healthBarHeight/2 + outline, length, healthBarHeight - 2 * outline);
+    }
+
     public void drawAmmoCount(Graphics g)
     {
         if(equipped != -1)
         {
-
             Graphics2D g2 = (Graphics2D)g;
             g2.setColor(new Color(61, 68, 68, 100));
-            int boxSize = 100;
-            g2.fillRect(Game.GAME_WIDTH/2 - boxSize, Game.GAME_HEIGHT - 250, boxSize, 100);
-            g2.setFont(new Font("Arial", 20, 30));
+
+            int x = Game.GAME_WIDTH/2;
+            int y= Game.GAME_HEIGHT - Game.GAME_HEIGHT/10;
+            int boxWidth = 100;
+            int boxHeight = 50;
+            g2.fillRect(x - boxWidth/2, y - boxHeight/2, boxWidth, boxHeight);
+
+            g2.fillRect(x + boxWidth/2 + boxWidth/10, y -boxHeight/4, boxWidth/2, boxHeight*2/3);
+
+            int letterSize = 50;
+            g.setFont(new Font("Arial", 30, letterSize));
             g2.setColor(Color.WHITE);
-            g2.drawString(""+guns.get(1).getAmmo(), Game.GAME_WIDTH/2 - boxSize, Game.GAME_HEIGHT - 225);
+            int j = guns.get(equipped).getAmmo();
+            double length = (double)numDigits(j)/2;
+
+            g2.drawString(""+guns.get(equipped).getAmmo(), (int)( x - letterSize/2 * length), y + boxHeight/3);
+
+            g.setFont(new Font("Arial", 30, (int)((double)letterSize/2.5)));
+
+            int k = guns.get(equipped).getTotalAmmo();
+            double lengthOf = (double)numDigits(k)/2;
+
+            g2.drawString(""+guns.get(equipped).getTotalAmmo(), (int)( x + boxWidth/2 + boxWidth/10- letterSize/4 * lengthOf + boxWidth/4), y + boxHeight/3 -boxHeight/5 + boxHeight/9);
         }
+    }
+
+    private int numDigits(int k)
+    {
+        int counter = 0;
+        if(k == 0)
+            counter++;
+
+        while(k > 0)
+        {
+            counter++;
+            k = k/10;
+        }
+
+        return counter;
     }
 
     public void drawHands(Graphics g) {
         g.setColor(new Color(0xFAC47F));
         double handExtendRight = 0;
         double handExtendLeft = 0;
-        
+
         double directionRad = direcRadian;
         double rightDir = directionRad + Math.PI / 5;
         double leftDir = directionRad - Math.PI / 5;
-        
+
         isCurrentlyPunching = false;
 
         if(equipped == -1)
@@ -219,7 +273,7 @@ public class Player
             handExtendLeft = gun.extendLeft();
             handExtendRight = gun.extendRight();
         }
-        
+
         if(isCurrentlyPunching)
         {
             if(isRightPunching)
@@ -227,7 +281,7 @@ public class Player
             else
                 leftDir += Math.PI * handExtendLeft / TOTAL_ARM_EXTEND / 6;
         }
-        
+
         int leftXOff = (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendLeft) * Math.cos(leftDir));
         int leftYOff= (int)((Game.PLAYER_SIZE / 2 + Game.HAND_SIZE / 4 + handExtendLeft) * Math.sin(leftDir));
 
@@ -253,7 +307,7 @@ public class Player
             else
                 isExtended = false;
         }
-        
+
         Game.fillCircle(g, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
         Game.fillCircle(g, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
 
@@ -286,7 +340,7 @@ public class Player
     {
         return x;
     }
-    
+
     /**
      * This returns the y loc
      * @return the y location
@@ -307,7 +361,7 @@ public class Player
     {
         return health;
     }
-    
+
     /**
      * Gets if the player is punching or not
      */
@@ -315,7 +369,7 @@ public class Player
     {
         return isCurrentlyPunching;
     }
-    
+
     /**
      * Gets the x of the hand punching
      */
@@ -323,7 +377,7 @@ public class Player
     {
         return xPunch;
     }
-    
+
     /**
      * Gets the y of the hand punching
      */
@@ -331,7 +385,7 @@ public class Player
     {
         return yPunch;
     }
-    
+
     /**
      * gets if the arm is extended
      */

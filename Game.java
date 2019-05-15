@@ -182,9 +182,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
 
         if(thisPlayer != null) {
-            thisPlayer.drawWeaponSelections(g);
-            thisPlayer.drawReload(g);
-            
+            thisPlayer.drawEssentials(g);
         }
 
         g.setColor(Color.RED);
@@ -224,6 +222,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static int getMouseX()
     {
+        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX);
         return (int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX;
     }
 
