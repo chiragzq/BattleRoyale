@@ -59,7 +59,7 @@ class Bullet {
     }
 
     isOffScreen() {
-        return this.x < -200 || 1280 < this.x || this.y < -200 || 1280 < this.y;
+        return this.x < -200 || 1500 < this.x || this.y < -200 || 1080 < this.y;
     }
 
     /**

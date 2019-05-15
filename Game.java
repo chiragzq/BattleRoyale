@@ -11,8 +11,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.awt.MouseInfo;
 
 public class Game extends JComponent implements KeyListener, MouseListener {
-    public static final int GAME_WIDTH = 1080;
-    public static final int GAME_HEIGHT = 1080;
+    public static final int GAME_WIDTH = 1280;
+    public static final int GAME_HEIGHT = 720;
     public static final double GAME_SCALE = 1;
     public static final int FRAME_RATE = 30;
 
