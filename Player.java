@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.*;
+import javax.swing.*;
 
 /**
  * The Player the person controls
@@ -321,15 +322,60 @@ public class Player
     public void drawWeaponSelections(Graphics g) {
         g.setColor(Color.BLACK);
         ((Graphics2D)g).setStroke(new BasicStroke(4));
-        g.setFont(new Font("Arial", 20, 30));
+        g.setFont(new Font("Arial", 20, 20));
         for(int i = 1;i <= 3;i ++) {
-            g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
-            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)));
+            String name = "";
+            int iWidth = 200;
+            int iLength = 100;
+            int xShift = 0;
+            int yShift = 0;
+            if(guns.get(3 - i + 1) instanceof Shotgun)
+            {
+                name = "shotgun";
+                iWidth = 162;
+                iLength = 60;
+                xShift = -5;
+                yShift = 20;
+            }
+            else if(guns.get(3 - i + 1) instanceof Rifle)
+            {
+                name = "rifle";
+                iWidth = 125;
+                iLength = 100;
+                xShift = 14;
+                yShift = 0;
+            }
+            else if(guns.get(3 - i + 1) instanceof Pistol)
+            {
+                name = "pistol";
+                iWidth = 100;
+                iLength = 50;
+                xShift = 25;
+                yShift = 25;
+            }
+            else
+            {
+                name = "fist";
+                iWidth = 75;
+                iLength = 75;
+                xShift = 25;
+                yShift = 15;
+            }
+            
+            drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
+            //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
+            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
         }
 
         int index = equipped == -1 ? 3 : equipped;
         g.setColor(new Color(0, 0, 0, 0.3f));
-        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
+        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)((120 * Game.GAME_SCALE) + 20*Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
+    }
+    
+    public void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
+    {
+        Image image = new ImageIcon("img/" + file + ".png").getImage();
+        g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
     }
 
     /**
