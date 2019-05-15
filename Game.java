@@ -65,7 +65,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
 
-        network = new Network("http://localhost:3000", this, lock);
+        network = new Network("http://apcs-survivio.herokuapp.com", this, lock);
 
         new Timer().schedule(new TimerTask(){
                 @Override
