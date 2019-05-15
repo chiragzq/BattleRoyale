@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
@@ -186,11 +187,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             
         }
 
-        
-
-
         g.setColor(Color.RED);
-        g.drawString("Ping: " + ping, 0, 20);
+        g.setFont(new Font("Arial", 20, 15));
+        g.drawString("Ping: " + ping, 0, 20);  
 
         lock.readLock().unlock();
     }
