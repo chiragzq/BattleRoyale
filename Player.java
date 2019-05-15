@@ -362,6 +362,16 @@ public class Player
         equipped = index == 3 ? -1 : index;
     }
 
+    public void updateAmmo(int index, int clip, int spare) {
+        Gun gun = guns.get(index);
+        if(gun == null) {
+            return;
+        }
+
+        gun.setClip(clip);
+        gun.setSpare(spare);
+    }
+
     public void setX(int x) {
         this.x = x;
     }

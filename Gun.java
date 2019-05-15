@@ -8,13 +8,10 @@ import java.awt.*;
 public abstract class Gun implements Weapon
 {
     private final static int BARREL_LENGTH = (int)(80 * Game.GAME_SCALE);
-    private final static int EXTENSION = (int)(Game.GAME_SCALE *0);
-    private int capacity;
-    private int spread;
     private double direction;
     private Player player;
-    private int numberInCarbine = 999;
-    
+    private int numberInCarbine;
+    private int spare;
 
     /**
      * Constructor
@@ -24,9 +21,10 @@ public abstract class Gun implements Weapon
     public Gun(Player player2, int cap, int spre)
     {
         player = player2;
-        capacity = cap;
-        spread = spre;
         direction = player2.getDirection();
+
+        numberInCarbine = 0;
+        spare = 0;
     }
     
     public int getAmmo()
@@ -67,6 +65,14 @@ public abstract class Gun implements Weapon
     
     public void setDirection(int dir) {
         direction = dir;
+    }
+
+    public void setClip(int clip) {
+        numberInCarbine = clip;
+    }
+
+    public void setSpare(int spare) {
+        this.spare = spare;
     }
 
     /**

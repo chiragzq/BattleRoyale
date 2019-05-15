@@ -4,7 +4,7 @@ class Gun {
         this.player = player;
 
         this.magSize = magSize;
-        this.clipSize = 100;
+        this.clipSize = 0;
         this.ammo = 3 * magSize;
 
         this.spread = spread;
@@ -23,9 +23,9 @@ class Gun {
     }
 
     reload() {
-        reloadAmount = Math.min(magSize - clipSize, ammo);
-        ammo -= reloadAmount;
-        clipSize += this.reload;
+        const reloadAmount = Math.min(this.magSize - this.clipSize, this.ammo);
+        this.ammo -= reloadAmount;
+        this.clipSize += reloadAmount;
     }
 }
 

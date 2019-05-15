@@ -107,8 +107,9 @@ public class Network {
                         } else if(type.equals("remove_bullet")) {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("reload")) {
-                            System.out.println(type);
                             game.getPlayer().setReloading(update.getInt("t"));
+                        } else if(type.equals("ammo")) {
+                            game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }

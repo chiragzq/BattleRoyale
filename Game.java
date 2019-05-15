@@ -187,12 +187,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             
         }
 
-        
-
-
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", 20, 15));
-        g.drawString("Ping: " + ping, 0, 20);
+        g.drawString("Ping: " + ping, 0, 20);  
 
         lock.readLock().unlock();
     }

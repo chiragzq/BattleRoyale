@@ -121,6 +121,18 @@ class Player {
             updated = true;
         }
 
+        if(!this.isReloading() && this.lastReloadTime > 0) {
+            this.lastReloadTime = 0;
+            const reloadedGun = this.weapons[this.equippedWeapon - 1];
+            reloadedGun.reload();
+            this.game.updates.push({
+                type: "ammo",
+                equip: this.equippedWeapon,
+                clip: reloadedGun.clipSize,
+                spare: reloadedGun.ammo
+            });
+        }
+
         if(!this.isReloading() && this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             this.game.updates.push({
@@ -147,6 +159,12 @@ class Player {
                     dir: bullet.direction
                 });
                 this.game.bullets.push(bullet);
+            });
+            this.game.updates.push({
+                type: "ammo",
+                equip: this.equippedWeapon,
+                clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                spare: this.weapons[this.equippedWeapon - 1].ammo,
             });
         } else { //using fists
             if(Date.now() - this.punchTime > this.lastPunchTime) {
