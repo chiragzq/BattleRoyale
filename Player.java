@@ -266,14 +266,16 @@ public class Player
 
     public void drawWeaponSelections(Graphics g) {
         g.setColor(Color.BLACK);
+        ((Graphics2D)g).setStroke(new BasicStroke(4));
+        g.setFont(new Font("Arial", 20, 30));
         for(int i = 1;i <= 3;i ++) {
-            g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
-            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 170)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 120)));
+            g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
+            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)));
         }
 
         int index = equipped == -1 ? 3 : equipped;
         g.setColor(new Color(0, 0, 0, 0.3f));
-        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 180)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 120 - 40)), (int)(140 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 120));
+        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
     }
 
     /**
