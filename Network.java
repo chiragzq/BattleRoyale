@@ -108,8 +108,6 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("reload")) {
                             game.getPlayer().setReloading(update.getInt("t"));
-                        } else if(type.equals("ammo")) {
-                            game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
@@ -120,7 +118,20 @@ public class Network {
                 }
             }
         });
-        socket.on("delete_player", new Emitter.Listener(){
+        socket.on("ammo", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                lock.writeLock().lock();
+                JSONObject update = (JSONObject)(arg0[0]);
+                try {
+                    game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
+                } catch(Exception e){e.printStackTrace();}
+                finally {
+                    lock.writeLock().unlock();
+                }
+            }
+        });
+        socket.on("delete_player", new Emitter.Listener() {
             @Override
             public void call(Object... arg0) {
                 lock.writeLock().lock();

@@ -65,7 +65,7 @@ class Game {
 }
 
 class Player {
-    constructor(game, x, y, index) {
+    constructor(game, x, y, index, socket) {
         this.game = game;
 
         this.x = x;
@@ -94,6 +94,8 @@ class Player {
         this.punchTime = 300;
 
         this.lastReloadTime = 0;
+
+        this.socket = socket;
     }
 
     update() {
@@ -125,8 +127,7 @@ class Player {
             this.lastReloadTime = 0;
             const reloadedGun = this.weapons[this.equippedWeapon - 1];
             reloadedGun.reload();
-            this.game.updates.push({
-                type: "ammo",
+            this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: reloadedGun.clipSize,
                 spare: reloadedGun.ammo
@@ -160,8 +161,7 @@ class Player {
                 });
                 this.game.bullets.push(bullet);
             });
-            this.game.updates.push({
-                type: "ammo",
+            this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: this.weapons[this.equippedWeapon - 1].clipSize,
                 spare: this.weapons[this.equippedWeapon - 1].ammo,
@@ -184,7 +184,6 @@ class Player {
 
     reload() {
         if(!this.weapons[this.equippedWeapon - 1] || this.isReloading()) return;
-        console.log("re");
         this.lastReloadTime = Date.now();
         this.game.updates.push({
             type: "reload",
