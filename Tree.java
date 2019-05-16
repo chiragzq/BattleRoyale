@@ -27,7 +27,7 @@ public class Tree extends Obstacle
     }
     
 
-    public void draw(Graphics g)
+    public void draw(Graphics g, int xShift, int yShift)
     {
         
         if(getHealth() < 25)
@@ -35,20 +35,20 @@ public class Tree extends Obstacle
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(new Color(110, 80, 81, 125));
-            Game.fillCircle(g2, getX(), getY(), SIZE_WHEN_DEAD);
+            Game.fillCircle(g2, getX() + xShift, getY() + yShift, SIZE_WHEN_DEAD);
         }
         else
         {
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(new Color(17, 99, 43, 175));
-            Game.fillCircle(g2, getX(), getY(), (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.fillCircle(g2, getX() + xShift, getY() + yShift, (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100)));
             g2.setStroke(new BasicStroke(5));
 
             g2.setColor(new Color(0, 0, 0));
-            Game.drawCircle(g2, getX(), getY(), (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.drawCircle(g2, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
             g.setColor(new Color(124, 91, 91));
-            Game.fillCircle(g, getX(), getY(), (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.fillCircle(g, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
         }
     }
 }

@@ -22,6 +22,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     private static int screenLocationX;
     private static int screenLocationY;
+    
+    private static final int MIN_X = 0;
+    private static final int MIN_Y = 0;
+    private static final int MAX_X = 2000;
+    private static final int MAX_Y = 2000;
+    
 
     private JFrame frame;
     private Map<Integer, Player> players;
@@ -55,7 +61,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             });
 
         lock = new ReentrantReadWriteLock();
-
         this.addMouseListener(this);
         
         obstacles = new HashMap<Integer, Obstacle>();
@@ -153,35 +158,57 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         else if (code == KeyEvent.VK_R)
             network.rPressed();
     }
+    
 
     @Override
     public void paintComponent(Graphics g) {
-        
         lock.readLock().lock();
 
-       
+        
+        
+        
+        
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
+        int xShift = Game.GAME_WIDTH/2;
+        int yShift = Game.GAME_HEIGHT/2;
+        if(thisPlayer != null)
+        {
+            xShift -= thisPlayer.getX();
+            yShift -= thisPlayer.getY();
+            drawBoundary(g);
+        }
+        
 
         //Draw the obstacle
-        bullets.values().forEach((bullet) -> bullet.draw(g));
+        for(Bullet bullet : bullets.values())
+        {
+            bullet.draw(g, xShift, yShift);
+        }
         
-        players.values().forEach((player) -> player.draw(g));
+        //bullets.values().forEach((bullet) -> bullet.draw(g));
         
+        //players.values().forEach((player) -> player.draw(g));
+        
+        for(Player player: players.values())
+        {
+            player.draw(g, xShift, yShift);
+        }
+       
         for(Obstacle ob: obstacles.values())
         {
             if(ob instanceof Stone)
-                ob.draw(g);
+                ob.draw(g, xShift, yShift);
         }
 
-        players.values().forEach((player) -> {
-            player.drawHands(g); 
-        });
-
+        for(Player player: players.values())
+        {
+            player.drawHands(g, xShift, yShift);
+        }
         for(Obstacle ob: obstacles.values())
         {
             if(!(ob instanceof Stone))
-                ob.draw(g);
+                ob.draw(g, xShift, yShift);
         }
 
         if(thisPlayer != null) {
@@ -193,6 +220,37 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", 20, 15));
         g.drawString("Ping: " + ping, 0, 20);  
+    }
+    
+    public void drawBoundary(Graphics g)
+    {
+        int xShift = Game.GAME_WIDTH/2 - thisPlayer.getX();
+        int yShift = Game.GAME_HEIGHT/2 - thisPlayer.getY();
+        
+        
+        int width = MAX_X - MIN_X;
+        int height = MAX_Y - MIN_Y;
+        int minX = MIN_X + xShift;
+        int maxX = MAX_X + xShift;
+        int minY = MIN_Y + yShift;
+        int maxY = MAX_Y + yShift;
+        
+        
+        
+        g.setColor(new Color(88, 91, 86, 100));
+        
+        
+        g.fillRect(minX, maxY - 2*height,width, height);
+        //Top
+        
+        g.fillRect(minX - width, maxY - 2*height, width, 2 * height);
+        //Left
+        
+        g.fillRect(minX - width, maxY, 2 * width, height);
+        //Bottom
+        
+        g.fillRect(minX + width, maxY -2*height, width, height* 3);
+        //Right
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
@@ -225,13 +283,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static int getMouseX()
     {
-        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX);
+        //System.out.println("X" + ((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX));
         return (int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX;
     }
 
     public static int getMouseY()
     {
-        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY);
+        //System.out.print("Y" + ((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY));
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 

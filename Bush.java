@@ -25,7 +25,7 @@ public class Bush extends Obstacle
         return SIZE;
     }
 
-    public void draw(Graphics g)
+    public void draw(Graphics g, int xShift, int yShift)
     {
         if(getHealth() < 0)
         {
@@ -40,12 +40,12 @@ public class Bush extends Obstacle
             int y = getY();
             Graphics2D g2 = (Graphics2D)g;
             g2.setColor(new Color(201, 239, 207, OPACITY));
-            Game.fillCircle(g2, x, y, (int)c);
+            Game.fillCircle(g2, x + xShift, y + yShift, (int)c);
             g2.setColor(new Color(62, 145, 75, OPACITY));
             g2.setStroke(new BasicStroke((int)(c/2)));
-            Game.drawCircle(g2, x, y, (int)((2*c) - c/2));
+            Game.drawCircle(g2, x + xShift, y + yShift, (int)((2*c) - c/2));
             g2.setColor(new Color(17, 99, 43, OPACITY));
-            Game.drawCircle(g2, x, y, (int)(3*c - c/1.75));
+            Game.drawCircle(g2, x + xShift, y + yShift, (int)(3*c - c/1.75));
         }
     }
 }

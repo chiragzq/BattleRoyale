@@ -47,7 +47,7 @@ public abstract class Obstacle
         return health;
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics g, int xShift, int yShift);
     
     public abstract int getSize();
 }

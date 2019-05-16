@@ -81,27 +81,34 @@ public class Player
      */
     public void faceCursor()
     {
-        int xMouse = Game.getMouseX();
-        int yMouse = Game.getMouseY();
-
+        int xShift = Game.GAME_WIDTH/2 - x;
+        int yShift = Game.GAME_HEIGHT/2 - y;
+        
+        int xMouse = Game.getMouseX() - xShift;
+        int yMouse = Game.getMouseY() - yShift;
+        
+        
+        
         double xSide = xMouse - x;
         double ySide = yMouse - y;
 
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
+        //System.out.println(direcRadian);
+        //System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
     }
 
     /**
      * This draws the player
      * @param g the graphics
      */
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xShift, int yShift) {
         if(equipped != -1) {
-            guns.get(equipped).draw(g);
+            guns.get(equipped).draw(g, xShift, yShift);
         }
 
         g.setColor(new Color(0xFAC47F));
-        Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
+        Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
     }
 
     public void drawEssentials(Graphics g)
@@ -220,7 +227,7 @@ public class Player
         return counter;
     }
 
-    public void drawHands(Graphics g) {
+    public void drawHands(Graphics g, int xShift, int yShift) {
         g.setColor(new Color(0xFAC47F));
         double handExtendRight = 0;
         double handExtendLeft = 0;
@@ -231,6 +238,8 @@ public class Player
 
         isCurrentlyPunching = false;
 
+      
+        
         if(equipped == -1)
         {
             double interval = TOTAL_PUNCH_TIME / 20;
@@ -312,15 +321,16 @@ public class Player
             else
                 isExtended = false;
         }
+        
 
-        Game.fillCircle(g, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
-        Game.fillCircle(g, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
+        Game.fillCircle(g, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
+        Game.fillCircle(g, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(2));
         g2.setColor(new Color(0x322819));
-        Game.drawCircle(g2, x + leftXOff, y + leftYOff, Game.HAND_SIZE);
-        Game.drawCircle(g2, x + rightXOff, y + rightYOff, Game.HAND_SIZE);
+        Game.drawCircle(g2, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
+        Game.drawCircle(g2, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
     }
 
     public void drawWeaponSelections(Graphics g) {
@@ -489,8 +499,9 @@ public class Player
     }
 
     public void setDirection(int direction) {
-        this.direction = direction;
-        direcRadian = Math.toRadians(direction);
+        //this.direction = direction;
+        //direcRadian = Math.toRadians(direction);
+        faceCursor();
         if(equipped != -1) {
             guns.get(equipped).setDirection(direction);
         }
