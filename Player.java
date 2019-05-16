@@ -3,7 +3,7 @@ import java.util.*;
 import javax.swing.*;
 
 /**
- * The Player the person controls
+ * The Player the person controls :)
  * @author Aaron Lo
  * @author Chirag Kaushik
  * @version 5-6-19
