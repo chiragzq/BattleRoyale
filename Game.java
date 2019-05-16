@@ -22,6 +22,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     private static int screenLocationX;
     private static int screenLocationY;
+    
+    private static final int MIN_X = -100;
+    private static final int MIN_Y = -100;
+    private static final int MAX_X = 100;
+    private static final int MAX_Y = 100;
+    
 
     private JFrame frame;
     private Map<Integer, Player> players;
@@ -60,6 +66,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         obstacles.add(new Bush(300, 300));
+        obstacles.add(new Stone(-400, 400));
+        obstacles.add(new Bush(-800, 400));
+        obstacles.add(new Tree(1200, 400));
         
         this.addMouseListener(this);
         players = new HashMap<Integer, Player>();
@@ -152,22 +161,27 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         else if (code == KeyEvent.VK_R)
             network.rPressed();
     }
+    
 
     @Override
     public void paintComponent(Graphics g) {
-        
         lock.readLock().lock();
 
+        
+        
+        
+        
+        g.setColor(new Color(0x7DAE58));
+        g.fillRect(0, 0, getWidth(), getHeight());
         int xShift = Game.GAME_WIDTH/2;
         int yShift = Game.GAME_HEIGHT/2;
         if(thisPlayer != null)
         {
             xShift -= thisPlayer.getX();
             yShift -= thisPlayer.getY();
+            drawBoundary(g);
         }
         
-        g.setColor(new Color(0x7DAE58));
-        g.fillRect(0, 0, getWidth(), getHeight());
 
         //Draw the obstacle
         for(Bullet bullet : bullets.values())
@@ -214,6 +228,38 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         lock.readLock().unlock();
     }
+    
+    public void drawBoundary(Graphics g)
+    {
+        int xShift = Game.GAME_WIDTH/2 - thisPlayer.getX();
+        int yShift = Game.GAME_HEIGHT/2 - thisPlayer.getY();
+        
+        
+        int width = MAX_X - MIN_X;
+        int height = MAX_Y - MIN_Y;
+        int minX = MIN_X + xShift;
+        int maxX = MAX_X + xShift;
+        int minY = MIN_Y + yShift;
+        int maxY = MAX_Y + yShift;
+        
+        System.out.println(minX + " " + minY + ": " + maxX + " " + maxY);
+        
+        
+        g.setColor(new Color(88, 91, 86, 100));
+        
+        
+        g.fillRect(minX, maxY - height,width, height);
+        //Top
+        
+        g.fillRect(minX - width, maxY - height, width, 2 * height);
+        //Left
+        
+        g.fillRect(minX - width, maxY + height, 2 * width, height);
+        //Bottom
+        
+        g.fillRect(minX + width, maxY -height, width, height* 3);
+        //Right
+    }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
         fillOval(g, x, y, r, r);
@@ -245,13 +291,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static int getMouseX()
     {
-        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX);
+        //System.out.println("X" + ((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX));
         return (int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX;
     }
 
     public static int getMouseY()
     {
-        //System.out.println((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY);
+        //System.out.print("Y" + ((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY));
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 
