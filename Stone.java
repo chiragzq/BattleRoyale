@@ -18,10 +18,10 @@ public class Stone extends Obstacle
      * @param col the col
      * @param row the row
      */
-    public Stone(int col, int row)
+    public Stone(int x, int y)
     {
         // initialise instance variables
-        super(col, row, HEALTH);
+        super(x, y, HEALTH);
     }
     
     public int getSize()
@@ -45,10 +45,10 @@ public class Stone extends Obstacle
             g2.setStroke(new BasicStroke(5));
             g2.setColor(new Color(0, 0, 0));
 
-            Game.drawCircle(g2, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.drawCircle(g2, getX() + xShift, getY() + yShift, getSize());
 
             g.setColor(new Color(168, 168, 168));
-            Game.fillCircle(g, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.fillCircle(g, getX() + xShift, getY() + yShift, getSize());
 
         }
     }
