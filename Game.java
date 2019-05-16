@@ -65,8 +65,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles = new ArrayList<Obstacle>();
         
         obstacles.add(new Tree(100, 100));
-        obstacles.add(new Bush(400, 400));
-        obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         obstacles.add(new Bush(300, 300));
         obstacles.add(new Stone(-400, 400));
@@ -245,7 +243,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         int minY = MIN_Y + yShift;
         int maxY = MAX_Y + yShift;
         
-        System.out.println(minX + " " + minY + ": " + maxX + " " + maxY);
         
         
         g.setColor(new Color(88, 91, 86, 100));
