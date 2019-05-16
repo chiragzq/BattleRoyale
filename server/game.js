@@ -253,7 +253,7 @@ class Player {
     }
 
     isOffScreen() {
-        return this.x < 0 || 1280 < this.x || this.y < 0 || 720 < this.y;
+        return this.x < 0 || 2000 < this.x || this.y < 0 || 2000 < this.y;
     }
 }
 
