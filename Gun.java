@@ -59,8 +59,10 @@ public abstract class Gun implements Weapon
     }
 
     public void faceCursor() {
-        int xMouse = Game.getMouseX();
-        int yMouse = Game.getMouseY();
+        int xShift = Game.GAME_WIDTH/2 - player.getX();
+        int yShift = Game.GAME_HEIGHT/2 - player.getY();
+        int xMouse = Game.getMouseX() - xShift;
+        int yMouse = Game.getMouseY() - yShift;
 
         double xSide = xMouse - player.getX();
         double ySide = yMouse - player.getY();
@@ -69,7 +71,8 @@ public abstract class Gun implements Weapon
     }
     
     public void setDirection(int dir) {
-        direction = dir;
+        //direction = dir;
+        faceCursor();
     }
 
     public void setClip(int clip) {

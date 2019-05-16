@@ -170,7 +170,12 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         //Draw the obstacle
-        bullets.values().forEach((bullet) -> bullet.draw(g));
+        for(Bullet bullet : bullets.values())
+        {
+            bullet.draw(g, xShift, yShift);
+        }
+        
+        //bullets.values().forEach((bullet) -> bullet.draw(g));
         
         //players.values().forEach((player) -> player.draw(g));
         

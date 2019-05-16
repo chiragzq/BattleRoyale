@@ -83,6 +83,7 @@ public class Player
     {
         int xShift = Game.GAME_WIDTH/2 - x;
         int yShift = Game.GAME_HEIGHT/2 - y;
+        
         int xMouse = Game.getMouseX() - xShift;
         int yMouse = Game.getMouseY() - yShift;
         
@@ -93,8 +94,8 @@ public class Player
 
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
-        
-        System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
+        //System.out.println(direcRadian);
+        //System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
     }
 
     /**
@@ -231,6 +232,8 @@ public class Player
 
         isCurrentlyPunching = false;
 
+      
+        
         if(equipped == -1)
         {
             double interval = TOTAL_PUNCH_TIME / 20;
@@ -312,6 +315,7 @@ public class Player
             else
                 isExtended = false;
         }
+        
 
         Game.fillCircle(g, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
         Game.fillCircle(g, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
@@ -489,8 +493,9 @@ public class Player
     }
 
     public void setDirection(int direction) {
-        this.direction = direction;
-        direcRadian = Math.toRadians(direction);
+        //this.direction = direction;
+        //direcRadian = Math.toRadians(direction);
+        faceCursor();
         if(equipped != -1) {
             guns.get(equipped).setDirection(direction);
         }
