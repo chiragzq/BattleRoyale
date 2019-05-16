@@ -31,7 +31,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 15, 12, 90, 80, 3200);
+        super("Rifle", player, 30, 15, 12, 90, 80, 1800);
     }
 
     fire() {

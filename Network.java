@@ -108,6 +108,8 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("reload")) {
                             game.getPlayer().setReloading(update.getInt("t"));
+                        } else if(type.equals("obstacle")) {
+
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
@@ -125,6 +127,28 @@ public class Network {
                 JSONObject update = (JSONObject)(arg0[0]);
                 try {
                     game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
+                } catch(Exception e){e.printStackTrace();}
+                finally {
+                    lock.writeLock().unlock();
+                }
+            }
+        });
+        socket.on("new_obstacle", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                lock.writeLock().lock();
+                JSONObject update = (JSONObject)(arg0[0]);
+                try {
+                    String type = update.getString("type");
+                    if(type.equals("rock")) {
+                        game.getObstacles().put(update.getInt("id"), new Stone(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("bush")) {
+                        game.getObstacles().put(update.getInt("id"), new Bush(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("tree")) {
+                        game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
+                    } else {
+                        throw new RuntimeException("Invalid obstacle type: " + type);
+                    }
                 } catch(Exception e){e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();

@@ -1,7 +1,10 @@
 const _weapon = require("./weapon");
+const _obstacle = require("./obstacle");
 
 const Rifle = _weapon.Rifle;
-const Bullet = _weapon.Bullet;
+const Rock = _obstacle.Rock;
+const Bush = _obstacle.Bush;
+const Tree = _obstacle.Tree;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -10,7 +13,8 @@ class Game {
     constructor() {
         this.players = [];
         this.bullets = [];
-        
+        this.obstacles = [new Rock(400, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+        this.obstacles.forEach((obstacle) => console.log(obstacle.getSize()));
         this.updates = [];
     }
 
@@ -112,6 +116,11 @@ class Player {
         if(xd || yd) {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
+            this.game.obstacles.some(obstacle => {
+                if(obstacle.solid && collisonCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
+                    [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                }
+            });
             updated = true;
         }
 
@@ -183,13 +192,25 @@ class Player {
     }
 
     reload() {
-        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading()) return;
+        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading() || !this.weapons[this.equippedWeapon - 1].ammo) return;
         this.lastReloadTime = Date.now();
         this.game.updates.push({
             type: "reload",
             t: this.weapons[this.equippedWeapon - 1].reloadTime,
         });
     }
+}
+
+function collisonCircle(x1, y1, r1, x2, y2, r2) {
+    return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
+}
+
+function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static object
+    const dir = Math.atan2(y2 - y1, x2 - x1);
+    return [
+        x1 + Math.round(Math.cos(dir) * (r1 + r2)),
+        y1 + Math.round(Math.sin(dir) * (r1 + r2))
+    ]
 }
 
 module.exports.Game = Game;
