@@ -23,10 +23,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private static int screenLocationX;
     private static int screenLocationY;
     
-    private static final int MIN_X = -1000;
-    private static final int MIN_Y = -1000;
-    private static final int MAX_X = 1000;
-    private static final int MAX_Y = 1000;
+    private static final int MIN_X = 0;
+    private static final int MIN_Y = 0;
+    private static final int MAX_X = 2000;
+    private static final int MAX_Y = 2000;
     
 
     private JFrame frame;

@@ -115,8 +115,8 @@ class Player {
             updated = true;
         }
 
-        const dx = this.mouse.x - this.x;
-        const dy = this.mouse.y - this.y;
+        const dx = this.mouse.x - 1280 / 2;
+        const dy = this.mouse.y - 720 / 2;
         const direction = Math.round(Math.atan2(dy, dx) * 180 / Math.PI);
         if(direction != this.direction) {
             this.direction = direction;
