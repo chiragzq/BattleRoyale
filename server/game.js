@@ -205,6 +205,22 @@ function collisonCircle(x1, y1, r1, x2, y2, r2) {
     return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
 }
 
+function collisionCirclePoint(x1, y1, r1, x2, y2) {
+    return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= r1 * r1;
+}
+
+function collisionCircleSquaare(x1, y1, r1, x2, y2, size) {
+    const distX = Math.abs(x1 - x2 - size / 2);
+    const distY = Math.abs(y1 - y2 - size / 2);
+    if (distX > (size / 2 + r1)) return false;
+    if (distY > (size / 2 + r1)) return false;
+    if (distX <= (size / 2)) return true;
+    if (distY <= (size / 2)) return true;
+    const dx = distX - size / 2;
+    const dy = distY - size / 2;
+    return (dx * dx + dy * dy <= (r1 * r1));
+}
+
 function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static object
     const dir = Math.atan2(y2 - y1, x2 - x1);
     return [
@@ -212,6 +228,7 @@ function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static obje
         y1 + Math.round(Math.sin(dir) * (r1 + r2))
     ]
 }
+
 
 module.exports.Game = Game;
 module.exports.Player = Player;
