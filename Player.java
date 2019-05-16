@@ -94,7 +94,7 @@ public class Player
         direcRadian = Math.atan2(ySide, xSide);
         direction = (Math.atan2(ySide, xSide) / Math.PI * 180);
         
-        System.out.println(xMouse + " " + yMouse + ": " + direcRadian + ", " + direction);
+        System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
     }
 
     /**
