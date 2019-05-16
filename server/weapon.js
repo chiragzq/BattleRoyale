@@ -31,7 +31,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 15, 12, 90, 80, 3200);
+        super("Rifle", player, 30, 15, 12, 90, 80, 1800);
     }
 
     fire() {
@@ -41,11 +41,35 @@ class Rifle extends Gun {
     }
 }
 
+class Shotgun extends Gun {
+    constructor(player) {
+        super("Shotgun", player, 5, 30, 6, 75, 80, 4000)
+    }
+
+    fire() {
+        if(!this.clipSize) return[];
+        this.clipSize--;
+        const ret = [];
+        for(let i = 0;i <= 7;i ++) {
+            ret.push(this.fireBullet(Math.round(this.player.direction + this.spread / 7 * i - this.spread / 2)));
+        }
+        return ret;
+    }
+}
+
 class Bullet {
     constructor(x, y, direction, speed, damage) {
         this.x = x;
         this.y = y;
+        this.length = 75;
+
         this.direction = direction;
+        this.backX = x + Math.round(Math.cos(direction * Math.PI / 180) * this.length);
+        this.backX = y + Math.round(Math.sin(direction * Math.PI / 180) * this.length);
+
+        this.centerX = x + Math.round(Math.cos(direction * Math.PI / 180) * this.length / 2);
+        this.centerY = y + Math.round(Math.sin(direction * Math.PI / 180) * this.length / 2);
+
         this.radDirection = direction * Math.PI / 180;
         this.distance = 0;
         this.speed = speed;
@@ -53,9 +77,17 @@ class Bullet {
     }
 
     move() {
-        this.x += this.speed * Math.cos(this.radDirection);
-        this.y += this.speed * Math.sin(this.radDirection);
+        const diffX = this.speed * Math.cos(this.radDirection);
+        const diffY = this.speed * Math.sin(this.radDirection);
+        this.x += diffX
+        this.y += diffY;
         this.distance += this.speed
+
+        this.backX += diffX;
+        this.backY += diffY;
+
+        this.centerX += diffX;
+        this.centerY += diffY;
     }
 
     isOffScreen() {
@@ -72,4 +104,5 @@ class Bullet {
 
 module.exports.Gun = Gun;
 module.exports.Bullet = Bullet;
-module.exports.Rifle = Rifle
+module.exports.Rifle = Rifle;
+module.exports.Shotgun = Shotgun;

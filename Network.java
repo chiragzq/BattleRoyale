@@ -59,7 +59,6 @@ public class Network {
                 lock.writeLock().lock();
                 try {
                     JSONObject info = (JSONObject) arg[0];
-                    System.out.println(info.getInt("id") + " " + playerId);
                     if(info.getInt("id") == playerId) {
                         return;
                     }
@@ -108,6 +107,8 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("reload")) {
                             game.getPlayer().setReloading(update.getInt("t"));
+                        } else if(type.equals("obstacle")) {
+                            game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
@@ -131,14 +132,41 @@ public class Network {
                 }
             }
         });
+        socket.on("new_obstacle", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                lock.writeLock().lock();
+                JSONObject update = (JSONObject)(arg0[0]);
+                try {
+                    String type = update.getString("type");
+                    if(type.equals("rock")) {
+                        game.getObstacles().put(update.getInt("id"), new Stone(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("bush")) {
+                        game.getObstacles().put(update.getInt("id"), new Bush(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("tree")) {
+                        game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
+                    } else {
+                        throw new RuntimeException("Invalid obstacle type: " + type);
+                    }
+                    game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
+                } catch(Exception e){e.printStackTrace();}
+                finally {
+                    lock.writeLock().unlock();
+                }
+            }
+        });
         socket.on("delete_player", new Emitter.Listener() {
             @Override
             public void call(Object... arg0) {
                 lock.writeLock().lock();
                 try {
                     int id = (int)arg0[0];
-                    game.getPlayers().remove(id);                }catch(Exception e){e.printStackTrace();
-
+                    game.getPlayers().remove(id); 
+                    System.out.println(id + " " + playerId);
+                    if(id == playerId) {
+                        System.exit(1);
+                    }               
+                }catch(Exception e){e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }

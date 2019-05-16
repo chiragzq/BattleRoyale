@@ -27,7 +27,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private Map<Integer, Player> players;
     private Player thisPlayer;
     
-    private List<Obstacle> obstacles;
+    private Map<Integer, Obstacle> obstacles;
     private Map<Integer, Bullet> bullets;
     
     private Network network;
@@ -56,12 +56,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         lock = new ReentrantReadWriteLock();
 
-        obstacles = new ArrayList<Obstacle>();
-        obstacles.add(new Stone(200, 200));
-        obstacles.add(new Tree(400, 400));
-        obstacles.add(new Bush(300, 300));
-        
         this.addMouseListener(this);
+        
+        obstacles = new HashMap<Integer, Obstacle>();
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
 
@@ -104,6 +101,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public Map<Integer, Bullet> getBullets() {
         return bullets;
+    }
+
+    public Map<Integer, Obstacle> getObstacles() {
+        return obstacles;
     }
 
     public void mouseClicked(MouseEvent e) {}
@@ -167,16 +168,17 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         
         players.values().forEach((player) -> player.draw(g));
         
-        obstacles.forEach((obstacle) -> obstacle.draw(g));
-        for(Obstacle ob: obstacles)
+        for(Obstacle ob: obstacles.values())
         {
             if(ob instanceof Stone)
                 ob.draw(g);
         }
+
         players.values().forEach((player) -> {
             player.drawHands(g); 
         });
-        for(Obstacle ob: obstacles)
+
+        for(Obstacle ob: obstacles.values())
         {
             if(!(ob instanceof Stone))
                 ob.draw(g);
@@ -186,11 +188,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             thisPlayer.drawEssentials(g);
         }
 
+        lock.readLock().unlock();
+
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", 20, 15));
         g.drawString("Ping: " + ping, 0, 20);  
-
-        lock.readLock().unlock();
     }
 
     public static void fillCircle(Graphics g, int x, int y, int r) {

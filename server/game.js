@@ -1,17 +1,25 @@
 const _weapon = require("./weapon");
+const _obstacle = require("./obstacle");
 
 const Rifle = _weapon.Rifle;
-const Bullet = _weapon.Bullet;
+const Shotgun = _weapon.Shotgun;
+
+const Rock = _obstacle.Rock;
+const Bush = _obstacle.Bush;
+const Tree = _obstacle.Tree;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
  */
 class Game {
-    constructor() {
+    constructor(io) {
         this.players = [];
         this.bullets = [];
-        
+        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+
         this.updates = [];
+
+        this.io = io;
     }
 
     update() {
@@ -30,14 +38,48 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
-            bullet.move();
             if(bullet.isOffScreen()) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
                 });
                 this.bullets[index] = null;
+            } else if(this.obstacles.some((obstacle, index2) => {
+                if(obstacle.solid && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
+                    obstacle.hurt(bullet.getDamage());
+                    this.updates.push({
+                        type: "obstacle",
+                        id: index2,
+                        h: obstacle.health
+                    });
+                    return true;
+                }
+                return false;
+            })) {
+                this.updates.push({
+                    type: "remove_bullet",
+                    id: index
+                });
+                this.bullets[index] = null;
+            } else if(this.players.some((player, index2) => {
+                if(player && collisionCircleBullet(player.x, player.y, 25, bullet)) {
+                    player.hurt(bullet.getDamage());
+                    if(player.isDead()) {
+                        console.log("DEAD\n\n\n\n")
+                        this.io.emit("delete_player", index2); 
+                        delete this.players[player.index];
+                    }
+                    return true;
+                }
+                return false;
+            })) {
+                this.updates.push({
+                    type: "remove_bullet",
+                    id: index
+                });
+                this.bullets[index] = null;
             } else {
+                bullet.move();
                 this.updates.push({
                     type: "bullet",
                     id: index,
@@ -87,7 +129,7 @@ class Player {
             y: 0
         }
 
-        this.weapons = [new Rifle(this), new Rifle(this)];
+        this.weapons = [new Rifle(this), new Shotgun(this)];
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
@@ -112,6 +154,11 @@ class Player {
         if(xd || yd) {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
+            this.game.obstacles.some(obstacle => {
+                if(obstacle.solid && collisonCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
+                    [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                }
+            });
             updated = true;
         }
 
@@ -183,14 +230,59 @@ class Player {
     }
 
     reload() {
-        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading()) return;
+        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading() || !this.weapons[this.equippedWeapon - 1].ammo) return;
         this.lastReloadTime = Date.now();
         this.game.updates.push({
             type: "reload",
             t: this.weapons[this.equippedWeapon - 1].reloadTime,
         });
     }
+
+    hurt(damage) {
+        if(this.isDead())return;
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+    }
+
+    isDead() {
+        return !this.health;
+    }
 }
+
+function collisonCircle(x1, y1, r1, x2, y2, r2) {
+    return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
+}
+
+function collisionCircleBullet(x1, y1, r1, bullet) {
+    return collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y) ||
+    collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY);
+}
+
+function collisionCirclePoint(x1, y1, r1, x2, y2) {
+    return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= r1 * r1;
+}
+
+function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
+    const distX = Math.abs(x1 - x2 - size / 2);
+    const distY = Math.abs(y1 - y2 - size / 2);
+    if (distX > (size / 2 + r1)) return false;
+    if (distY > (size / 2 + r1)) return false;
+    if (distX <= (size / 2)) return true;
+    if (distY <= (size / 2)) return true;
+    const dx = distX - size / 2;
+    const dy = distY - size / 2;
+    return (dx * dx + dy * dy <= (r1 * r1));
+}
+
+function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static object
+    const dir = Math.atan2(y2 - y1, x2 - x1);
+    return [
+        x1 + Math.round(Math.cos(dir) * (r1 + r2)),
+        y1 + Math.round(Math.sin(dir) * (r1 + r2))
+    ]
+}
+
 
 module.exports.Game = Game;
 module.exports.Player = Player;

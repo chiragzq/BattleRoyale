@@ -11,7 +11,7 @@ const io = socketIO(server);
 const Game = gameLib.Game;
 const Player = gameLib.Player;
 
-const game = new Game();
+const game = new Game(io);
 
 io.on('connection', (socket) => {
     console.log("New user connected");
@@ -37,13 +37,23 @@ io.on('connection', (socket) => {
         });
     });
 
+    game.obstacles.forEach((obstacle, index) => {
+        socket.emit("new_obstacle", {
+            id: index,
+            x: obstacle.x,
+            y: obstacle.y,
+            type: obstacle.getType(),
+            h: obstacle.health
+        });
+    });
+
     io.emit("new_player", {
         id: player.index,
         x: player.x,
         y: player.y,
         dir: player.direction,
         health: player.health
-    })
+    });
 
     game.players.push(player);
 
