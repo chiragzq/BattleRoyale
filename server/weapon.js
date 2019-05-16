@@ -17,8 +17,8 @@ class Gun {
     }
 
     fireBullet(direction) {
-        const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * this.barrelLength + this.player.x);
-        const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * this.barrelLength + this.player.y);
+        const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * (50) + this.player.x);
+        const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * (50) + this.player.y);
         return new Bullet(bulletX, bulletY, direction, this.speed, this.damage);
     }
 
