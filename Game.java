@@ -23,10 +23,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private static int screenLocationX;
     private static int screenLocationY;
     
-    private static final int MIN_X = -100;
-    private static final int MIN_Y = -100;
-    private static final int MAX_X = 100;
-    private static final int MAX_Y = 100;
+    private static final int MIN_X = -1000;
+    private static final int MIN_Y = -1000;
+    private static final int MAX_X = 1000;
+    private static final int MAX_Y = 1000;
     
 
     private JFrame frame;
@@ -63,6 +63,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         lock = new ReentrantReadWriteLock();
 
         obstacles = new ArrayList<Obstacle>();
+        
+        obstacles.add(new Tree(100, 100));
+        obstacles.add(new Bush(400, 400));
         obstacles.add(new Stone(200, 200));
         obstacles.add(new Tree(400, 400));
         obstacles.add(new Bush(300, 300));
@@ -248,16 +251,16 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         g.setColor(new Color(88, 91, 86, 100));
         
         
-        g.fillRect(minX, maxY - height,width, height);
+        g.fillRect(minX, maxY - 2*height,width, height);
         //Top
         
-        g.fillRect(minX - width, maxY - height, width, 2 * height);
+        g.fillRect(minX - width, maxY - 2*height, width, 2 * height);
         //Left
         
-        g.fillRect(minX - width, maxY + height, 2 * width, height);
+        g.fillRect(minX - width, maxY, 2 * width, height);
         //Bottom
         
-        g.fillRect(minX + width, maxY -height, width, height* 3);
+        g.fillRect(minX + width, maxY -2*height, width, height* 3);
         //Right
     }
 
