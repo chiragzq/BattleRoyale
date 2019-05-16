@@ -109,7 +109,7 @@ public class Network {
                         } else if(type.equals("reload")) {
                             game.getPlayer().setReloading(update.getInt("t"));
                         } else if(type.equals("obstacle")) {
-
+                            game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }

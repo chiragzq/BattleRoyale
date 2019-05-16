@@ -37,9 +37,9 @@ public abstract class Obstacle
         return y;
     }
    
-    public void setHealth(int add)
+    public void setHealth(int newHealth)
     {
-        health += add;
+        health = newHealth;
     }
     
     public int getHealth()

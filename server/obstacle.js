@@ -10,6 +10,12 @@ class Obstacle {
     getType() {
         return null;
     }
+
+    hurt(damage) {
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+        if(!this.health) this.solid = false;
+    }
 }
 
 class Bush extends Obstacle {
@@ -37,6 +43,12 @@ class Rock extends Obstacle {
 
     getType() {
         return "rock";
+    }
+
+    hurt(damage) {
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+        if(this.health < 25) this.solid = false;
     }
 }
 

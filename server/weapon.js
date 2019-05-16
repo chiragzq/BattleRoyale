@@ -41,11 +41,23 @@ class Rifle extends Gun {
     }
 }
 
+class Shotgun extends Gun {
+
+}
+
 class Bullet {
     constructor(x, y, direction, speed, damage) {
         this.x = x;
         this.y = y;
+        this.length = 75;
+
         this.direction = direction;
+        this.backX = x + Math.round(Math.cos(direction * Math.PI / 180) * this.length);
+        this.backX = y + Math.round(Math.sin(direction * Math.PI / 180) * this.length);
+
+        this.centerX = x + Math.round(Math.cos(direction * Math.PI / 180) * this.length / 2);
+        this.centerY = y + Math.round(Math.sin(direction * Math.PI / 180) * this.length / 2);
+
         this.radDirection = direction * Math.PI / 180;
         this.distance = 0;
         this.speed = speed;
@@ -53,9 +65,17 @@ class Bullet {
     }
 
     move() {
-        this.x += this.speed * Math.cos(this.radDirection);
-        this.y += this.speed * Math.sin(this.radDirection);
+        const diffX = this.speed * Math.cos(this.radDirection);
+        const diffY = this.speed * Math.sin(this.radDirection);
+        this.x += diffX
+        this.y += diffY;
         this.distance += this.speed
+
+        this.backX += diffX;
+        this.backY += diffY;
+
+        this.centerX += diffX;
+        this.centerY += diffY;
     }
 
     isOffScreen() {

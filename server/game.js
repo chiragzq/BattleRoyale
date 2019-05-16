@@ -14,7 +14,7 @@ class Game {
         this.players = [];
         this.bullets = [];
         this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
-        this.obstacles.forEach((obstacle) => console.log(obstacle.getSize()));
+
         this.updates = [];
     }
 
@@ -34,14 +34,32 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
-            bullet.move();
             if(bullet.isOffScreen()) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
                 });
                 this.bullets[index] = null;
+            } else if(this.obstacles.some((obstacle, index2) => {
+                if(obstacle.solid && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
+                    obstacle.hurt(bullet.getDamage());
+                    this.updates.push({
+                        type: "obstacle",
+                        id: index2,
+                        h: obstacle.health
+                    });
+                    return true;
+                }
+                return false;
+            })) {
+                console.log("\n\n\n\n")
+                this.updates.push({
+                    type: "remove_bullet",
+                    id: index
+                });
+                this.bullets[index] = null;
             } else {
+                bullet.move();
                 this.updates.push({
                     type: "bullet",
                     id: index,
@@ -205,11 +223,17 @@ function collisonCircle(x1, y1, r1, x2, y2, r2) {
     return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
 }
 
+function collisionCircleBullet(x1, y1, r1, bullet) {
+    return collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y) ||
+    collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY);
+}
+
 function collisionCirclePoint(x1, y1, r1, x2, y2) {
     return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= r1 * r1;
 }
 
-function collisionCircleSquaare(x1, y1, r1, x2, y2, size) {
+function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
     const distX = Math.abs(x1 - x2 - size / 2);
     const distY = Math.abs(y1 - y2 - size / 2);
     if (distX > (size / 2 + r1)) return false;
