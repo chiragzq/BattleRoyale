@@ -15,7 +15,7 @@ class Game {
     constructor(io) {
         this.players = [];
         this.bullets = [];
-        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(350, 400), new Rock(432, 654), new Rock(690, 64), new Rock(800, 423), new Rock(597, 583),  new Rock(43, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
 
         this.updates = [];
 
