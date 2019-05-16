@@ -11,7 +11,7 @@ const io = socketIO(server);
 const Game = gameLib.Game;
 const Player = gameLib.Player;
 
-const game = new Game();
+const game = new Game(io);
 
 io.on('connection', (socket) => {
     console.log("New user connected");
@@ -42,7 +42,8 @@ io.on('connection', (socket) => {
             id: index,
             x: obstacle.x,
             y: obstacle.y,
-            type: obstacle.getType()
+            type: obstacle.getType(),
+            h: obstacle.health
         });
     });
 

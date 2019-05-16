@@ -2,6 +2,8 @@ const _weapon = require("./weapon");
 const _obstacle = require("./obstacle");
 
 const Rifle = _weapon.Rifle;
+const Shotgun = _weapon.Shotgun;
+
 const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
 const Tree = _obstacle.Tree;
@@ -10,12 +12,14 @@ const Tree = _obstacle.Tree;
  * Manages the state of the game and manage updates between previous game states.
  */
 class Game {
-    constructor() {
+    constructor(io) {
         this.players = [];
         this.bullets = [];
         this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
 
         this.updates = [];
+
+        this.io = io;
     }
 
     update() {
@@ -52,7 +56,23 @@ class Game {
                 }
                 return false;
             })) {
-                console.log("\n\n\n\n")
+                this.updates.push({
+                    type: "remove_bullet",
+                    id: index
+                });
+                this.bullets[index] = null;
+            } else if(this.players.some((player, index2) => {
+                if(player && collisionCircleBullet(player.x, player.y, 25, bullet)) {
+                    player.hurt(bullet.getDamage());
+                    if(player.isDead()) {
+                        console.log("DEAD\n\n\n\n")
+                        this.io.emit("delete_player", index2); 
+                        delete this.players[player.index];
+                    }
+                    return true;
+                }
+                return false;
+            })) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
@@ -109,7 +129,7 @@ class Player {
             y: 0
         }
 
-        this.weapons = [new Rifle(this), new Rifle(this)];
+        this.weapons = [new Rifle(this), new Shotgun(this)];
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
@@ -216,6 +236,16 @@ class Player {
             type: "reload",
             t: this.weapons[this.equippedWeapon - 1].reloadTime,
         });
+    }
+
+    hurt(damage) {
+        if(this.isDead())return;
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+    }
+
+    isDead() {
+        return !this.health;
     }
 }
 

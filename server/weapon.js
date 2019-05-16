@@ -42,7 +42,19 @@ class Rifle extends Gun {
 }
 
 class Shotgun extends Gun {
+    constructor(player) {
+        super("Shotgun", player, 5, 30, 6, 75, 80, 4000)
+    }
 
+    fire() {
+        if(!this.clipSize) return[];
+        this.clipSize--;
+        const ret = [];
+        for(let i = 0;i <= 7;i ++) {
+            ret.push(this.fireBullet(Math.round(this.player.direction + this.spread / 7 * i - this.spread / 2)));
+        }
+        return ret;
+    }
 }
 
 class Bullet {
@@ -92,4 +104,5 @@ class Bullet {
 
 module.exports.Gun = Gun;
 module.exports.Bullet = Bullet;
-module.exports.Rifle = Rifle
+module.exports.Rifle = Rifle;
+module.exports.Shotgun = Shotgun;

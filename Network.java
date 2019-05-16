@@ -59,7 +59,6 @@ public class Network {
                 lock.writeLock().lock();
                 try {
                     JSONObject info = (JSONObject) arg[0];
-                    System.out.println(info.getInt("id") + " " + playerId);
                     if(info.getInt("id") == playerId) {
                         return;
                     }
@@ -149,6 +148,7 @@ public class Network {
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }
+                    game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
                 } catch(Exception e){e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
@@ -161,8 +161,12 @@ public class Network {
                 lock.writeLock().lock();
                 try {
                     int id = (int)arg0[0];
-                    game.getPlayers().remove(id);                }catch(Exception e){e.printStackTrace();
-
+                    game.getPlayers().remove(id); 
+                    System.out.println(id + " " + playerId);
+                    if(id == playerId) {
+                        System.exit(1);
+                    }               
+                }catch(Exception e){e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }
