@@ -37,7 +37,7 @@ public class Stone extends Obstacle
             Graphics2D g2 = (Graphics2D)g;
 
             g2.setColor(new Color(78, 91, 83, 75));
-            Game.fillCircle(g2, getX(), getY(), SIZE_WHEN_DEAD);
+            Game.fillCircle(g2, getX() + xShift, getY() + yShift, SIZE_WHEN_DEAD);
         }
         else
         {

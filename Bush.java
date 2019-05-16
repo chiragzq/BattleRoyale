@@ -31,7 +31,7 @@ public class Bush extends Obstacle
         {
             Graphics2D g2 = (Graphics2D)g;
             g2.setColor(new Color(201, 239, 207, 200));
-            Game.fillCircle(g2, getX(), getY(), SIZE_WHEN_DEAD);
+            Game.fillCircle(g2, getX() + xShift, getY() + yShift, SIZE_WHEN_DEAD);
         }
         else
         {
