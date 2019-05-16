@@ -13,7 +13,7 @@ class Game {
     constructor() {
         this.players = [];
         this.bullets = [];
-        this.obstacles = [new Rock(400, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
         this.obstacles.forEach((obstacle) => console.log(obstacle.getSize()));
         this.updates = [];
     }
