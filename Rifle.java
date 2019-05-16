@@ -13,7 +13,7 @@ public class Rifle extends Gun
         super(play, 30, 0);
     }
     
-    public void draw(Graphics g)
+    public void draw(Graphics g, int xShift, int yShift)
     {
         g.setColor(new Color(0, 0, 0));
         Graphics2D g2 = (Graphics2D) g;
@@ -21,7 +21,7 @@ public class Rifle extends Gun
         int y = getPlayer().getY();
 
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
-        g2.drawLine(x, y, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y);
+        g2.drawLine(x + xShift, y + yShift, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x + xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y + yShift);
     }
     
     /**

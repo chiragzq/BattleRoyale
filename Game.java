@@ -158,28 +158,45 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         
         lock.readLock().lock();
 
-       
+        int xShift = Game.GAME_WIDTH/2;
+        int yShift = Game.GAME_HEIGHT/2;
+        if(thisPlayer != null)
+        {
+            xShift -= thisPlayer.getX();
+            yShift -= thisPlayer.getY();
+        }
+        
         g.setColor(new Color(0x7DAE58));
         g.fillRect(0, 0, getWidth(), getHeight());
 
         //Draw the obstacle
         bullets.values().forEach((bullet) -> bullet.draw(g));
         
-        players.values().forEach((player) -> player.draw(g));
+        //players.values().forEach((player) -> player.draw(g));
         
-        obstacles.forEach((obstacle) -> obstacle.draw(g));
+        for(Player player: players.values())
+        {
+            player.draw(g, xShift, yShift);
+        }
+        
+        //obstacles.forEach((obstacle) -> obstacle.draw(g));
         for(Obstacle ob: obstacles)
         {
             if(ob instanceof Stone)
-                ob.draw(g);
+                ob.draw(g, xShift, yShift);
         }
-        players.values().forEach((player) -> {
+        
+        for(Player player: players.values())
+        {
+            player.drawHands(g, xShift, yShift);
+        }
+        /*players.values().forEach((player) -> {
             player.drawHands(g); 
-        });
+        });*/
         for(Obstacle ob: obstacles)
         {
             if(!(ob instanceof Stone))
-                ob.draw(g);
+                ob.draw(g, xShift, yShift);
         }
 
         if(thisPlayer != null) {

@@ -30,7 +30,7 @@ public class Stone extends Obstacle
     }
 
     
-    public void draw(Graphics g)
+    public void draw(Graphics g, int xShift, int yShift)
     {
         if(getHealth() < 25)
         {
@@ -45,10 +45,10 @@ public class Stone extends Obstacle
             g2.setStroke(new BasicStroke(5));
             g2.setColor(new Color(0, 0, 0));
 
-            Game.drawCircle(g2, getX(), getY(), (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.drawCircle(g2, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
 
             g.setColor(new Color(168, 168, 168));
-            Game.fillCircle(g, getX(), getY(), (int)(SIZE * Math.sqrt((double)getHealth()/100)));
+            Game.fillCircle(g, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
 
         }
     }

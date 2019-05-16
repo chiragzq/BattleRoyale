@@ -84,7 +84,7 @@ public abstract class Gun implements Weapon
      * Draws the gun
      * @param g the gun
      */
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics g, int xShift, int yShift);
 
     /**
      * Location of Right hand
