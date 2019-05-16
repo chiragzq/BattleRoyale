@@ -3,7 +3,7 @@ import java.util.*;
 import javax.swing.*;
 
 /**
- * The Player the person controls
+ * The Player the person controls :)
  * @author Aaron Lo
  * @author Chirag Kaushik
  * @version 5-6-19
@@ -100,11 +100,10 @@ public class Player
             guns.get(equipped).draw(g);
         }
 
-
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x, y, Game.PLAYER_SIZE);
     }
-    
+
     public void drawEssentials(Graphics g)
     {
         drawWeaponSelections(g);
@@ -120,11 +119,10 @@ public class Player
         {
             g.setFont(new Font("Arial", 20, 20));
 
-            int x = Game.GAME_WIDTH/2;
-            int y= Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/5;
             int width = 60;
             int height = 60;
-
+            int x = Game.GAME_WIDTH/2 + width/5;
+            int y= Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/5;
             double a = (double)(reloadDuration -k);
             double angle = a/reloadDuration * 360;
 
@@ -161,11 +159,17 @@ public class Player
         g2.setColor(new Color(61, 68, 68, 100));
 
         g2.fillRect(x - healthBarWidth/2, y - healthBarHeight/2, healthBarWidth, healthBarHeight);
-        
+
         int outline = 5;
-        
+
         int length = (int)((double)health/100 * (healthBarWidth - outline * 2));
+        
         g2.setColor(Color.WHITE);
+        
+        if(health < 30)
+        {
+            g2.setColor(new Color(255, (int)(255/Math.pow(x, 1)), (int)(255/Math.pow(x, 1))));
+        }
         g2.fillRect(x - healthBarWidth/2 + outline, y - healthBarHeight/2 + outline, length, healthBarHeight - 2 * outline);
     }
 
@@ -355,13 +359,13 @@ public class Player
             }
             else
             {
-                name = "fist";
+                name = "fist2";
                 iWidth = 75;
                 iLength = 75;
                 xShift = 25;
                 yShift = 15;
             }
-            
+
             drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
             //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
             g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
@@ -371,7 +375,7 @@ public class Player
         g.setColor(new Color(0, 0, 0, 0.3f));
         g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)((120 * Game.GAME_SCALE) + 20*Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
     }
-    
+
     public void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
         Image image = new ImageIcon("img/" + file + ".png").getImage();
