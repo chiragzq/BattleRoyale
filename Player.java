@@ -163,7 +163,13 @@ public class Player
         int outline = 5;
 
         int length = (int)((double)health/100 * (healthBarWidth - outline * 2));
+        
         g2.setColor(Color.WHITE);
+        
+        if(health < 30)
+        {
+            g2.setColor(new Color(255, (int)(255/Math.pow(x, 1)), (int)(255/Math.pow(x, 1))));
+        }
         g2.fillRect(x - healthBarWidth/2 + outline, y - healthBarHeight/2 + outline, length, healthBarHeight - 2 * outline);
     }
 
