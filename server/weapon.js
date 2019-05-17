@@ -31,7 +31,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 15, 12, 90, 80, 1800);
+        super("Rifle", player, 30, 15, 2, 90, 80, 1800);
     }
 
     fire() {
@@ -43,7 +43,7 @@ class Rifle extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 30, 6, 75, 80, 4000)
+        super("Shotgun", player, 5, 30, 6, 75, 80, 800)
     }
 
     fire() {
@@ -54,6 +54,13 @@ class Shotgun extends Gun {
             ret.push(this.fireBullet(Math.round(this.player.direction + this.spread / 7 * i - this.spread / 2)));
         }
         return ret;
+    }
+
+    reload() { 
+        if(this.ammo && this.clipSize < this.magSize) {
+            this.clipSize++;
+            this.ammo--;
+        }
     }
 }
 

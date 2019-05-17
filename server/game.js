@@ -183,15 +183,18 @@ class Player {
                 clip: reloadedGun.clipSize,
                 spare: reloadedGun.ammo
             });
+            this.reload();
         }
 
-        if(!this.isReloading() && this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
+        if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             this.game.updates.push({
                 type: "equip",
                 id: this.index,
                 index: this.equippedWeapon
             });
+            this.socket.emit("reload", 0); //cancel reload
+            this.lastReloadTime = 0;
         }
         this.newEquip = 0;
 
@@ -199,7 +202,10 @@ class Player {
     }
 
     click() {
-        if(this.isReloading()) return;
+        if(this.isReloading()) {
+            this.lastReloadTime = 0;
+            this.socket.emit("reload", 0); //cancel reload
+        }
         if(this.weapons[this.equippedWeapon - 1]) { //fired a gun
             const bullets = this.weapons[this.equippedWeapon - 1].fire();
             bullets.forEach((bullet) => {
@@ -234,12 +240,10 @@ class Player {
     }
 
     reload() {
-        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading() || !this.weapons[this.equippedWeapon - 1].ammo) return;
+        const weapon = this.weapons[this.equippedWeapon - 1];
+        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize) return;
         this.lastReloadTime = Date.now();
-        this.game.updates.push({
-            type: "reload",
-            t: this.weapons[this.equippedWeapon - 1].reloadTime,
-        });
+        this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
     }
 
     hurt(damage) {
