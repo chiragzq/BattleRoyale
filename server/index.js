@@ -4,7 +4,7 @@ const http = require("http");
 
 const server = http.createServer((req, res) => {
     res.end("");
-}).listen(process.env.PORT || 3000);
+}).listen(process.env.PORT || 5000);
 
 const io = socketIO(server);
 
