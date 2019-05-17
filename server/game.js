@@ -15,7 +15,7 @@ class Game {
     constructor(io) {
         this.players = [];
         this.bullets = [];
-        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(350, 400), new Rock(432, 654), new Rock(690, 64), new Rock(800, 423), new Rock(597, 583),  new Rock(43, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+        this.obstacles = generateRandomMap();
 
         this.updates = [];
 
@@ -122,7 +122,7 @@ class Player {
         this.moveD = false;
         this.moveR = false;
 
-        this.speed = 10;
+        this.speed = 15;
 
         this.mouse = {
             x: 0,
@@ -259,6 +259,23 @@ class Player {
     isOffScreen() {
         return this.x < 0 || 2000 < this.x || this.y < 0 || 2000 < this.y;
     }
+}
+
+function generateRandomMap() {
+    const ret = [];
+    let bushes = 25;
+    let trees = 25;
+    let rocks = 25;
+    while(bushes--) {
+        ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(trees--) {
+        ret.push(new Tree(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(rocks--) {
+        ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    return ret;
 }
 
 function collisonCircle(x1, y1, r1, x2, y2, r2) {
