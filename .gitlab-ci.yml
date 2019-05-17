@@ -1,0 +1,22 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:latest
+
+variables:
+  AUTO_DEVOPS_DOMAIN: dev.harker.org
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - node_modules/
+  
+staging:
+  stage: deploy
+  script:
+    - npm install
+    - node server/index.js
+  environment:
+    name: staging
+    url: http://$CI_PROJECT_PATH_SLUG-staging.$KUBE_INGRESS_BASE_DOMAIN
