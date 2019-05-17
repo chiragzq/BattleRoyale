@@ -16,7 +16,7 @@ const game = new Game(io);
 io.on('connection', (socket) => {
     console.log("New user connected");
 
-    const player = new Player(game, 100, 100, game.players.length, socket);
+    const player = new Player(game, Math.round(Math.random() * 2000), Math.round(Math.random() * 2000), game.players.length, socket);
 
     socket.emit("player_info", {
         id: game.players.length,

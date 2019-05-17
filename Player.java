@@ -103,12 +103,14 @@ public class Player
      * @param g the graphics
      */
     public void draw(Graphics g, int xShift, int yShift) {
+        g.setColor(new Color(0xFAC47F));
+        Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
+    }
+
+    public void drawGun(Graphics g, int xShift, int yShift) {
         if(equipped != -1) {
             guns.get(equipped).draw(g, xShift, yShift);
         }
-
-        g.setColor(new Color(0xFAC47F));
-        Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
     }
 
     public void drawEssentials(Graphics g)

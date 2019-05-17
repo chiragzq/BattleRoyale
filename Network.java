@@ -105,8 +105,6 @@ public class Network {
                             equipPlayer.setEquippedIndex(update.getInt("index"));
                         } else if(type.equals("remove_bullet")) {
                             game.getBullets().remove(update.getInt("id"));
-                        } else if(type.equals("reload")) {
-                            game.getPlayer().setReloading(update.getInt("t"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
                         } else {
@@ -170,6 +168,12 @@ public class Network {
                 } finally {
                     lock.writeLock().unlock();
                 }
+            }
+        });
+        socket.on("reload", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                game.getPlayer().setReloading((int)arg0[0]);
             }
         });
         socket.connect();

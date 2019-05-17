@@ -15,7 +15,7 @@ class Game {
     constructor(io) {
         this.players = [];
         this.bullets = [];
-        this.obstacles = [new Rock(200, 400), new Rock(300, 100), new Rock(350, 400), new Rock(432, 654), new Rock(690, 64), new Rock(800, 423), new Rock(597, 583),  new Rock(43, 100), new Rock(800, 400), new Bush(100, 100), new Bush(1000, 600), new Tree(500, 600), new Tree(100, 600)];
+        this.obstacles = generateRandomMap();
 
         this.updates = [];
 
@@ -122,7 +122,7 @@ class Player {
         this.moveD = false;
         this.moveR = false;
 
-        this.speed = 10;
+        this.speed = 15;
 
         this.mouse = {
             x: 0,
@@ -183,15 +183,18 @@ class Player {
                 clip: reloadedGun.clipSize,
                 spare: reloadedGun.ammo
             });
+            this.reload();
         }
 
-        if(!this.isReloading() && this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
+        if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             this.game.updates.push({
                 type: "equip",
                 id: this.index,
                 index: this.equippedWeapon
             });
+            this.socket.emit("reload", 0); //cancel reload
+            this.lastReloadTime = 0;
         }
         this.newEquip = 0;
 
@@ -199,7 +202,10 @@ class Player {
     }
 
     click() {
-        if(this.isReloading()) return;
+        if(this.isReloading()) {
+            this.lastReloadTime = 0;
+            this.socket.emit("reload", 0); //cancel reload
+        }
         if(this.weapons[this.equippedWeapon - 1]) { //fired a gun
             const bullets = this.weapons[this.equippedWeapon - 1].fire();
             bullets.forEach((bullet) => {
@@ -234,12 +240,10 @@ class Player {
     }
 
     reload() {
-        if(!this.weapons[this.equippedWeapon - 1] || this.isReloading() || !this.weapons[this.equippedWeapon - 1].ammo) return;
+        const weapon = this.weapons[this.equippedWeapon - 1];
+        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize) return;
         this.lastReloadTime = Date.now();
-        this.game.updates.push({
-            type: "reload",
-            t: this.weapons[this.equippedWeapon - 1].reloadTime,
-        });
+        this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
     }
 
     hurt(damage) {
@@ -255,6 +259,23 @@ class Player {
     isOffScreen() {
         return this.x < 0 || 2000 < this.x || this.y < 0 || 2000 < this.y;
     }
+}
+
+function generateRandomMap() {
+    const ret = [];
+    let bushes = 25;
+    let trees = 25;
+    let rocks = 25;
+    while(bushes--) {
+        ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(trees--) {
+        ret.push(new Tree(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(rocks--) {
+        ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    return ret;
 }
 
 function collisonCircle(x1, y1, r1, x2, y2, r2) {
