@@ -21,7 +21,13 @@ public class Pistol extends Gun
         int x = getPlayer().getX();
         int y = getPlayer().getY();
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
+        
+        int radius = (int)(Game.GAME_SCALE *10);
+        int increment = radius/2;
+        
         g2.drawLine(x + xShift, y + yShift, (int)(Math.cos(getDirection() * Math.PI / 180)*BARREL_LENGTH) + x+ xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*BARREL_LENGTH) + y+ yShift);
+        Game.fillCircle(g, (int)(Math.cos(getDirection() * Math.PI / 180)*(BARREL_LENGTH + increment)) + x+ xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*(increment  + BARREL_LENGTH)) + y+ yShift, radius);
+        
     }
     
     /**

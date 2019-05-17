@@ -23,6 +23,10 @@ public class Shotgun extends Gun
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *13)));
         g2.drawLine(x + xShift, y + yShift, (int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x+ xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y + yShift);
 
+        
+        int radius = (int)(Game.GAME_SCALE *13);
+        double increment = (double)radius/2 - 1;
+        Game.fillCircle(g, (int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift, radius);
     }
 
     /**
