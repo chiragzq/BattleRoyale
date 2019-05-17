@@ -28,7 +28,8 @@ public class Rifle extends Gun
         
         int radius = (int)(Game.GAME_SCALE *10);
         int increment = radius/2;
-        Game.fillCircle(g, (int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift, radius);
+        g.fillOval((int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift - radius/2, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift - radius/2, radius, radius);
+        //Game.fillCircle(g, (int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift, radius);
         //g2.fillOval((int)(Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x + xShift - radius/2, (int)(Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y + yShift - radius/2, radius, radius);
     }
     

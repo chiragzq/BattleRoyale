@@ -25,8 +25,8 @@ public class Shotgun extends Gun
 
         
         int radius = (int)(Game.GAME_SCALE *13);
-        double increment = (double)radius/2 - 1;
-        Game.fillCircle(g, (int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift, radius);
+        double increment = (double)radius/2-2;
+        g.fillOval((int)(Math.cos(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + x + xShift - radius/2, (int)(Math.sin(getDirection() * Math.PI / 180)*(getBarrelLength()+increment)) + y + yShift - radius/2, radius, radius);
     }
 
     /**
