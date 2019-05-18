@@ -72,6 +72,25 @@ class Tree extends Obstacle {
     }
 }
 
+class Box extends Obstacle {
+    constructor(x, y) {
+        super(x, y, 30, true);
+    }
+
+    getSize() {
+        return Math.round(this.size * Math.sqrt(this.health / 100));
+    }
+
+    getType() {
+        return "box";
+    }
+
+    hurt(damage) {
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+    }
+}
+
 module.exports.Obstacle = Obstacle;
 module.exports.Bush = Bush;
 module.exports.Rock = Rock;
