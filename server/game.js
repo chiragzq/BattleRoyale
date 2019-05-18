@@ -329,9 +329,9 @@ class Player {
 
 function generateRandomMap() {
     const ret = [];
-    let bushes = 25;
-    let trees = 25;
-    let rocks = 25;
+    let bushes = 50;
+    let trees = 50;
+    let rocks = 50;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
