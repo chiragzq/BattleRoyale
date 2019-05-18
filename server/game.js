@@ -45,14 +45,15 @@ class Game {
                 });
                 this.bullets[index] = null;
             } else if(this.obstacles.some((obstacle, index2) => {
-                if(obstacle.solid && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
+                const solid = obstacle.solid;
+                if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
                     obstacle.hurt(bullet.getDamage());
                     this.updates.push({
                         type: "obstacle",
                         id: index2,
                         h: obstacle.health
                     });
-                    return true;
+                    return solid;
                 }
                 return false;
             })) {
@@ -212,7 +213,7 @@ class Player {
             hands.forEach((hand) => {
                 if(collided) return;
                 this.game.obstacles.some((obstacle, index) => {
-                    if(obstacle.solid && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
+                    if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         this.game.updates.push({
                             type: "obstacle",

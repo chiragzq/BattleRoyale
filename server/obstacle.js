@@ -16,6 +16,10 @@ class Obstacle {
         this.health = Math.max(this.health, 0);
         if(!this.health) this.solid = false;
     }
+
+    isDead() {
+        return !this.health;
+    }
 }
 
 class Bush extends Obstacle {
@@ -24,7 +28,7 @@ class Bush extends Obstacle {
     }
 
     getSize() {
-        return this.health ? this.size : 0;
+        return this.size;
     }
 
     getType() {
@@ -50,6 +54,10 @@ class Rock extends Obstacle {
         this.health = Math.max(this.health, 0);
         if(this.health < 25) this.solid = false;
     }
+
+    isDead() {
+        return this.health < 25;
+    }
 }
 
 class Tree extends Obstacle {
@@ -69,6 +77,10 @@ class Tree extends Obstacle {
         this.health -= damage;
         this.health = Math.max(this.health, 0);
         if(this.health < 25) this.solid = false;
+    }
+
+    isDead() {
+        return this.health < 25;
     }
 }
 
