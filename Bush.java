@@ -27,7 +27,7 @@ public class Bush extends Obstacle
 
     public void draw(Graphics g, int xShift, int yShift)
     {
-        if(getHealth() <= 0)
+        if(getHealth() < 25)
         {
             Graphics2D g2 = (Graphics2D)g;
             g2.setColor(new Color(201, 239, 207, 200));

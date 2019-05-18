@@ -177,6 +177,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
         
 
+        for(Obstacle ob: obstacles.values())
+        {
+            if(ob.getHealth() < 25)
+                ob.draw(g, xShift, yShift);
+        }
+        //Draws death states
+        
         //Draw the obstacle
         
         for(Bullet bullet : bullets.values())
@@ -190,7 +197,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
        
         for(Obstacle ob: obstacles.values())
         {
-            if(ob instanceof Stone)
+            if(ob instanceof Stone && ob.getHealth() >= 25)
                 ob.draw(g, xShift, yShift);
         }
 
@@ -208,11 +215,14 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         {
             player.drawHands(g, xShift, yShift);
         }
+        
         for(Obstacle ob: obstacles.values())
         {
-            if(!(ob instanceof Stone))
+            if(!(ob instanceof Stone) && ob.getHealth() >= 25)
                 ob.draw(g, xShift, yShift);
         }
+        
+        
 
         if(thisPlayer != null) {
             thisPlayer.drawEssentials(g);
