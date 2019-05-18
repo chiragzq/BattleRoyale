@@ -230,6 +230,7 @@ class Player {
                     id: this.index,
                 });
                 this.lastPunchTime = Date.now();
+                this.didPunchCollision = false;
             }
         }
     }

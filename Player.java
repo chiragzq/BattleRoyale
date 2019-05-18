@@ -501,9 +501,10 @@ public class Player
     }
 
     public void setDirection(int direction) {
-        //this.direction = direction;
-        //direcRadian = Math.toRadians(direction);
-        faceCursor();
+        this.direction = direction;
+        direcRadian = Math.toRadians(direction);
+        // faceCursor(); 
+        // WHY AARON!!!
         if(equipped != -1) {
             guns.get(equipped).setDirection(direction);
         }
