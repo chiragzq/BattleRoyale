@@ -286,13 +286,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static int getMouseX()
     {
-        //System.out.println("X" + ((int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX));
         return (int)MouseInfo.getPointerInfo().getLocation().getX() - screenLocationX;
     }
 
     public static int getMouseY()
     {
-        //System.out.print("Y" + ((int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY));
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 
