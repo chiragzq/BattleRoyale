@@ -143,6 +143,8 @@ public class Network {
                         game.getObstacles().put(update.getInt("id"), new Bush(update.getInt("x"), update.getInt("y")));
                     } else if(type.equals("tree")) {
                         game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("box")) {
+                        game.getObstacles().put(update.getInt("id"), new Box(update.getInt("x"), update.getInt("y")));
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }

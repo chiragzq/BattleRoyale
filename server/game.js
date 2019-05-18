@@ -7,6 +7,7 @@ const Shotgun = _weapon.Shotgun;
 const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
 const Tree = _obstacle.Tree;
+const Box = _obstacle.Box;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -332,6 +333,7 @@ function generateRandomMap() {
     let bushes = 50;
     let trees = 50;
     let rocks = 50;
+    let boxes = 20;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
@@ -340,6 +342,9 @@ function generateRandomMap() {
     }
     while(rocks--) {
         ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(boxes--) {
+        ret.push(new Box(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     return ret;
 }
