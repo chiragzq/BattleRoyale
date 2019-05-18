@@ -43,19 +43,21 @@ class Rifle extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 4, 75, 80, 400)
+        //super("Shotgun", player, 5, 35, 4, 75, 80, 400)
+        super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
     fire() {
         if(!this.clipSize) return[];
         this.clipSize--;
         const ret = [];
-        for(let i = 0;i <= 7;i ++) {
+        const numBullets = 400;
+        for(let i = 0;i <= numBullets;i ++) {
             ret.push(this.fireBullet(Math.round(
                 this.player.direction + 
-                this.spread / 7 * i - 
+                this.spread / numBullets * i - 
                 this.spread / 2 + 
-                (Math.random() * this.spread / 10 - this.spread / 20))));
+                (Math.random() * this.spread / numBullets / 1.5 - this.spread / numBullets / 3))));
         }
         return ret;
     }

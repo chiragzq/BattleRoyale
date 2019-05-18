@@ -2,16 +2,28 @@ const socketIO = require('socket.io');
 const gameLib = require("./game");
 const http = require("http");
 
+const Game = gameLib.Game;
+const Player = gameLib.Player;
+
+
+let game;
+
 const server = http.createServer((req, res) => {
-    res.end("");
+    if(req.url == "/restart") {
+        game.players.forEach((player) => {
+            player.socket.disconnect();
+        });
+        game.generateRandomMap();
+        res.end("restarted");
+    } else {
+        res.end("ree");
+    }
 }).listen(process.env.PORT || 5000);
 
 const io = socketIO(server);
 
-const Game = gameLib.Game;
-const Player = gameLib.Player;
 
-const game = new Game(io);
+game = new Game(io);
 
 io.on('connection', (socket) => {
     console.log("New user connected");

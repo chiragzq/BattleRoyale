@@ -113,6 +113,10 @@ class Game {
         }
         return ret;
     }
+
+    generateRandomMap() {
+        this.obstacles = generateRandomMap();
+    }
 }
 
 class Player {
