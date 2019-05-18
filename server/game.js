@@ -64,6 +64,14 @@ class Game {
             } else if(this.players.some((player, index2) => {
                 if(player && collisionCircleBullet(player.x, player.y, 25, bullet)) {
                     player.hurt(bullet.getDamage());
+                    this.updates.push({
+                        type: "player",
+                        id: player.index,
+                        x: player.x,
+                        y: player.y,
+                        dir: player.direction,
+                        health: player.health
+                    });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
                         this.io.emit("delete_player", index2); 
@@ -159,8 +167,9 @@ class Player {
                 this.y -= Math.round(this.speed * Math.sin(dir));
             }
             this.game.obstacles.some(obstacle => {
-                if(obstacle.solid && collisonCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
+                if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                    return true;
                 }
             });
             updated = true;
@@ -186,6 +195,56 @@ class Player {
             this.reload();
         }
 
+        if(!this.didPunchCollision && Date.now() - this.punchTime / 2 > this.lastPunchTime) {
+            const handRadius = 9;
+            const handOffset = Math.PI / 30;
+            const handExtend = 20;
+
+            let hands = [{
+                x: this.x + (25 + handExtend) * Math.cos(this.direction * Math.PI / 180 + handOffset),
+                y: this.y + (25 + handExtend) * Math.sin(this.direction * Math.PI / 180 + handOffset)
+            }, {
+                x: this.x + (25 + handExtend) * Math.cos(this.direction * Math.PI / 180 - handOffset),
+                y: this.y + (25 + handExtend) * Math.sin(this.direction * Math.PI / 180 - handOffset)
+            }]
+
+            let collided = false;
+            hands.forEach((hand) => {
+                if(collided) return;
+                this.game.obstacles.some((obstacle, index) => {
+                    if(obstacle.solid && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
+                        obstacle.hurt(18);
+                        this.game.updates.push({
+                            type: "obstacle",
+                            id: index,
+                            h: obstacle.health
+                        });
+                        return collided = true;
+                    }
+                });
+                if(collided) return;
+                this.game.players.some((player) => {
+                    if(collisionCircle(hand.x, hand.y, handRadius, player.x, player.y, 25)) {
+                        player.hurt(18);
+                        this.game.updates.push({
+                            type: "player",
+                            id: player.index,
+                            x: player.x,
+                            y: player.y,
+                            dir: player.direction,
+                            health: player.health
+                        });
+                        if(player.isDead()) {
+                            this.game.io.emit("delete_player", player.index); 
+                            delete this.game.players[player.index];
+                        }
+                        return collided = true;
+                    }
+                });
+            });
+            this.didPunchCollision = true;
+        }
+
         if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             this.game.updates.push({
@@ -195,6 +254,7 @@ class Player {
             });
             this.socket.emit("reload", 0); //cancel reload
             this.lastReloadTime = 0;
+            this.lastPunchTime = 0;
         }
         this.newEquip = 0;
 
@@ -279,7 +339,7 @@ function generateRandomMap() {
     return ret;
 }
 
-function collisonCircle(x1, y1, r1, x2, y2, r2) {
+function collisionCircle(x1, y1, r1, x2, y2, r2) {
     return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
 }
 

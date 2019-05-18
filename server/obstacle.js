@@ -95,3 +95,4 @@ module.exports.Obstacle = Obstacle;
 module.exports.Bush = Bush;
 module.exports.Rock = Rock;
 module.exports.Tree = Tree;
+module.exports.Box = Box;

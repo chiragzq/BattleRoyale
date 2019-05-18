@@ -72,7 +72,6 @@ public abstract class Gun implements Weapon
     
     public void setDirection(int dir) {
         direction = dir;
-        //faceCursor();
     }
 
     public void setClip(int clip) {

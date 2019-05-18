@@ -453,7 +453,6 @@ public class Player
      */
     public boolean isExtended()
     {
-        System.out.println(isExtended);
         return isExtended;
     }
 
