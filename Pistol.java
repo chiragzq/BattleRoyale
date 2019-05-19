@@ -8,6 +8,7 @@ import java.awt.*;
 public class Pistol extends Gun
 {
     private static final int BARREL_LENGTH =(int)( 55 * Game.GAME_SCALE);
+    
     public Pistol(Player play)
     {
         super(play, 30, 20);

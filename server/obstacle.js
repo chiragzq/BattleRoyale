@@ -25,6 +25,7 @@ class Obstacle {
 class Bush extends Obstacle {
     constructor(x, y) {
         super(x, y, 30, false);
+        this.health = 70;
     }
 
     getSize() {

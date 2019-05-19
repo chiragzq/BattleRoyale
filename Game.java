@@ -187,13 +187,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         //Draw the obstacle
         
         for(Bullet bullet : bullets.values())
-        {
             bullet.draw(g, xShift, yShift);
-        }
-        
-        //bullets.values().forEach((bullet) -> bullet.draw(g));
-        
-        //players.values().forEach((player) -> player.draw(g));
        
         for(Obstacle ob: obstacles.values())
         {
@@ -201,18 +195,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                 ob.draw(g, xShift, yShift);
         }
 
-        for(Player player : players.values())
+        for(Player player : players.values()) {
             player.drawGun(g, xShift, yShift);
-
-
-        for(Player player: players.values())
-        {
             player.draw(g, xShift, yShift);
-        }
-
-
-        for(Player player: players.values())
-        {
             player.drawHands(g, xShift, yShift);
         }
         

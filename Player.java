@@ -86,9 +86,7 @@ public class Player
         
         int xMouse = Game.getMouseX() - xShift;
         int yMouse = Game.getMouseY() - yShift;
-        
-        
-        
+    
         double xSide = xMouse - x;
         double ySide = yMouse - y;
 
@@ -417,46 +415,6 @@ public class Player
     }
 
     /**
-     * gets healet
-     */
-    public int getHealth()
-    {
-        return health;
-    }
-
-    /**
-     * Gets if the player is punching or not
-     */
-    public boolean isPunching()
-    {
-        return isCurrentlyPunching;
-    }
-
-    /**
-     * Gets the x of the hand punching
-     */
-    public int xPunch()
-    {
-        return xPunch;
-    }
-
-    /**
-     * Gets the y of the hand punching
-     */
-    public int yPunch()
-    {
-        return yPunch;
-    }
-
-    /**
-     * gets if the arm is extended
-     */
-    public boolean isExtended()
-    {
-        return isExtended;
-    }
-
-    /**
      * Gets the gun that the player has equipped.
      * @return the equipped gun, or null if the player is wielding fists
      */
@@ -467,10 +425,6 @@ public class Player
     public void setReloading(int duration) {
         lastReloadTime = System.currentTimeMillis();
         reloadDuration = duration;
-    }
-
-    public void stopReloading() {
-        lastReloadTime = 0;
     }
 
     public void setEquippedIndex(int index) {

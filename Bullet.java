@@ -13,11 +13,9 @@ public class Bullet
     private int backX;
     private int backY;
     private int direction;
-    private int distance;
+    
     //How far the bullet traveled
     private static final int LENGTH = (int)(75* Game.GAME_SCALE);
-    private static final int SPEED = (int)(35 * Game.GAME_SCALE);
-    private static final int DAMAGE = 10;
     private int thicknessOfBullet;
     
     /**
@@ -33,37 +31,8 @@ public class Bullet
         direction = direc;
         findTheBackEndOfTheBullet();
         
-        distance = 0;
         thicknessOfBullet = 3;
     }
-    
-    public int getDirection()
-    {
-        return direction;
-    }
-    
-    
-    /**
-     * Moves the Bullet
-     * @return false if the bullet should not be moving anymore; true if it can
-     */
-    public boolean move()
-    {
-        if(distance == 0)
-            return false;
-        y += Math.sin(Math.toRadians(direction)) * SPEED;
-        x += Math.cos(Math.toRadians(direction)) * SPEED;
-        distance--;
-        findTheBackEndOfTheBullet();
-        return true;
-    }
-    
-    public int doDamage()
-    {
-        return DAMAGE;
-    }
-    
-    
     
     /**
      * This gives the back end of the bullet
@@ -72,25 +41,6 @@ public class Bullet
     {
         backY = y + (int)(Math.sin(Math.toRadians(direction)) * LENGTH);
         backX = x + (int)(Math.cos(Math.toRadians(direction)) * LENGTH);
-    }
-    
-    
-    /**
-     * This gets the x
-     * @return the x Loc
-     */
-    public int getX()
-    {
-        return x;
-    }
-    
-    /**
-     * This gets the y location
-     * @return the y Loc
-     */
-    public int getY()
-    {
-        return y;
     }
     
     public void setX(int x) {
@@ -105,16 +55,6 @@ public class Bullet
         backY += diff;
     }
 
-    public int getBackX()
-    {
-        return backX;
-    }
-    
-    public int getBackY()
-    {
-        return backY;
-    }
-    
     /**
      * Draws the Bullet
      * @param g the graphics
