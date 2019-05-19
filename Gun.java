@@ -5,9 +5,10 @@ import java.awt.*;
  * @author Aaron Lo
  * @version 5-7-19
  */
-public abstract class Gun implements Weapon
+public abstract class Gun
 {
     private final static int BARREL_LENGTH = (int)(80 * Game.GAME_SCALE);
+    
     private double direction;
     private Player player;
     private int numberInCarbine;

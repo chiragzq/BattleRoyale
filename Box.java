@@ -9,6 +9,7 @@ import javax.swing.*;
 public class Box extends Obstacle
 {
     private static final int LENGTH = 100;
+    
     public Box(int xl, int yl)
     {
         super(xl, yl, 100);

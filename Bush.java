@@ -9,15 +9,12 @@ public class Bush extends Obstacle
 {
     // instance variables - replace the example below with your own
     private static final int SIZE = (int)(Game.GAME_SCALE *100);
-    private static final int LEAVE_SIZE = (int)(Game.GAME_SCALE *100);
-    private static final int BORDER = 0;
-    private static final int HEALTH = 70;
     private static final int SIZE_WHEN_DEAD = (int)(Game.GAME_SCALE *20);
     private static final int OPACITY = 235;
 
     public Bush(int x, int y)
     {
-        super(x, y, HEALTH);
+        super(x, y, 100);
     }
 
     public int getSize()
@@ -27,7 +24,7 @@ public class Bush extends Obstacle
 
     public void draw(Graphics g, int xShift, int yShift)
     {
-        if(getHealth() <= 0)
+        if(getHealth() <= 25)
         {
             Graphics2D g2 = (Graphics2D)g;
             g2.setColor(new Color(201, 239, 207, 200));
