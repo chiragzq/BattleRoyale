@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
         game.generateRandomMap();
         res.end("restarted");
     } else {
-        res.end("ree");
+        res.end(`${game.players.length} Players\n`);
     }
 }).listen(process.env.PORT || 5000);
 
