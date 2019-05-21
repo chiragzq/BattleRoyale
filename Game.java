@@ -10,6 +10,7 @@ import java.util.Timer;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.awt.MouseInfo;
+import java.awt.Image;
 
 public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int GAME_WIDTH = 1280;
@@ -211,6 +212,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         if(thisPlayer != null) {
             thisPlayer.drawEssentials(g);
+            thisPlayer.drawDeath(g);
         }
 
         lock.readLock().unlock();
@@ -265,6 +267,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         x = x - r / 2;
         y = y - r / 2;
         g.drawOval(x, y, r, r);
+    }
+    public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
+    {
+        Image image = new ImageIcon("img/" + file + ".png").getImage();
+        g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
     }
 
     public void updateScreenLocation()
