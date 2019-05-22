@@ -168,10 +168,7 @@ class Player {
         if(xd || yd) {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
-            if(this.isOffScreen()) {
-                this.x -= Math.round(this.speed * Math.cos(dir));
-                this.y -= Math.round(this.speed * Math.sin(dir));
-            }
+            this.fixOffScreen();
             this.game.obstacles.some(obstacle => {
                 if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
@@ -323,8 +320,11 @@ class Player {
         return !this.health;
     }
 
-    isOffScreen() {
-        return this.x < 0 || 2000 < this.x || this.y < 0 || 2000 < this.y;
+    fixOffScreen() {
+        this.x = Math.max(this.x, 0);
+        this.y = Math.max(this.y, 0);
+        this.x = Math.min(this.x, 2000);
+        this.y = Math.min(this.y, 2000);
     }
 }
 
