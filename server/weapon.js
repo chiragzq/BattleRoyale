@@ -47,7 +47,7 @@ class Rifle extends Gun {
         if(!this.canShoot()) return [];
         this.player.speed = 5;
         clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 500);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 100);
         this.clipSize--;
         return [this.fireBullet(Math.round((Math.random() - 0.5) * this.spread + this.player.direction))];
     }
@@ -64,7 +64,7 @@ class Shotgun extends Gun {
         this.clipSize--;
         this.player.speed = 5;
         clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 500);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 400);
         const ret = [];
         const numBullets = 7;
         for(let i = 0;i <= numBullets;i ++) {
