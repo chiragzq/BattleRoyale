@@ -136,7 +136,7 @@ class Player {
         this.moveD = false;
         this.moveR = false;
 
-        this.speed = 15;
+        this.speed = 13;
 
         this.mouse = {
             x: 0,
