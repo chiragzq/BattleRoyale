@@ -1,5 +1,6 @@
+let timeout = setTimeout(()=>{},0);
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime) {
+    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay) {
         this.name = name;
         this.player = player;
 
@@ -14,12 +15,20 @@ class Gun {
         this.barrelLength = barrelLength;
 
         this.reloadTime = reloadTime;
+
+        this.shootDelay = shootDelay;
+        this.lastShootTime = 0;
     }
 
     fireBullet(direction) {
+        this.lastShootTime = Date.now();
         const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * (50) + this.player.x);
         const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * (50) + this.player.y);
         return new Bullet(bulletX, bulletY, direction, this.speed, this.damage);
+    }
+
+    canShoot() {
+        return this.clipSize && Date.now() - this.shootDelay > this.lastShootTime;
     }
 
     reload() {
@@ -31,11 +40,14 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 30, 2, 18, 90, 80, 1800);
+        super("Rifle", player, 20, 3, 22, 90, 80, 2400, 250);
     }
 
     fire() {
-        if(!this.clipSize) return [];
+        if(!this.canShoot()) return [];
+        this.player.speed = 5;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 100);
         this.clipSize--;
         return [this.fireBullet(Math.round((Math.random() - 0.5) * this.spread + this.player.direction))];
     }
@@ -43,13 +55,16 @@ class Rifle extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 4, 75, 80, 400)
+        super("Shotgun", player, 5, 35, 4, 75, 80, 700, 300)
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
     fire() {
-        if(!this.clipSize) return[];
+        if(!this.canShoot()) return [];
         this.clipSize--;
+        this.player.speed = 5;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 400);
         const ret = [];
         const numBullets = 7;
         for(let i = 0;i <= numBullets;i ++) {

@@ -87,7 +87,7 @@ class Tree extends Obstacle {
 
 class Box extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, true);
+        super(x, y, 100, true);
     }
 
     getSize() {

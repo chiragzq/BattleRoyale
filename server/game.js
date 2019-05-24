@@ -143,7 +143,7 @@ class Player {
         this.moveD = false;
         this.moveR = false;
 
-        this.speed = 15;
+        this.speed = 13;
 
         this.mouse = {
             x: 0,
@@ -177,7 +177,12 @@ class Player {
             this.y += Math.round(this.speed * Math.sin(dir));
             this.fixOffScreen();
             this.game.obstacles.some(obstacle => {
-                if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
+                if(obstacle instanceof Box) {
+                    if(obstacle.solid && collisionCircleSquare(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
+                        [this.x, this.y] = fixCollidedObjectSquare(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                        return true;
+                    }
+                } else if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
                     return true;
                 }
@@ -341,6 +346,7 @@ function generateRandomMap() {
     let trees = 50;
     let rocks = 50;
     let boxes = 20;
+    ret.push(new Box(0,0))
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
@@ -371,23 +377,33 @@ function collisionCirclePoint(x1, y1, r1, x2, y2) {
 }
 
 function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
-    const distX = Math.abs(x1 - x2 - size / 2);
-    const distY = Math.abs(y1 - y2 - size / 2);
-    if (distX > (size / 2 + r1)) return false;
-    if (distY > (size / 2 + r1)) return false;
-    if (distX <= (size / 2)) return true;
-    if (distY <= (size / 2)) return true;
-    const dx = distX - size / 2;
-    const dy = distY - size / 2;
+    const nearX = Math.max(x2 - size / 2, Math.min(x1, x2 + size / 2));
+    const nearY = Math.max(y2 - size / 2, Math.min(y1, y2 + size / 2));
+    const dx = x1 - nearX;
+    const dy = y1 - nearY;
     return (dx * dx + dy * dy <= (r1 * r1));
 }
 
-function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static object
+function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static circle
     const dir = Math.atan2(y2 - y1, x2 - x1);
     return [
         x1 + Math.round(Math.cos(dir) * (r1 + r2)),
         y1 + Math.round(Math.sin(dir) * (r1 + r2))
     ]
+}
+
+function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a static square
+    const nearX = Math.max(x1 - size / 2, Math.min(x2, x1 + size / 2));
+    const nearY = Math.max(y1 - size / 2, Math.min(y2, y1 + size / 2));
+
+    let xOff = nearX - x1;
+    let yOff = nearY - y1;
+    if(Math.abs(xOff) > Math.abs(yOff)) {
+        xOff = (size / 2 + r2) * Math.sign(xOff);
+    } else {
+        yOff = (size / 2 + r2) * Math.sign(yOff)
+    }
+    return [x1 + xOff, y1 + yOff];
 }
 
 
