@@ -101,6 +101,7 @@ class Box extends Obstacle {
     hurt(damage) {
         this.health -= damage;
         this.health = Math.max(this.health, 0);
+        if(this.health < 25) this.solid = false;
     }
 }
 
