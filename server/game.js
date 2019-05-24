@@ -335,7 +335,7 @@ class Player {
 
 function generateRandomMap() {
     const ret = [];
-    let bushes = 30; 
+    let bushes = 30;
     let trees = 30;
     let rocks = 30;
     let boxes = 20;
