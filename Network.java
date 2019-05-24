@@ -107,7 +107,10 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
-                        } else {
+                        } else if(type.equals("dropped_rifle")) {
+                            Item newItem = new DroppedRifle(update.getInt("x"), update.getInt("y"));
+                            game.getItems().put(update.getInt("id"), newItem);
+                        }else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }

@@ -38,6 +38,8 @@ public class Tester extends JComponent implements MouseListener
         
         items = new ArrayList<Item>();
         items.add(new Ammo(100, 100));
+        items.add(new DroppedRifle(200, 200));
+        items.add(new DroppedShotgun(300, 300));
     }
     
     /**
@@ -47,12 +49,12 @@ public class Tester extends JComponent implements MouseListener
     public void paintComponent(Graphics g)
     {
         //background
-        //g.setColor(new Color(0, 128, 0));
-        //g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(new Color(0, 128, 0));
+        g.fillRect(0, 0, getWidth(), getHeight());
         
         for(int i = 0; i < items.size(); i++)
         {
-            items.get(i).draw(g);
+            items.get(i).draw(g, 0, 0);
         }
         
     }

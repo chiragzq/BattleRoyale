@@ -36,5 +36,5 @@ public abstract class Item
         return size;
     }
 
-    public abstract void draw(Graphics g);
+    public abstract void draw(Graphics g, int xShift, int yShift);
 }

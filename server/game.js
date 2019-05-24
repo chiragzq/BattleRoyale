@@ -1,5 +1,6 @@
 const _weapon = require("./weapon");
 const _obstacle = require("./obstacle");
+const _item = require("./item");
 
 const Rifle = _weapon.Rifle;
 const Shotgun = _weapon.Shotgun;
@@ -9,6 +10,10 @@ const Bush = _obstacle.Bush;
 const Tree = _obstacle.Tree;
 const Box = _obstacle.Box;
 
+const DroppedRifle = _item.DroppedRifle;
+const DroppedShotgun = _item.DroppedShotgun;
+const Bandage = _item.Bandage;
+
 /**
  * Manages the state of the game and manage updates between previous game states.
  */
@@ -17,6 +22,8 @@ class Game {
         this.players = [];
         this.bullets = [];
         this.obstacles = generateRandomMap();
+        
+        this.items = [];
 
         this.updates = [];
 
@@ -97,7 +104,7 @@ class Game {
                     y: bullet.y
                 })
             }
-        });
+        }); 
     }
 
     getUpdates() {

@@ -37,6 +37,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private Map<Integer, Obstacle> obstacles;
     private Map<Integer, Bullet> bullets;
     
+    private Map<Integer, Item> items;
+    
     private Network network;
     private ReadWriteLock lock;
     private int ping;
@@ -67,10 +69,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles = new HashMap<Integer, Obstacle>();
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
+        items = new HashMap<Integer, Item>();
         
-        //network = new Network("http://localhost:5000", this, lock);
+        network = new Network("http://localhost:5000", this, lock);
         //network = new Network("http://apcs-survivio.herokuapp.com", this, lock);
-        network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
+        //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
 
         new Timer().schedule(new TimerTask(){
                 @Override
@@ -112,6 +115,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public Map<Integer, Obstacle> getObstacles() {
         return obstacles;
+    }
+
+    public Map<Integer, Item> getItems() {
+        return items;
     }
 
     public void mouseClicked(MouseEvent e) {}
@@ -195,6 +202,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             if(ob instanceof Stone && ob.getHealth() >= 25)
                 ob.draw(g, xShift, yShift);
         }
+
+        for(Item item: items.values())
+            item.draw(g, xShift, yShift);
 
         for(Player player : players.values()) {
             player.drawGun(g, xShift, yShift);

@@ -26,13 +26,25 @@ class Item {
 
 class Ammo extends Item {
     constructor(x, y) {
-        super(x, y, true, 5);
+        super(x, y, true, 15);
     }
 }
 
 class DroppedGun extends Item {
     constructor(x, y) {
-        super(x, y, false, 20);
+        super(x, y, false, 50);
+    }
+}
+
+class DroppedRifle extends DroppedGun {
+    constructor(x, y) {
+        super(x, y);
+    }
+}
+
+class DroppedShotgun extends DroppedGun {
+    constructor(x, y,) {
+        super(x, y);
     }
 }
 
