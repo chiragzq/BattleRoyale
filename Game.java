@@ -192,7 +192,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
        
         for(Obstacle ob: obstacles.values())
         {
-            if(ob instanceof Stone && ob.getHealth() >= 25)
+            if((ob instanceof Stone || ob instanceof Box) && ob.getHealth() >= 25)
                 ob.draw(g, xShift, yShift);
         }
 
@@ -204,7 +204,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         
         for(Obstacle ob: obstacles.values())
         {
-            if(!(ob instanceof Stone) && ob.getHealth() >= 25)
+            if(!(ob instanceof Stone || ob instanceof Box) && ob.getHealth() >= 25)
                 ob.draw(g, xShift, yShift);
         }
         
