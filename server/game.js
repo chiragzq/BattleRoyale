@@ -351,7 +351,7 @@ class Player {
 
     hurt(damage) {
         if(this.isDead())return;
-        this.health += damage;
+        this.health -= damage;
         this.health = Math.max(this.health, 0);
     }
 
