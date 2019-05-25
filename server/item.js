@@ -53,3 +53,10 @@ class Bandage extends Item {
         super(x, y, false, 8);
     }
 }
+
+module.exports.Item = Item;
+module.exports.Ammo = Ammo;
+module.exports.DroppedGun = DroppedGun;
+module.exports.DroppedRifle = DroppedRifle;
+module.exports.DroppedShotgun = DroppedShotgun;
+module.exports.Bandage = Bandage;

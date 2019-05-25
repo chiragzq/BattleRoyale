@@ -16,7 +16,8 @@ public class Tester extends JComponent implements MouseListener
     private static final int FACE_UP_OFFSET = 15;  //distance for cascading face-up cards
     private static final int FACE_DOWN_OFFSET = 5;  //distance for cascading face-down cards
     private JFrame frame;
-    private ArrayList<Item> items;
+    private ArrayList<Bullet> items;
+    private ArrayList<Obstacle> ob;
     /**
      * The constructor for SolitaireDisplay
      * @param game the game of Solitaire
@@ -36,10 +37,10 @@ public class Tester extends JComponent implements MouseListener
         frame.pack();
         frame.setVisible(true);
         
-        items = new ArrayList<Item>();
-        items.add(new Ammo(100, 100));
-        items.add(new DroppedRifle(200, 200));
-        items.add(new DroppedShotgun(300, 300));
+        items = new ArrayList<Bullet>();
+        items.add(new BlackBullet(100, 100, 40));
+        ob = new ArrayList<Obstacle>();
+        ob.add(new Barrel(100, 100));
     }
     
     /**
@@ -49,12 +50,16 @@ public class Tester extends JComponent implements MouseListener
     public void paintComponent(Graphics g)
     {
         //background
-        g.setColor(new Color(0, 128, 0));
-        g.fillRect(0, 0, getWidth(), getHeight());
+        
         
         for(int i = 0; i < items.size(); i++)
         {
             items.get(i).draw(g, 0, 0);
+        }
+        
+        for(Obstacle obs : ob)
+        {
+            obs.draw(g, 0 ,0);
         }
         
     }
