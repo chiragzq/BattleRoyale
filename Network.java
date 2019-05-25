@@ -98,8 +98,6 @@ public class Network {
                             game.getBullets().put(update.getInt("id"), newBullet);
                         } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));
-                            if(updatedBullet == null)
-                                System.out.println("ERROR");
                             updatedBullet.setX(update.getInt("x"));
                             updatedBullet.setY(update.getInt("y"));
                         } else if(type.equals("equip")) {
