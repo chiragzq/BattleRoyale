@@ -125,11 +125,12 @@ class Barrel extends Obstacle {
         this.health = Math.max(this.health, 0);
     }
 
-    spawnBullets(x) {
-        bullet = [];
-        for(i = x; x > 0; i--) {
-            bullet.push(Bullet)
+    spawnBullets(z) {
+        var bullet = [];
+        for(var i = 0; i < z; i++) {
+            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 10, 50));
         }
+        return bullet;
     }
 }
 
@@ -138,3 +139,4 @@ module.exports.Bush = Bush;
 module.exports.Rock = Rock;
 module.exports.Tree = Tree;
 module.exports.Box = Box;
+module.exports.Barrel = Barrel;

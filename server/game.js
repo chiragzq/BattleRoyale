@@ -9,6 +9,7 @@ const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
 const Tree = _obstacle.Tree;
 const Box = _obstacle.Box;
+const Barrel = _obstacle.Barrel;
 
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
@@ -56,6 +57,19 @@ class Game {
                 const solid = obstacle.solid;
                 if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
                     obstacle.hurt(bullet.getDamage());
+                    if(obstacle.isDead() && obstacle instanceof Barrel) {
+                        const bullets = obstacle.spawnBullets(100);
+                        bullets.forEach((bullet) => {
+                            this.updates.push({
+                                type: "new_bullet",
+                                id: bullets.length,
+                                x: bullet.x,
+                                y: bullet.y,
+                                dir: bullet.direction
+                            });
+                            this.bullets.push(bullet);
+                        });
+                    }
                     this.updates.push({
                         type: "obstacle",
                         id: index2,
@@ -229,6 +243,19 @@ class Player {
                 this.game.obstacles.some((obstacle, index) => {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
+                        if(obstacle.isDead() && obstacle instanceof Barrel) {
+                            var bullets = obstacle.spawnBullets(12);
+                            bullets.forEach((bullet) => {
+                                this.game.updates.push({
+                                    type: "new_bullet",
+                                    id: bullet.length,
+                                    x: bullet.x,
+                                    y: bullet.y,
+                                    dir: bullet.direction
+                                });
+                                this.game.bullets.push(bullet);
+                            });
+                        }
                         this.game.updates.push({
                             type: "obstacle",
                             id: index,
@@ -324,7 +351,7 @@ class Player {
 
     hurt(damage) {
         if(this.isDead())return;
-        this.health -= damage;
+        this.health += damage;
         this.health = Math.max(this.health, 0);
     }
 
@@ -346,6 +373,7 @@ function generateRandomMap() {
     let trees = 50;
     let rocks = 50;
     let boxes = 20;
+    let barrels = 20;
     ret.push(new Box(0,0))
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
@@ -358,6 +386,9 @@ function generateRandomMap() {
     }
     while(boxes--) {
         ret.push(new Box(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+    }
+    while(barrels--) {
+        ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     return ret;
 }

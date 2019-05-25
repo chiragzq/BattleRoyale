@@ -98,6 +98,8 @@ public class Network {
                             game.getBullets().put(update.getInt("id"), newBullet);
                         } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));
+                            if(updatedBullet == null)
+                                System.out.println("ERROR");
                             updatedBullet.setX(update.getInt("x"));
                             updatedBullet.setY(update.getInt("y"));
                         } else if(type.equals("equip")) {
@@ -149,6 +151,8 @@ public class Network {
                         game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
                     } else if(type.equals("box")) {
                         game.getObstacles().put(update.getInt("id"), new Box(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("barrel")) {
+                        game.getObstacles().put(update.getInt("id"), new Barrel(update.getInt("x"), update.getInt("y")));
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }
