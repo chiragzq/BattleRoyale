@@ -169,17 +169,24 @@ class Player {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
             this.fixOffScreen();
-            this.game.obstacles.some(obstacle => {
+            
+            let max = 1000;
+            while(max-- && this.game.obstacles.some(obstacle => {
                 if(obstacle instanceof Box) {
                     if(obstacle.solid && collisionCircleSquare(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                         [this.x, this.y] = fixCollidedObjectSquare(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                        console.log("collision");
                         return true;
                     }
                 } else if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                    console.log("collision");
+
                     return true;
                 }
-            });
+                
+                return false;
+            })){}
             updated = true;
         }
 
@@ -335,9 +342,9 @@ class Player {
 
 function generateRandomMap() {
     const ret = [];
-    let bushes = 30;
-    let trees = 30;
-    let rocks = 30;
+    let bushes = 50;
+    let trees = 50;
+    let rocks = 50;
     let boxes = 20;
     ret.push(new Box(0,0))
     while(bushes--) {
@@ -380,8 +387,8 @@ function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
 function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static circle
     const dir = Math.atan2(y2 - y1, x2 - x1);
     return [
-        x1 + Math.round(Math.cos(dir) * (r1 + r2)),
-        y1 + Math.round(Math.sin(dir) * (r1 + r2))
+        Math.round(x1 + Math.round(Math.cos(dir) * (r1 + r2)) * 1.02),
+        Math.round(y1 + Math.round(Math.sin(dir) * (r1 + r2)) * 1.02)
     ]
 }
 
@@ -396,7 +403,7 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     } else {
         yOff = (size / 2 + r2) * Math.sign(yOff)
     }
-    return [x1 + xOff, y1 + yOff];
+    return [Math.round(x1 + xOff * 1.02), Math.round(y1 + yOff * 1.02)];
 }
 
 
