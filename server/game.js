@@ -55,7 +55,7 @@ class Game {
                 this.bullets[index] = null;
             } else if(this.obstacles.some((obstacle, index2) => {
                 const solid = obstacle.solid;
-                if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
+                if(!obstacle.isDead() && (obstacle instanceof Box ? collisionBulletBox(obstacle.x, obstacle.y, obstacle.getSize(), bullet) : collisionCircleBullet(obstacle.x, obstacle.y, obstacle.getSize(), bullet))) {
                     obstacle.hurt(bullet.getDamage());
                     if(obstacle.isDead() && obstacle instanceof Barrel) {
                         const project = obstacle.spawnBullets(128);
@@ -404,9 +404,9 @@ function collisionCircle(x1, y1, r1, x2, y2, r2) {
 }
 
 function collisionCircleBullet(x1, y1, r1, bullet) {
-    return collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y) ||
-    collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
-    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY);
+    return collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y);
 }
 
 function collisionCirclePoint(x1, y1, r1, x2, y2) {
@@ -419,6 +419,16 @@ function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
     const dx = x1 - nearX;
     const dy = y1 - nearY;
     return (dx * dx + dy * dy <= (r1 * r1));
+}
+
+function collisionBulletBox(x, y, size1, bullet) {
+    return collisionSquarePoint(x, y, size1, bullet.backX, bullet.backY) ||
+    collisionSquarePoint(x, y, size1, bullet.centerX, bullet.centerY) ||
+    collisionSquarePoint(x, y, size1, bullet.x, bullet.y)
+}
+
+function collisionSquarePoint(x1, y1, size, x2, y2) {
+    return x1 - size / 2 < x2 && x2 < x1 + size / 2 && y1 - size / 2 < y2 && y2 < y1 + size / 2;
 }
 
 function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static circle
