@@ -86,6 +86,8 @@ public class Network {
                             game.setPing((int)(System.currentTimeMillis() - update.getLong("t")));
                         } else if(type.equals("player")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
+                            if(updatedPlayer == null) 
+                                continue;
                             updatedPlayer.setX(update.getInt("x"));
                             updatedPlayer.setY(update.getInt("y"));
                             updatedPlayer.setDirection(update.getInt("dir"));
