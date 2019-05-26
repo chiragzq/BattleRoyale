@@ -58,7 +58,7 @@ class Game {
                 if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
                     obstacle.hurt(bullet.getDamage());
                     if(obstacle.isDead() && obstacle instanceof Barrel) {
-                        const project = obstacle.spawnBullets(12);
+                        const project = obstacle.spawnBullets(128);
                         project.forEach((bullet) => {
                             this.updates.push({
                                 type: "new_bullet",

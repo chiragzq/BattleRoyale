@@ -111,7 +111,7 @@ class Box extends Obstacle {
 
 class Barrel extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, true);
+        super(x, y, 30, true, 100);
     }
 
     getSize() {
@@ -128,9 +128,9 @@ class Barrel extends Obstacle {
     }
 
     spawnBullets(z) {
-        var bullet = [];
+        const bullet = [];
         for(var i = 0; i < z; i++) {
-            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 48, 50));
+            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 80, 50, 400, 0.65));
         }
         return bullet;
     }
