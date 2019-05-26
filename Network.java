@@ -104,7 +104,6 @@ public class Network {
                             Player equipPlayer = game.getPlayers().get(update.getInt("id"));
                             equipPlayer.setEquippedIndex(update.getInt("index"));
                         } else if(type.equals("remove_bullet")) {
-                            System.out.println(update.getInt("id"));
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));

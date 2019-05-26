@@ -58,11 +58,11 @@ class Game {
                 if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
                     obstacle.hurt(bullet.getDamage());
                     if(obstacle.isDead() && obstacle instanceof Barrel) {
-                        const bullets = obstacle.spawnBullets(100);
-                        bullets.forEach((bullet) => {
+                        const project = obstacle.spawnBullets(12);
+                        project.forEach((bullet) => {
                             this.updates.push({
                                 type: "new_bullet",
-                                id: bullets.length,
+                                id: this.bullets.length,
                                 x: bullet.x,
                                 y: bullet.y,
                                 dir: bullet.direction
@@ -244,16 +244,16 @@ class Player {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Barrel) {
-                            var bullets = obstacle.spawnBullets(12);
-                            bullets.forEach((bullet) => {
-                                this.game.updates.push({
+                            const project = obstacle.spawnBullets(12);
+                            project.forEach((bullet) => {
+                                this.updates.push({
                                     type: "new_bullet",
-                                    id: bullet.length,
+                                    id: this.bullets.length,
                                     x: bullet.x,
                                     y: bullet.y,
                                     dir: bullet.direction
-                                });
-                                this.game.bullets.push(bullet);
+                                }); 
+                                this.bullets.push(bullet);
                             });
                         }
                         this.game.updates.push({
