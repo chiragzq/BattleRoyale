@@ -41,6 +41,7 @@ public class Tester extends JComponent implements MouseListener
         items.add(new BlackBullet(100, 100, 40));
         ob = new ArrayList<Obstacle>();
         ob.add(new Barrel(100, 100));
+        ob.get(0).setHealth(0);
     }
     
     /**

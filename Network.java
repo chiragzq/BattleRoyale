@@ -151,7 +151,8 @@ public class Network {
                     } else if(type.equals("box")) {
                         game.getObstacles().put(update.getInt("id"), new Box(update.getInt("x"), update.getInt("y")));
                     } else if(type.equals("barrel")) {
-                        game.getObstacles().put(update.getInt("id"), new Barrel(update.getInt("x"), update.getInt("y")));
+                        Barrel b = new Barrel(update.getInt("x"), update.getInt("y"));
+                        game.getObstacles().put(update.getInt("id"), b);
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }
