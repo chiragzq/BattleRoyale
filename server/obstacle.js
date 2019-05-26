@@ -125,6 +125,7 @@ class Barrel extends Obstacle {
     hurt(damage) {
         this.health -= damage;
         this.health = Math.max(this.health, 0);
+        if(this.health < 25) this.solid = false;
     }
 
     spawnBullets(z) {
@@ -133,6 +134,10 @@ class Barrel extends Obstacle {
             bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 80, 50, 200, 0.65));
         }
         return bullet;
+    }
+
+    isDead() {
+        return this.health < 25;
     }
 }
 

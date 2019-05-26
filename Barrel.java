@@ -20,6 +20,10 @@ public class Barrel extends Obstacle
     
     public void draw(Graphics g, int xShift, int yShift)
     {
+        if(getHealth() < 25) {
+            //DRAW EXPLOSION REMNANT!!! AARON
+            return;
+        }
         //border:2E2E2E
         //out:7B7B7B
         //in:585858
