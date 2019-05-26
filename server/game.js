@@ -168,7 +168,7 @@ class Player {
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
-        this.punchTime = 300;
+        this.punchTime = 350;
 
         this.lastReloadTime = 0;
 
