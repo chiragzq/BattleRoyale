@@ -433,6 +433,11 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     const nearX = Math.max(x1 - size / 2, Math.min(x2, x1 + size / 2));
     const nearY = Math.max(y1 - size / 2, Math.min(y2, y1 + size / 2));
 
+    if(Math.abs(nearX - x1) == Math.abs(nearY - y1)) {
+        //corner
+        return fixCollidedObject(x1, y1, size * Math.sqrt(2) / 2, x2, y2, r2);
+    }
+
     let xOff = nearX - x1;
     let yOff = nearY - y1;
     if(Math.abs(xOff) > Math.abs(yOff)) {
