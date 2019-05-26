@@ -39,7 +39,7 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
-            if(bullet.isOffScreen()) {
+            if(bullet.isDead()) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
