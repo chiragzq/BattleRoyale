@@ -9,7 +9,7 @@ public class Stone extends Obstacle
 {
     // instance variables - replace the example below with your own
     private static final int SIZE = (int)(74 * Game.GAME_SCALE);
-    private static final int HEALTH = 100;
+    private static final int HEALTH = 200;
     private static final int SIZE_WHEN_DEAD = (int)(20* Game.GAME_SCALE);
 
     /**
@@ -25,7 +25,7 @@ public class Stone extends Obstacle
     
     public int getSize()
     {
-        return (int)(SIZE * Math.sqrt((double)getHealth()/100));
+        return (int)(SIZE * Math.sqrt((double)getHealth()/HEALTH));
     }
 
     

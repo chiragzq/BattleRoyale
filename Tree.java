@@ -9,7 +9,7 @@ public class Tree extends Obstacle
 {
     private static final int SIZE = (int)(Game.GAME_SCALE *60);
     private static final int LEAVE_SIZE = (int)(Game.GAME_SCALE *200);
-    private static final int HEALTH = 100;
+    private static final int HEALTH = 120;
     private static final int SIZE_WHEN_DEAD = (int)(Game.GAME_SCALE *25);
 
     /**
@@ -22,7 +22,7 @@ public class Tree extends Obstacle
     
     public int getSize()
     {
-        return (int)(SIZE * Math.sqrt((double)getHealth()/100));
+        return (int)(SIZE * Math.sqrt((double)getHealth()/HEALTH));
     }
     
 
