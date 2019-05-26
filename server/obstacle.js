@@ -39,7 +39,8 @@ class Bush extends Obstacle {
 
 class Rock extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, true);
+        super(x, y, 37, true);
+        this.hurt(Math.round(Math.random() * 30));
     }
 
     getSize() {
@@ -64,6 +65,7 @@ class Rock extends Obstacle {
 class Tree extends Obstacle {
     constructor(x, y) {
         super(x, y, 30, true);
+        this.hurt(Math.round(Math.random() * 30));
     }
 
     getSize() {
