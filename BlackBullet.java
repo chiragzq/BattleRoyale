@@ -1,12 +1,11 @@
-import java.util.*;
 import java.awt.*;
 /**
- * A Bullet the Player Fires
+ * Write a description of class BlackBullet here.
  * 
- * @author Aaron Lo
- * @version 5-6-19
+ * @author (your name) 
+ * @version (a version number or a date)
  */
-public class Bullet
+public class BlackBullet extends Bullet
 {
     private int x;
     private int y;
@@ -24,62 +23,11 @@ public class Bullet
      * @param yLoc y loc
      * @param direc the direction
      */
-    public Bullet(int xLoc, int yLoc, int direc)
+    public BlackBullet(int xLoc, int yLoc, int direc)
     {
-        x = xLoc;
-        y = yLoc;
-        direction = direc;
-        findTheBackEndOfTheBullet();
-        
-        thicknessOfBullet = 3;
+        super(xLoc, yLoc, direc);
     }
-    
-    /**
-     * This gives the back end of the bullet
-     */
-    public void findTheBackEndOfTheBullet()
-    {
-        backY = y + (int)(Math.sin(Math.toRadians(direction)) * LENGTH);
-        backX = x + (int)(Math.cos(Math.toRadians(direction)) * LENGTH);
-    }
-    
-    public int getX()
-    {
-        return x;
-        
-    }
-    
-    public int getY()
-    {
-        return y;
-    }
-    
-    public int getBackX()
-    {
-        return backX;
-    }
-    
-    public int getBackY() 
-    {
-        return backY;
-    }
-    
-    public void setX(int x) {
-        int diff = x - this.x;
-        this.x = x;
-        backX += diff;
-    }
-
-    public void setY(int y) {
-        int diff = y - this.y;
-        this.y = y;
-        backY += diff;
-    }
-    
-    public int getThick()
-    {
-        return thicknessOfBullet;
-    }
+   
 
     /**
      * Draws the Bullet
@@ -87,19 +35,25 @@ public class Bullet
      */
     public void draw(Graphics g, int xShift, int yShift)
     {
-        g.setColor(new Color(39, 99, 196, 255));
+        int x = getX();
+        int y = getY();
+        int backX = getBackX();
+        int backY = getBackY();
+        int thicknessOfBullet = getThick();
+        
+        g.setColor(new Color(76, 82, 91, 255));
         Graphics2D g2 = (Graphics2D)g;
         g2.setStroke(new BasicStroke(thicknessOfBullet));
         double x1 = ((double)x - backX)/3 * 2 + x;
         double y1 = ((double)y - backY)/3 * 2 + y;
         g2.drawLine(x + xShift, y + yShift, (int)x1 + xShift, (int)y1+ yShift);
         
-        g.setColor(new Color(39, 99, 196, 150));
+        g.setColor(new Color(76, 82, 91, 150));
         double x2 = ((double)x - backX)/12 * 3 + x1;
         double y2 = ((double)y - backY)/12 * 3 + y1;
         g2.drawLine((int)x1 + xShift, (int)y1+ yShift, (int)x2 + xShift, (int)y2+ yShift);
         
-        g.setColor(new Color(39, 99, 196, 50));
+        g.setColor(new Color(76, 82, 91, 50));
         double x3 = ((double)x - backX)/12 * 1 + x2;
         double y3 = ((double)y - backY)/12 * 1 + y2;
         g2.drawLine((int)x2 + xShift, (int)y2+ yShift, (int)x3 + xShift, (int)y3+ yShift);

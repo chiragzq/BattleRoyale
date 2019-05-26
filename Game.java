@@ -41,6 +41,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private Map<Integer, Obstacle> obstacles;
     private Map<Integer, Bullet> bullets;
     
+    private Map<Integer, Item> items;
+    
     private Network network;
     private ReadWriteLock lock;
     private int ping;
@@ -73,12 +75,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         obstacles = new HashMap<Integer, Obstacle>();
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
-
-        gameState = State.CONNECTING;
+        items = new HashMap<Integer, Item>();
+        
+      gameState = State.CONNECTING;
         
         network = new Network("http://localhost:5000", this, lock);
-        //network = new Network("http://apcs-survivio.herokuapp.com", this, lock);
         //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
+      
         new Timer().scheduleAtFixedRate(new TimerTask(){
                 @Override
                 public void run() {
@@ -119,6 +122,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public Map<Integer, Obstacle> getObstacles() {
         return obstacles;
+    }
+
+    public Map<Integer, Item> getItems() {
+        return items;
     }
 
     public void mouseClicked(MouseEvent e) {}
@@ -208,7 +215,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             drawBoundary(g);
 
             Collection<Obstacle> lObstacles = obstacles.values();
-
 
             for(Obstacle ob: lObstacles)
             {

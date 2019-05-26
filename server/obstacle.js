@@ -1,3 +1,6 @@
+const _weapon = require("./weapon");
+const Bullet = _weapon.Bullet;
+
 class Obstacle {
     constructor(x, y, size, solid, health) {
         this.x = x;
@@ -106,8 +109,36 @@ class Box extends Obstacle {
     }
 }
 
+class Barrel extends Obstacle {
+    constructor(x, y) {
+        super(x, y, 30, true);
+    }
+
+    getSize() {
+        return Math.round(this.size * Math.sqrt(this.health / 100));
+    }
+
+    getType() {
+        return "barrel";
+    }
+
+    hurt(damage) {
+        this.health -= damage;
+        this.health = Math.max(this.health, 0);
+    }
+
+    spawnBullets(z) {
+        var bullet = [];
+        for(var i = 0; i < z; i++) {
+            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 48, 50));
+        }
+        return bullet;
+    }
+}
+
 module.exports.Obstacle = Obstacle;
 module.exports.Bush = Bush;
 module.exports.Rock = Rock;
 module.exports.Tree = Tree;
 module.exports.Box = Box;
+module.exports.Barrel = Barrel;

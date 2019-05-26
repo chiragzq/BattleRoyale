@@ -109,11 +109,14 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
-                        } else {
+                        } else if(type.equals("dropped_rifle")) {
+                            Item newItem = new DroppedRifle(update.getInt("x"), update.getInt("y"));
+                            game.getItems().put(update.getInt("id"), newItem);
+                        }else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }
-                }catch(Exception e){e.printStackTrace();
+                }catch(Exception e){System.out.println(e); e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }
@@ -147,6 +150,8 @@ public class Network {
                         game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
                     } else if(type.equals("box")) {
                         game.getObstacles().put(update.getInt("id"), new Box(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("barrel")) {
+                        game.getObstacles().put(update.getInt("id"), new Barrel(update.getInt("x"), update.getInt("y")));
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }
