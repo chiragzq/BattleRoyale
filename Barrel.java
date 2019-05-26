@@ -20,7 +20,20 @@ public class Barrel extends Obstacle
     
     public void draw(Graphics g, int xShift, int yShift)
     {
-        g.setColor(new Color(109, 112, 117));
+        //border:2E2E2E
+        //out:7B7B7B
+        //in:585858
+        //circle: 1C1817
+        g.setColor(new Color(0x2E2E2E));
         Game.fillCircle(g, getX()  + xShift, getY() + yShift, getSize());
+
+        g.setColor(new Color(0x7b7b7b));
+        Game.fillCircle(g, getX()  + xShift, getY() + yShift, (int)(getSize() / 1.1));
+
+        g.setColor(new Color(0x585858));
+        Game.fillCircle(g, getX()  + xShift, getY() + yShift, (int)(getSize() / 1.3));
+
+        g.setColor(new Color(0x1c1817));
+        Game.fillCircle(g, getX() + xShift - getSize() / 10, getY() + yShift - getSize() / 10, (int)(getSize() / 8.5));
     }
 }
