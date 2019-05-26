@@ -8,12 +8,12 @@ class Item {
 
     collision(xLoc, yLoc, radius) { //Checks if something is at same location with item; xLoc/yLoc is center of object
         if(!this.isBox)
-            return ((this.x - xLoc) * (this.x - xLoc) + (this.y - yLoc) * (this.y - yLoc)) <= ((size + radius) * (size + radius));
+            return ((this.x - xLoc) * (this.x - xLoc) + (this.y - yLoc) * (this.y - yLoc)) <= ((this.size + radius) * (this.size + radius));
         else {
-            isInX1 = this.x - this.size <= xLoc + radius;
-            isInX2 = this.x + this.size >= xLoc - radius;
-            isInY1 = this.y + this.size >= yLoc - radius;
-            isInY2 = this.y - this.size <= yLoc + radius;
+            var isInX1 = this.x - this.size <= xLoc + radius;
+            var isInX2 = this.x + this.size >= xLoc - radius;
+            var isInY1 = this.y + this.size >= yLoc - radius;
+            var isInY2 = this.y - this.size <= yLoc + radius;
             return isInX1 && isInX2 && isInY1 && isInY2;
         }
     }
@@ -53,3 +53,10 @@ class Bandage extends Item {
         super(x, y, false, 8);
     }
 }
+
+module.exports.Item = Item;
+module.exports.Ammo = Ammo;
+module.exports.DroppedGun = DroppedGun;
+module.exports.DroppedRifle = DroppedRifle;
+module.exports.DroppedShotgun = DroppedShotgun;
+module.exports.Bandage = Bandage;

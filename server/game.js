@@ -12,6 +12,7 @@ const Box = _obstacle.Box;
 
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
+const Ammo = _item.Ammo;
 const Bandage = _item.Bandage;
 
 /**
@@ -229,6 +230,31 @@ class Player {
                 this.game.obstacles.some((obstacle, index) => {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
+                        if(obstacle.isDead() && obstacle instanceof Box) {
+                            var thing = parseInt((Math.random() * 3));
+                            var stuff;
+                            var typeOf;
+                            if(thing == 0) {
+                                stuff = new DroppedRifle(obstacle.x, obstacle.y);
+                                typeOf = "rifle";
+                            }
+                            else if(thing == 1) {
+                                stuff = new DroppedShotgun(obstacle.x, obstacle.y);
+                                typeOf = "shotgun";
+                            }
+                            else if(thing == 2) {
+                                stuff = new Ammo(obstacle.x, obstacle.y);
+                                typeOf = "ammo"
+                            }
+                                
+                            this.game.io.emit("new_dropped_item", {
+                                type: typeOf,
+                                x: obstacle.x,
+                                y: obstacle.y,
+                                id: this.game.items.length
+                            });
+                            this.game.items.push(stuff);
+                        }
                         this.game.updates.push({
                             type: "obstacle",
                             id: index,
@@ -277,6 +303,16 @@ class Player {
     }
 
     click() {
+        this.game.items.forEach((item, index) => {
+            if(item != null && item.collision(this.x, this.y, 25)) {
+                this.game.updates.push({
+                    type: "remove_item",
+                    id: index
+                })
+                this.game.items[index] = null;
+            }   
+        });
+
         if(this.isReloading()) {
             this.lastReloadTime = 0;
             this.socket.emit("reload", 0); //cancel reload

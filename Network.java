@@ -108,9 +108,8 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
-                        } else if(type.equals("dropped_rifle")) {
-                            Item newItem = new DroppedRifle(update.getInt("x"), update.getInt("y"));
-                            game.getItems().put(update.getInt("id"), newItem);
+                        } else if(type.equals("remove_item")) {
+                            game.getItems().remove(update.getInt("id"));
                         }else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
@@ -157,6 +156,32 @@ public class Network {
                 finally {
                     lock.writeLock().unlock();
                 }
+            }
+        });
+        socket.on("new_dropped_item", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                lock.writeLock().lock();
+                JSONObject update = (JSONObject)(arg0[0]);
+                try {
+                    String type = update.getString("type");
+                    if(type.equals("rifle")) {
+                        game.getItems().put(update.getInt("id"), new DroppedRifle(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("shotgun")) {
+                        game.getItems().put(update.getInt("id"), new DroppedShotgun(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("ammo")) {
+                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y")));
+                    }
+                    else {
+                        throw new RuntimeException("Invalid obstacle type: " + type);
+                    }
+                } catch(Exception e) {e.printStackTrace();}
+                finally {
+                    lock.writeLock().unlock();
+                }
+
             }
         });
         socket.on("delete_player", new Emitter.Listener() {
@@ -219,6 +244,10 @@ public class Network {
 
     public void rPressed() {
         socket.emit("r", nil);
+    }
+
+    public void fPressed() {
+        socket.emit("f", nil);
     }
 
     public void click() {

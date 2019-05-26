@@ -166,6 +166,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.num3();
         else if (code == KeyEvent.VK_R)
             network.rPressed();
+        else if (code == KeyEvent.VK_F)
+            network.fPressed();
+
     }
     
 
