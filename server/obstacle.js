@@ -2,10 +2,10 @@ const _weapon = require("./weapon");
 const Bullet = _weapon.Bullet;
 
 class Obstacle {
-    constructor(x, y, size, solid) {
+    constructor(x, y, size, solid, health) {
         this.x = x;
         this.y = y;
-        this.health = 100;
+        this.health = health;
         this.size = size;
         this.solid = solid;
     }
@@ -27,8 +27,7 @@ class Obstacle {
 
 class Bush extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, false);
-        this.health = 70;
+        super(x, y, 30, false, 70);
     }
 
     getSize() {
@@ -42,11 +41,12 @@ class Bush extends Obstacle {
 
 class Rock extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, true);
+        super(x, y, 37, true, 200);
+        this.hurt(Math.round(Math.random() * 60));
     }
 
     getSize() {
-        return Math.round(this.size * Math.sqrt(this.health / 100));
+        return Math.round(this.size * Math.sqrt(this.health / 200));
     }
 
     getType() {
@@ -66,11 +66,12 @@ class Rock extends Obstacle {
 
 class Tree extends Obstacle {
     constructor(x, y) {
-        super(x, y, 30, true);
+        super(x, y, 30, true, 120);
+        this.hurt(Math.round(Math.random() * 36));
     }
 
     getSize() {
-        return Math.round(this.size * Math.sqrt(this.health / 100));
+        return Math.round(this.size * Math.sqrt(this.health / 120));
     }
 
     getType() {
@@ -90,7 +91,7 @@ class Tree extends Obstacle {
 
 class Box extends Obstacle {
     constructor(x, y) {
-        super(x, y, 100, true);
+        super(x, y, 100, true, 100);
     }
 
     getSize() {
@@ -104,6 +105,7 @@ class Box extends Obstacle {
     hurt(damage) {
         this.health -= damage;
         this.health = Math.max(this.health, 0);
+        if(this.health < 25) this.solid = false;
     }
 }
 

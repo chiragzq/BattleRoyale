@@ -14,7 +14,7 @@ public class Bush extends Obstacle
 
     public Bush(int x, int y)
     {
-        super(x, y, 100);
+        super(x, y, 70);
     }
 
     public int getSize()

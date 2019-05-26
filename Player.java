@@ -392,15 +392,6 @@ public class Player
         g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
     }
 
-    public void drawDeath(Graphics g) {
-        g.setColor(new Color(168,168, 168, 100));
-        g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
-        g.setColor(Color.RED);
-        g.setFont(new Font("Arial", Font.BOLD, 25));
-        g.drawString("You have died!", Game.GAME_WIDTH/2 - Game.GAME_WIDTH/15, Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/20);
-        g.drawString("Press Anywhere to Respawn", Game.GAME_WIDTH/2 - Game.GAME_WIDTH/8, Game.GAME_HEIGHT/2 + Game.GAME_HEIGHT/10);
-    }
-
     /**
      * This returns the x loc
      * @return the x location

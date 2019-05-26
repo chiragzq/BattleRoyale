@@ -1,6 +1,6 @@
 let timeout = setTimeout(()=>{},0);
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay) {
+    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff) {
         this.name = name;
         this.player = player;
 
@@ -18,13 +18,16 @@ class Gun {
 
         this.shootDelay = shootDelay;
         this.lastShootTime = 0;
+
+        this.bulletDistance = bulletDistance;
+        this.bulletFallOff = bulletFallOff;
     }
 
     fireBullet(direction) {
         this.lastShootTime = Date.now();
         const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * (50) + this.player.x);
         const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * (50) + this.player.y);
-        return new Bullet(bulletX, bulletY, direction, this.speed, this.damage);
+        return new Bullet(bulletX, bulletY, direction, this.speed, this.damage, this.bulletDistance, this.bulletFallOff);
     }
 
     canShoot() {
@@ -40,7 +43,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 20, 3, 22, 90, 80, 2400, 250);
+        super("Rifle", player, 20, 3, 22, 90, 80, 2400, 250, 2000, 0.9);
     }
 
     fire() {
@@ -55,7 +58,7 @@ class Rifle extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 4, 75, 80, 700, 300)
+        super("Shotgun", player, 5, 35, 8, 75, 80, 700, 300, 250, 0.82)
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
@@ -64,7 +67,7 @@ class Shotgun extends Gun {
         this.clipSize--;
         this.player.speed = 5;
         clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 400);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 200);
         const ret = [];
         const numBullets = 7;
         for(let i = 0;i <= numBullets;i ++) {
@@ -86,7 +89,7 @@ class Shotgun extends Gun {
 }
 
 class Bullet {
-    constructor(x, y, direction, speed, damage) {
+    constructor(x, y, direction, speed, damage, maxDistance, fallOff) {
         this.x = x;
         this.y = y;
         this.length = 75;
@@ -100,8 +103,10 @@ class Bullet {
 
         this.radDirection = direction * Math.PI / 180;
         this.distance = 0;
+        this.maxDistance = maxDistance;
         this.speed = speed;
         this.damage = damage;
+        this.fallOff = fallOff;
     }
 
     move() {
@@ -118,15 +123,15 @@ class Bullet {
         this.centerY += diffY;
     }
 
-    isOffScreen() {
-        return this.x < -200 || 2200 < this.x || this.y < -200 || 2200 < this.y;
+    isDead() {
+        return this.x < -200 || 4200 < this.x || this.y < -200 || 4200 < this.y || this.distance > this.maxDistance;
     }
 
     /**
      * Returns the damage of the bullet, taking into account the distance it traveled
      */
     getDamage() {
-        return this.damage * 52 / (41 + 11 * Math.exp(0.002 * this.distance));
+        return this.damage * Math.pow(this.fallOff, this.distance / 100);
     }
 }
 

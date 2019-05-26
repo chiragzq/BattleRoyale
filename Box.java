@@ -17,12 +17,20 @@ public class Box extends Obstacle
     
     public int getSize()
     {
-        return LENGTH;
+        return (int)(LENGTH * Math.sqrt((double)getHealth()/100));
     }
     
     public void draw(Graphics g, int xShift, int yShift)
     {
-        drawImage(g, "box", getX() - LENGTH/2 + xShift, getY() - LENGTH/2 + yShift, LENGTH, LENGTH);
+        if(getHealth() < 25)
+        {
+            g.setColor(new Color(99, 91, 61, 200));
+            Game.fillCircle(g, getX() + xShift, getY() + yShift, 10);
+        }
+        else
+        {
+            drawImage(g, "box", getX() - getSize()/2 + xShift, getY() - getSize()/2 + yShift, getSize(), getSize());
+        }
     }
     
     public void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)

@@ -47,7 +47,7 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
-            if(bullet.isOffScreen()) {
+            if(bullet.isDead()) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
@@ -190,17 +190,24 @@ class Player {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
             this.fixOffScreen();
-            this.game.obstacles.some(obstacle => {
+            
+            let max = 1000;
+            while(max-- && this.game.obstacles.some(obstacle => {
                 if(obstacle instanceof Box) {
                     if(obstacle.solid && collisionCircleSquare(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                         [this.x, this.y] = fixCollidedObjectSquare(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                        console.log("collision");
                         return true;
                     }
                 } else if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                    console.log("collision");
+
                     return true;
                 }
-            });
+                
+                return false;
+            })){}
             updated = true;
         }
 
@@ -362,8 +369,8 @@ class Player {
     fixOffScreen() {
         this.x = Math.max(this.x, 0);
         this.y = Math.max(this.y, 0);
-        this.x = Math.min(this.x, 2000);
-        this.y = Math.min(this.y, 2000);
+        this.x = Math.min(this.x, 4000);
+        this.y = Math.min(this.y, 4000);
     }
 }
 
@@ -374,18 +381,17 @@ function generateRandomMap() {
     let rocks = 50;
     let boxes = 20;
     let barrels = 20;
-    ret.push(new Box(0,0))
     while(bushes--) {
-        ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(trees--) {
-        ret.push(new Tree(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Tree(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(rocks--) {
-        ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Rock(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(boxes--) {
-        ret.push(new Box(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Box(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(barrels--) {
         ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
@@ -418,8 +424,8 @@ function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
 function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static circle
     const dir = Math.atan2(y2 - y1, x2 - x1);
     return [
-        x1 + Math.round(Math.cos(dir) * (r1 + r2)),
-        y1 + Math.round(Math.sin(dir) * (r1 + r2))
+        Math.round(x1 + Math.round(Math.cos(dir) * (r1 + r2)) * 1.02),
+        Math.round(y1 + Math.round(Math.sin(dir) * (r1 + r2)) * 1.02)
     ]
 }
 
@@ -434,7 +440,7 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     } else {
         yOff = (size / 2 + r2) * Math.sign(yOff)
     }
-    return [x1 + xOff, y1 + yOff];
+    return [Math.round(x1 + xOff * 1.02), Math.round(y1 + yOff * 1.02)];
 }
 
 

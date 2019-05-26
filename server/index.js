@@ -1,5 +1,6 @@
 const socketIO = require('socket.io');
 const gameLib = require("./game");
+const urllib = require("url");
 const http = require("http");
 
 const Game = gameLib.Game;
@@ -7,16 +8,47 @@ const Player = gameLib.Player;
 
 
 let game;
+let sockets = [];
+let accepting = false;
+let players = 0;
+let waitTime = 100000;
+let startWaitTime = Date.now();
+let waitTimeout = setTimeout(()=>{},0);
 
 const server = http.createServer((req, res) => {
-    if(req.url == "/restart") {
+    const url = urllib.parse(req.url, true);
+    if(url.pathname == "/start" && url.query["players"] && url.query["t"]) {
+        players = Number(url.query.players);
+        waitTime = Number(url.query.t);
+        clearTimeout(waitTimeout);
         game.players.forEach((player) => {
             player.socket.disconnect();
         });
         game.generateRandomMap();
-        res.end("restarted");
+        
+        sockets = [];
+        accepting = true;
+        startWaitTime = Date.now();
+
+        waitTimeout = setTimeout(() => {
+            accepting = false;
+            sockets.forEach((socket) => initializeSocket(socket))
+        }, waitTime * 1000);
+
     } else {
-        res.end(`${game.players.length} Players\n`);
+        res.setHeader("Content-Type", "text/html");
+        res.end(`
+<input id="a" type="number" value="5"/>Number of Players<br/>
+<input id="b" type="number" value="30"/>Wait duration (seconds)<br/>
+<button id="c">Start</button>
+<script>
+const xhr = new XMLHttpRequest();
+document.getElementById("c").onclick=()=>{
+    xhr.open("GET", "/start?players=" + document.getElementById("a").value + "&t=" + document.getElementById("b").value, true);
+    xhr.send();
+}
+</script>
+`);
     }
 }).listen(process.env.PORT || 5000);
 
@@ -25,9 +57,26 @@ const io = socketIO(server);
 
 game = new Game(io);
 
+io.use((socket, next) => {
+    if(accepting && sockets.length < players && Date.now() - waitTime * 1000 < startWaitTime) {
+        next();
+    } else {
+        accepting = false;
+        next(new Error("You suck"));
+    }
+});
+
 io.on('connection', (socket) => {
     console.log("New user connected");
+    sockets.push(socket);
+});
 
+setInterval(() => {
+    game.update();
+    io.emit("update", game.getUpdates())
+}, 1000/30);
+
+function initializeSocket(socket) {
     const player = new Player(game, Math.round(Math.random() * 2000), Math.round(Math.random() * 2000), game.players.length, socket);
 
     socket.emit("player_info", {
@@ -129,12 +178,6 @@ io.on('connection', (socket) => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];
     });
-
-});
-
-setInterval(() => {
-    game.update();
-    io.emit("update", game.getUpdates())
-}, 1000/30);
+}
 
 console.log("Started socket");
