@@ -335,8 +335,8 @@ class Player {
     fixOffScreen() {
         this.x = Math.max(this.x, 0);
         this.y = Math.max(this.y, 0);
-        this.x = Math.min(this.x, 2000);
-        this.y = Math.min(this.y, 2000);
+        this.x = Math.min(this.x, 4000);
+        this.y = Math.min(this.y, 4000);
     }
 }
 
@@ -346,18 +346,17 @@ function generateRandomMap() {
     let trees = 50;
     let rocks = 50;
     let boxes = 20;
-    ret.push(new Box(0,0))
     while(bushes--) {
-        ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(trees--) {
-        ret.push(new Tree(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Tree(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(rocks--) {
-        ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Rock(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(boxes--) {
-        ret.push(new Box(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Box(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     return ret;
 }

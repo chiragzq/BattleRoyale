@@ -31,8 +31,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     
     private static final int MIN_X = 0;
     private static final int MIN_Y = 0;
-    private static final int MAX_X = 2000;
-    private static final int MAX_Y = 2000;
+    private static final int MAX_X = 4000;
+    private static final int MAX_Y = 4000;
 
     private JFrame frame;
     private Map<Integer, Player> players;
