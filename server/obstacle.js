@@ -130,7 +130,7 @@ class Barrel extends Obstacle {
     spawnBullets(z) {
         const bullet = [];
         for(var i = 0; i < z; i++) {
-            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 80, 50, 400, 0.65));
+            bullet.push(new Bullet(this.x, this.y, Math.random() * 360, 80, 50, 200, 0.65));
         }
         return bullet;
     }
