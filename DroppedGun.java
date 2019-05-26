@@ -9,7 +9,7 @@ public class DroppedGun extends Item
 {
     public DroppedGun(int x, int y)
     {
-        super(x, y, 50);
+        super(x, y, 65);
     }
     
     public void draw(Graphics g, int xShift, int yShift)

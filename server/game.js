@@ -106,6 +106,17 @@ class Game {
                 })
             }
         }); 
+        this.items.forEach((item, index3) => {
+            if(item != null){
+                item.move();
+                this.updates.push({
+                    type: "item",
+                    id: index3,
+                    x: item.x,
+                    y: item.y
+                })
+            }
+        });
     }
 
     getUpdates() {
@@ -234,16 +245,17 @@ class Player {
                             var thing = parseInt((Math.random() * 3));
                             var stuff;
                             var typeOf;
+                            var angle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
                             if(thing == 0) {
-                                stuff = new DroppedRifle(obstacle.x, obstacle.y);
+                                stuff = new DroppedRifle(obstacle.x, obstacle.y, angle);
                                 typeOf = "rifle";
                             }
                             else if(thing == 1) {
-                                stuff = new DroppedShotgun(obstacle.x, obstacle.y);
+                                stuff = new DroppedShotgun(obstacle.x, obstacle.y, angle);
                                 typeOf = "shotgun";
                             }
                             else if(thing == 2) {
-                                stuff = new Ammo(obstacle.x, obstacle.y);
+                                stuff = new Ammo(obstacle.x, obstacle.y, angle);
                                 typeOf = "ammo"
                             }
                                 
@@ -302,7 +314,7 @@ class Player {
         return updated;
     }
 
-    click() {
+    pickUp() {
         this.game.items.forEach((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
                 this.game.updates.push({
@@ -312,7 +324,9 @@ class Player {
                 this.game.items[index] = null;
             }   
         });
+    }
 
+    click() {
         if(this.isReloading()) {
             this.lastReloadTime = 0;
             this.socket.emit("reload", 0); //cancel reload

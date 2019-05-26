@@ -1,9 +1,12 @@
 class Item {
-    constructor(x, y, isBox, size) { //size is radius of circle or half the length of box
+    constructor(x, y, isBox, size, angle) { //size is radius of circle or half the length of box
         this.x = x;
         this.y = y;
         this.isBox = isBox;
         this.size = size;
+        this.moveAway = 300;
+        this.start = Date.now();
+        this.angle = angle;
     }
 
     collision(xLoc, yLoc, radius) { //Checks if something is at same location with item; xLoc/yLoc is center of object
@@ -22,35 +25,47 @@ class Item {
         this.x += xDirection;
         this.y += yDirection;
     }
+
+    move() {
+        var movement = 0;
+        if(Date.now() - this.start < this.moveAway) {
+            var dis = Date.now() - this.start;
+            if (Date.now() - this.start < 100)
+                dis = 100;
+            movement = (this.moveAway/(dis) * 2);
+        }
+        this.x = this.x + movement * Math.cos(this.angle);
+        this.y = this.y + movement * Math.sin(this.angle);
+    }
 }
 
 class Ammo extends Item {
-    constructor(x, y) {
-        super(x, y, true, 15);
+    constructor(x, y, angle) {
+        super(x, y, true, 20, angle);
     }
 }
 
 class DroppedGun extends Item {
-    constructor(x, y) {
-        super(x, y, false, 50);
+    constructor(x, y, angle) {
+        super(x, y, false, 65, angle);
     }
 }
 
 class DroppedRifle extends DroppedGun {
-    constructor(x, y) {
-        super(x, y);
+    constructor(x, y, angle) {
+        super(x, y, angle);
     }
 }
 
 class DroppedShotgun extends DroppedGun {
-    constructor(x, y,) {
-        super(x, y);
+    constructor(x, y, angle) {
+        super(x, y, angle);
     }
 }
 
 class Bandage extends Item {
-    constructor(x, y) {
-        super(x, y, false, 8);
+    constructor(x, y, angle) {
+        super(x, y, false, 8, angle);
     }
 }
 

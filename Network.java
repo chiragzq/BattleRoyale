@@ -108,6 +108,10 @@ public class Network {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
+                        } else if(type.equals("item")) {
+                            Item item = game.getItems().get(update.getInt("id"));
+                            item.setX(update.getInt("x"));
+                            item.setY(update.getInt("y"));
                         } else if(type.equals("remove_item")) {
                             game.getItems().remove(update.getInt("id"));
                         }else {
