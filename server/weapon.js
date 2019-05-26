@@ -67,7 +67,7 @@ class Shotgun extends Gun {
         this.clipSize--;
         this.player.speed = 5;
         clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 400);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 200);
         const ret = [];
         const numBullets = 7;
         for(let i = 0;i <= numBullets;i ++) {
