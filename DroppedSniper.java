@@ -17,7 +17,7 @@ public class DroppedSniper extends DroppedGun
         int sizeI = getSize();
         int sizeNew = sizeI - sizeI/10;
         double multiple = 3.2;
-        g.setColor(new Color(32, 91, 181));
+        g.setColor(new Color(0, 0, 0));
         super.draw(g, xShift, yShift);
         Game.drawImage(g, "sniper", getX() - sizeNew/2 + sizeNew/40 - sizeNew/23 + xShift, getY() - sizeNew/2 + sizeNew/5 + yShift, (int)((2*sizeNew + sizeNew * 1.5)/multiple),(int)( (2*sizeNew)/multiple));
     }

@@ -5,6 +5,7 @@ const _item = require("./item");
 const Rifle = _weapon.Rifle;
 const Shotgun = _weapon.Shotgun;
 const Sniper = _weapon.Sniper;
+const Pistol = _weapon.Pistol;
 
 const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
@@ -76,35 +77,6 @@ class Game {
                             this.bullets.push(bullet);
                         });
                     }
-                    // else if(obstacle.isDead() && obstacle instanceof Box) {
-                    //     let dropItem;
-                    //     let moveAngle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
-                    //     switch(Math.round(Math.random() * 5 - .5)) {
-                    //         case 0:
-                    //             dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                    //             break;
-                    //         case 1:
-                    //             dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                    //             break;
-                    //         case 2:
-                    //             dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
-                    //             break;
-                    //         case 3:
-                    //             dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
-                    //             break;
-                    //         case 4:
-                    //             dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
-                    //             break;
-                    //     } 
-                    //     console.log(dropItem);
-                    //     this.updates.push("new_dropped_item", {
-                    //         type: dropItem.type,
-                    //         x: obstacle.x,
-                    //         y: obstacle.y,
-                    //         id: this.items.length
-                    //     });
-                    //     this.items.push(dropItem);
-                    // }
                     this.updates.push({
                         type: "obstacle",
                         id: index2,
@@ -298,28 +270,20 @@ class Player {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
                             let dropItem;
-                            let moveAngle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
-                            switch(Math.round(Math.random() * 5 - .5)) {
-                                case 0:
-                                    dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                                    break;
-                                case 1:
-                                    dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                                    break;
-                                case 2:
-                                    dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
-                                    break;
-                                case 3:
-                                    dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
-                                    break;
-                                case 4:
-                                    dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
-                                    break;
-                            } 
+                            let moveAngle = Math.random() * 360;
+                            const chance = Math.random() * 100;
+                            if(chance < 5)
+                                dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
+                            else if(chance < 30)
+                                dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
+                            else if(chance < 55)
+                                dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 90)
+                                dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
+                            else
+                                dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
                             if(dropItem instanceof DroppedGun) {
-                                const shiftAngle = Math.PI/4
-                                const droppedAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle + shiftAngle);
-                                console.log(droppedAmmo);
+                                const droppedAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
                                 this.game.io.emit("new_dropped_item", {
                                     type: droppedAmmo.type,
                                     x: obstacle.x,
@@ -328,7 +292,7 @@ class Player {
                                 });
                                 this.game.items.push(droppedAmmo);
 
-                                const dropAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle - shiftAngle);
+                                const dropAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle - Math.random() * 360);
                                 console.log(dropAmmo);
                                 this.game.io.emit("new_dropped_item", {
                                     type: dropAmmo.type,
@@ -429,8 +393,12 @@ class Player {
                 let pickup;
                 if(item.type == "rifle") {
                     pickup = new Rifle(this);
-                } else {
+                } else if(item.type == "shotgun") {
                     pickup = new Shotgun(this);
+                } else if(item.type == "sniper"){
+                    pickup = new Sniper(this);
+                } else {
+                    pickup = new Pistol(this);
                 }
                 if(!this.weapons[0]) {
                     this.game.updates.push({
@@ -530,11 +498,11 @@ class Player {
 
 function generateRandomMap() {
     const ret = [];
-    let bushes = 50;
-    let trees = 50;
-    let rocks = 50;
-    let boxes = 20;
-    let barrels = 20;
+    let bushes = 60;
+    let trees = 60;
+    let rocks = 60;
+    let boxes = 60;
+    let barrels = 30;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
@@ -564,7 +532,7 @@ function collisionCircleBullet(x1, y1, r1, bullet) {
 }
 
 function collisionCirclePoint(x1, y1, r1, x2, y2) {
-    return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= r1 * r1;
+    return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= (r1 + 5) * (r1 + 5);
 }
 
 function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
@@ -619,8 +587,12 @@ function killPlayer(player, game) {
         let dropWeapon;
         if(weapon.name == "rifle") {
             dropWeapon = new DroppedRifle(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
-        } else {
+        } else if(weapon.name == "shotgun") {
             dropWeapon = new DroppedShotgun(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        } else if(weapon.name == "sniper"){
+            dropWeapon = new DroppedSniper(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        } else {
+            dropWeapon = new DroppedPistol(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
         }
         game.io.emit("new_dropped_item", {
             type: dropWeapon.type,

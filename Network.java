@@ -123,6 +123,10 @@ public class Network {
                                 gun = new Rifle(player);
                             } else if(update.getString("gt").equals("shotgun")) {
                                 gun = new Shotgun(player);
+                            } else if(update.getString("gt").equals("sniper")) {
+                                gun = new Sniper(player);
+                            } else if(update.getString("gt").equals("pistol")) {
+                                gun = new Pistol(player);
                             } else {
                                 throw new RuntimeException("Unknown gun type! " + update.getString("gt"));
                             }
@@ -203,7 +207,7 @@ public class Network {
                         game.getItems().put(update.getInt("id"), new DroppedSniper(update.getInt("x"), update.getInt("y")));
                     }
                     else {
-                        throw new RuntimeException("Invalid obstacle type: " + type);
+                        throw new RuntimeException("Invalid dropped item type: " + type);
                     }
                 } catch(Exception e) {e.printStackTrace();}
                 finally {

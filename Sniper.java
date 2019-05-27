@@ -11,6 +11,10 @@ public class Sniper extends Gun
     {
         super(play);
     }
+
+    public int getBarrelLength() {
+        return 90;
+    }
     
     public void draw(Graphics g, int xShift, int yShift)
     {
@@ -67,6 +71,6 @@ public class Sniper extends Gun
      */
     public int extendLeft()
     {
-        return 30;
+        return 50;
     }
 }

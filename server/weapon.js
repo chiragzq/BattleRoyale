@@ -6,7 +6,7 @@ class Gun {
 
         this.magSize = magSize;
         this.clipSize = 0;
-        this.ammo = 3 * magSize;
+        this.ammo = 0;
 
         this.spread = spread;
         this.damage = damage;
@@ -59,7 +59,7 @@ class Rifle extends Gun {
 
 class Sniper extends Gun {
     constructor(player) {
-        super("Sniper", player, 5, 0, 95, 80, 90, 1000, 500, 500, 0.99, 7);
+        super("Sniper", player, 5, 0, 100, 80, 100, 800, 1000, 4000, 0.95, 7);
     }
 
     fire() {
@@ -111,6 +111,21 @@ class Shotgun extends Gun {
     }
 }
 
+class Pistol extends Gun {
+    constructor(player) {
+        super("Pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3);
+    }
+
+    fire() {
+        if(!this.canShoot()) return [];
+        this.player.speed = 5;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 100);
+        this.clipSize--;
+        return [this.fireBullet(Math.round((Math.random() - 0.5) * this.spread + this.player.direction))];
+    }
+}
+
 class Bullet {
     constructor(x, y, direction, speed, damage, maxDistance, fallOff) {
         this.x = x;
@@ -158,6 +173,7 @@ class Bullet {
     }
 }
 
+module.exports.Pistol = Pistol;
 module.exports.Gun = Gun;
 module.exports.Bullet = Bullet;
 module.exports.Rifle = Rifle;

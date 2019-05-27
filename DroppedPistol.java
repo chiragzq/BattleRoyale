@@ -18,7 +18,7 @@ public class DroppedPistol extends DroppedGun
         int sizeNew = sizeI - sizeI/10;
         double multiple = 2.3;
         double mul = 2.4;
-        g.setColor(new Color(255, 204, 0));
+        g.setColor(new Color(0, 0, 0));
         super.draw(g, xShift, yShift);
         Game.drawImage(g, "pistol", getX() - sizeNew/2 - sizeNew/7 + sizeNew/5+ xShift, getY() - sizeNew/2 + sizeNew/3 + yShift, (int)((2*sizeNew + sizeNew/5)/mul),(int)( (2*sizeNew)/multiple/mul));
     }

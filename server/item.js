@@ -4,7 +4,7 @@ class Item {
         this.y = y;
         this.isBox = isBox;
         this.size = size;
-        this.moveAway = vel ? vel : 500;
+        this.moveAway = vel ? vel : 300;
         this.start = Date.now();
         this.angle = angle;
 
@@ -45,7 +45,7 @@ class Item {
 
 class Ammo extends Item {
     constructor(x, y, angle, vel) {
-        super("ammo", x, y, true, 20, angle, vel);
+        super("ammo", x, y, true, 15, angle, vel);
     }
 }
 
@@ -68,14 +68,14 @@ class DroppedShotgun extends DroppedGun {
 }
 
 class DroppedPistol extends DroppedGun {
-    constructor(x, y, angle) {
-        super("pistol", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("pistol", x, y, angle, vel);
     }
 }
 
 class DroppedSniper extends DroppedGun {
-    constructor(x, y, angle) {
-        super("sniper", x, y, angle);
+    constructor(x, y, angle, vek) {
+        super("sniper", x, y, angle, vek);
     }
 }
 
