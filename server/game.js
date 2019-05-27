@@ -13,6 +13,7 @@ const Barrel = _obstacle.Barrel;
 
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
+const Ammo = _item.Ammo;
 const Bandage = _item.Bandage;
 
 /**
@@ -119,6 +120,17 @@ class Game {
                 })
             }
         }); 
+        this.items.forEach((item, index3) => {
+            if(item != null){
+                item.move();
+                this.updates.push({
+                    type: "item",
+                    id: index3,
+                    x: item.x,
+                    y: item.y
+                })
+            }
+        });
     }
 
     getUpdates() {
@@ -250,6 +262,31 @@ class Player {
                 this.game.obstacles.some((obstacle, index) => {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
+                        if(obstacle.isDead() && obstacle instanceof Box) {
+                            var thing = parseInt((Math.random() * 3));
+                            var stuff;
+                            var typeOf;
+                            var angle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
+                            if(thing == 0) {
+                                stuff = new DroppedRifle(obstacle.x, obstacle.y, angle);
+                                typeOf = "rifle";
+                            }
+                            else if(thing == 1) {
+                                stuff = new DroppedShotgun(obstacle.x, obstacle.y, angle);
+                                typeOf = "shotgun";
+                            }
+                            else if(thing == 2) {
+                                stuff = new Ammo(obstacle.x, obstacle.y, angle);
+                                typeOf = "ammo"
+                            }
+                                
+                            this.game.io.emit("new_dropped_item", {
+                                type: typeOf,
+                                x: obstacle.x,
+                                y: obstacle.y,
+                                id: this.game.items.length
+                            });
+                            this.game.items.push(stuff);
                         if(obstacle.isDead() && obstacle instanceof Barrel) {
                             const project = obstacle.spawnBullets(12);
                             project.forEach((bullet) => {
@@ -308,6 +345,18 @@ class Player {
         this.newEquip = 0;
 
         return updated;
+    }
+
+    pickUp() {
+        this.game.items.forEach((item, index) => {
+            if(item != null && item.collision(this.x, this.y, 25)) {
+                this.game.updates.push({
+                    type: "remove_item",
+                    id: index
+                })
+                this.game.items[index] = null;
+            }   
+        });
     }
 
     click() {

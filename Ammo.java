@@ -4,7 +4,7 @@ public class Ammo extends Item
 {
     public Ammo(int x, int y)
     {
-        super(x, y, 15);
+        super(x, y, 20);
     }
 
     public void draw(Graphics g, int xShift, int yShift)

@@ -174,6 +174,10 @@ function initializeSocket(socket) {
         player.reload();
     });
 
+    socket.on("f", () => {
+        player.pickUp();
+    })
+
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];
