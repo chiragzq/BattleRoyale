@@ -380,8 +380,8 @@ public class Player
                 xShift = 25;
                 yShift = 15;
             }
-
-            drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
+            if(!(name.equals("fist2") && 4-i < 3)) 
+                drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
             //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
             g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
         }
