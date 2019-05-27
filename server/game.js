@@ -98,8 +98,7 @@ class Game {
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
-                        this.io.emit("delete_player", index2); 
-                        delete this.players[player.index];
+                        killPlayer(player, this);
                     }
                     return true;
                 }
@@ -320,8 +319,7 @@ class Player {
                             health: player.health
                         });
                         if(player.isDead()) {
-                            this.game.io.emit("delete_player", player.index); 
-                            delete this.game.players[player.index];
+                            killPlayer(player, this.game);
                         }
                         return collided = true;
                     }
@@ -550,6 +548,36 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     return [Math.round(x1 + xOff * 1.02), Math.round(y1 + yOff * 1.02)];
 }
 
+function killPlayer(player, game) {
+    game.io.emit("delete_player", player.index); 
+    player.weapons.forEach((weapon) => {
+        if(weapon == null) return;
+        let dropWeapon;
+        if(weapon.name == "rifle") {
+            dropWeapon = new DroppedRifle(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        } else {
+            dropWeapon = new DroppedShotgun(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        }
+        game.io.emit("new_dropped_item", {
+            type: dropWeapon.type,
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(dropWeapon);
+        for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize);i ++) {
+            const ammo = new Ammo(player.x, player.y, Math.random() * 360, Math.random() * 800)
+            game.io.emit("new_dropped_item", {
+                type: ammo.type,
+                x: player.x,
+                y: player.y,
+                id: game.items.length
+            });
+            game.items.push(ammo);
+        }
+    });
+    delete game.players[player.index];
+}
 
 module.exports.Game = Game;
 module.exports.Player = Player;

@@ -1,10 +1,10 @@
 class Item {
-    constructor(name, x, y, isBox, size, angle) { //size is radius of circle or half the length of box
+    constructor(name, x, y, isBox, size, angle, vel) { //size is radius of circle or half the length of box
         this.x = x;
         this.y = y;
         this.isBox = isBox;
         this.size = size;
-        this.moveAway = 300;
+        this.moveAway = vel ? vel : 500;
         this.start = Date.now();
         this.angle = angle;
 
@@ -36,7 +36,7 @@ class Item {
                 dis = 100;
             movement = (this.moveAway/(dis) * 2);
         }
-        if(movement < 5) return false;
+        if(movement < 1) return false;
         this.x = this.x + movement * Math.cos(this.angle);
         this.y = this.y + movement * Math.sin(this.angle);
         return true;
@@ -44,26 +44,26 @@ class Item {
 }
 
 class Ammo extends Item {
-    constructor(x, y, angle) {
-        super("ammo", x, y, true, 20, angle);
+    constructor(x, y, angle, vel) {
+        super("ammo", x, y, true, 20, angle, vel);
     }
 }
 
 class DroppedGun extends Item {
-    constructor(name, x, y, angle) {
-        super(name, x, y, false, 65, angle);
+    constructor(name, x, y, angle, vel) {
+        super(name, x, y, false, 65, angle, vel);
     }
 }
 
 class DroppedRifle extends DroppedGun {
-    constructor(x, y, angle) {
-        super("rifle", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("rifle", x, y, angle, vel);
     }
 }
 
 class DroppedShotgun extends DroppedGun {
-    constructor(x, y, angle) {
-        super("shotgun", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("shotgun", x, y, angle, vel);
     }
 }
 

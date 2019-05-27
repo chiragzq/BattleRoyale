@@ -212,7 +212,6 @@ public class Network {
                 try {
                     int id = (int)arg0[0];
                     game.getPlayers().remove(id); 
-                    System.out.println(id + " " + playerId);
                     if(id == playerId) {
                         socket.disconnect();
                         game.gameState = Game.State.DEAD;
