@@ -9,6 +9,7 @@ const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
 const Tree = _obstacle.Tree;
 const Box = _obstacle.Box;
+const Barrel = _obstacle.Barrel;
 
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
@@ -47,7 +48,7 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if(!bullet) return;
-            if(bullet.isOffScreen()) {
+            if(bullet.isDead()) {
                 this.updates.push({
                     type: "remove_bullet",
                     id: index
@@ -55,8 +56,21 @@ class Game {
                 this.bullets[index] = null;
             } else if(this.obstacles.some((obstacle, index2) => {
                 const solid = obstacle.solid;
-                if(!obstacle.isDead() && collisionCircleBullet(obstacle.x, obstacle.y, obstacle.size, bullet)) {
+                if(!obstacle.isDead() && (obstacle instanceof Box ? collisionBulletBox(obstacle.x, obstacle.y, obstacle.getSize(), bullet) : collisionCircleBullet(obstacle.x, obstacle.y, obstacle.getSize(), bullet))) {
                     obstacle.hurt(bullet.getDamage());
+                    if(obstacle.isDead() && obstacle instanceof Barrel) {
+                        const project = obstacle.spawnBullets(128);
+                        project.forEach((bullet) => {
+                            this.updates.push({
+                                type: "new_bullet",
+                                id: this.bullets.length,
+                                x: bullet.x,
+                                y: bullet.y,
+                                dir: bullet.direction
+                            });
+                            this.bullets.push(bullet);
+                        });
+                    }
                     this.updates.push({
                         type: "obstacle",
                         id: index2,
@@ -166,7 +180,7 @@ class Player {
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
-        this.punchTime = 300;
+        this.punchTime = 350;
 
         this.lastReloadTime = 0;
 
@@ -188,17 +202,24 @@ class Player {
             this.x += Math.round(this.speed * Math.cos(dir));
             this.y += Math.round(this.speed * Math.sin(dir));
             this.fixOffScreen();
-            this.game.obstacles.some(obstacle => {
+            
+            let max = 1000;
+            while(max-- && this.game.obstacles.some(obstacle => {
                 if(obstacle instanceof Box) {
                     if(obstacle.solid && collisionCircleSquare(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                         [this.x, this.y] = fixCollidedObjectSquare(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                        console.log("collision");
                         return true;
                     }
                 } else if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
+                    console.log("collision");
+
                     return true;
                 }
-            });
+                
+                return false;
+            })){}
             updated = true;
         }
 
@@ -266,6 +287,18 @@ class Player {
                                 id: this.game.items.length
                             });
                             this.game.items.push(stuff);
+                        if(obstacle.isDead() && obstacle instanceof Barrel) {
+                            const project = obstacle.spawnBullets(12);
+                            project.forEach((bullet) => {
+                                this.game.updates.push({
+                                    type: "new_bullet",
+                                    id: this.game.bullets.length,
+                                    x: bullet.x,
+                                    y: bullet.y,
+                                    dir: bullet.direction
+                                }); 
+                                this.game.bullets.push(bullet);
+                            });
                         }
                         this.game.updates.push({
                             type: "obstacle",
@@ -385,8 +418,8 @@ class Player {
     fixOffScreen() {
         this.x = Math.max(this.x, 0);
         this.y = Math.max(this.y, 0);
-        this.x = Math.min(this.x, 2000);
-        this.y = Math.min(this.y, 2000);
+        this.x = Math.min(this.x, 4000);
+        this.y = Math.min(this.y, 4000);
     }
 }
 
@@ -396,18 +429,21 @@ function generateRandomMap() {
     let trees = 50;
     let rocks = 50;
     let boxes = 20;
-    ret.push(new Box(0,0))
+    let barrels = 20;
     while(bushes--) {
-        ret.push(new Bush(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(trees--) {
-        ret.push(new Tree(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Tree(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(rocks--) {
-        ret.push(new Rock(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Rock(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
     while(boxes--) {
-        ret.push(new Box(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
+        ret.push(new Box(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
+    }
+    while(barrels--) {
+        ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     return ret;
 }
@@ -417,9 +453,9 @@ function collisionCircle(x1, y1, r1, x2, y2, r2) {
 }
 
 function collisionCircleBullet(x1, y1, r1, bullet) {
-    return collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y) ||
-    collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
-    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY);
+    return collisionCirclePoint(x1, y1, r1, bullet.backX, bullet.backY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.centerX, bullet.centerY) ||
+    collisionCirclePoint(x1, y1, r1, bullet.x, bullet.y);
 }
 
 function collisionCirclePoint(x1, y1, r1, x2, y2) {
@@ -434,17 +470,32 @@ function collisionCircleSquare(x1, y1, r1, x2, y2, size) {
     return (dx * dx + dy * dy <= (r1 * r1));
 }
 
+function collisionBulletBox(x, y, size1, bullet) {
+    return collisionSquarePoint(x, y, size1, bullet.backX, bullet.backY) ||
+    collisionSquarePoint(x, y, size1, bullet.centerX, bullet.centerY) ||
+    collisionSquarePoint(x, y, size1, bullet.x, bullet.y)
+}
+
+function collisionSquarePoint(x1, y1, size, x2, y2) {
+    return x1 - size / 2 < x2 && x2 < x1 + size / 2 && y1 - size / 2 < y2 && y2 < y1 + size / 2;
+}
+
 function fixCollidedObject(x1, y1, r1, x2, y2, r2) { //(x1, y1) is a static circle
     const dir = Math.atan2(y2 - y1, x2 - x1);
     return [
-        x1 + Math.round(Math.cos(dir) * (r1 + r2)),
-        y1 + Math.round(Math.sin(dir) * (r1 + r2))
+        Math.round(x1 + Math.round(Math.cos(dir) * (r1 + r2)) * 1.02),
+        Math.round(y1 + Math.round(Math.sin(dir) * (r1 + r2)) * 1.02)
     ]
 }
 
 function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a static square
     const nearX = Math.max(x1 - size / 2, Math.min(x2, x1 + size / 2));
     const nearY = Math.max(y1 - size / 2, Math.min(y2, y1 + size / 2));
+
+    if(Math.abs(nearX - x1) == Math.abs(nearY - y1)) {
+        //corner
+        return fixCollidedObject(x1, y1, size * Math.sqrt(2) / 2, x2, y2, r2);
+    }
 
     let xOff = nearX - x1;
     let yOff = nearY - y1;
@@ -453,7 +504,7 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     } else {
         yOff = (size / 2 + r2) * Math.sign(yOff)
     }
-    return [x1 + xOff, y1 + yOff];
+    return [Math.round(x1 + xOff * 1.02), Math.round(y1 + yOff * 1.02)];
 }
 
 

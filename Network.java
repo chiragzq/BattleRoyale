@@ -35,7 +35,7 @@ public class Network {
             @Override
             public void call(Object... args) {
                 System.out.println("Connected to server");
-                // Display game is in progress... please wait
+                game.gameState = Game.State.WAITING;
             }
         });
         socket.on("player_info", new Emitter.Listener(){
@@ -43,11 +43,11 @@ public class Network {
             public void call(Object... arg) {
                 lock.writeLock().lock();
                 try {
+                    game.gameState = Game.State.PLAYING;
                     JSONObject info = (JSONObject) arg[0];
                     Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
                     game.setPlayer(player, info.getInt("id"));
                     playerId = info.getInt("id");                }catch(Exception e){e.printStackTrace();
-
                 } finally {
                     lock.writeLock().unlock();
                 }
@@ -86,6 +86,8 @@ public class Network {
                             game.setPing((int)(System.currentTimeMillis() - update.getLong("t")));
                         } else if(type.equals("player")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
+                            if(updatedPlayer == null) 
+                                continue;
                             updatedPlayer.setX(update.getInt("x"));
                             updatedPlayer.setY(update.getInt("y"));
                             updatedPlayer.setDirection(update.getInt("dir"));
@@ -104,7 +106,6 @@ public class Network {
                             Player equipPlayer = game.getPlayers().get(update.getInt("id"));
                             equipPlayer.setEquippedIndex(update.getInt("index"));
                         } else if(type.equals("remove_bullet")) {
-                            System.out.println(update.getInt("id"));
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {
                             game.getObstacles().get(update.getInt("id")).setHealth(update.getInt("h"));
@@ -152,6 +153,9 @@ public class Network {
                         game.getObstacles().put(update.getInt("id"), new Tree(update.getInt("x"), update.getInt("y")));
                     } else if(type.equals("box")) {
                         game.getObstacles().put(update.getInt("id"), new Box(update.getInt("x"), update.getInt("y")));
+                    } else if(type.equals("barrel")) {
+                        Barrel b = new Barrel(update.getInt("x"), update.getInt("y"));
+                        game.getObstacles().put(update.getInt("id"), b);
                     } else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }
@@ -197,7 +201,8 @@ public class Network {
                     game.getPlayers().remove(id); 
                     System.out.println(id + " " + playerId);
                     if(id == playerId) {
-                        System.exit(1);
+                        socket.disconnect();
+                        game.gameState = Game.State.DEAD;
                     }               
                 }catch(Exception e){e.printStackTrace();
                 } finally {
@@ -211,43 +216,64 @@ public class Network {
                 game.getPlayer().setReloading((int)arg0[0]);
             }
         });
+        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                game.gameState = Game.State.CONNECT_FAILURE;
+            }
+        });
+        socket.on(Socket.EVENT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                game.gameState = Game.State.CONNECT_FAILURE;
+            }
+        });
         socket.connect();
     }
 
     public void wPressed() {
-        socket.emit("w_pressed", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("w_pressed", nil);
     }
 
     public void aPressed() {
-        socket.emit("a_pressed", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("a_pressed", nil);
     }
 
     public void sPressed() {
-        socket.emit("s_pressed", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("s_pressed", nil);
     }
 
     public void dPressed() {
-        socket.emit("d_pressed", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("d_pressed", nil);
     }
 
     public void wReleased() {
-        socket.emit("w_released", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("w_released", nil);
     }
 
     public void aReleased() {
-        socket.emit("a_released", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("a_released", nil);
     }
 
     public void sReleased() {
-        socket.emit("s_released", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("s_released", nil);
     }
 
     public void dReleased() {
-        socket.emit("d_released", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("d_released", nil);
     }
 
     public void rPressed() {
-        socket.emit("r", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("r", nil);
     }
 
     public void fPressed() {
@@ -255,22 +281,28 @@ public class Network {
     }
 
     public void click() {
-        socket.emit("click", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("click", nil);
     }
 
     public void num1() {
-        socket.emit("1", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("1", nil);
     }
 
     public void num2() {
-        socket.emit("2", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("2", nil);
     }
 
     public void num3() {
-        socket.emit("3", nil);
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("3", nil);
     }
  
     public void mouseLocation(int x, int y) {
+        if(game.gameState != Game.State.PLAYING)
+            return;
         JSONObject coordinates = new JSONObject();
         coordinates.put("x", x);
         coordinates.put("y", y);
