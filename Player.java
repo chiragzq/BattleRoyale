@@ -381,7 +381,7 @@ public class Player
                 yShift = 15;
             }
 
-            drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
+            Game.drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
             //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
             g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
         }
@@ -390,13 +390,7 @@ public class Player
         g.setColor(new Color(0, 0, 0, 0.3f));
         g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)((120 * Game.GAME_SCALE) + 20*Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
     }
-
-    public void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
-    {
-        Image image = new ImageIcon("img/" + file + ".png").getImage();
-        g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
-    }
-
+    
     /**
      * This returns the x loc
      * @return the x location

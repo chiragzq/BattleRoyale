@@ -9,10 +9,13 @@ import javax.swing.*;
 public class Box extends Obstacle
 {
     private static final int LENGTH = 100;
+    private static Image image; 
 
     public Box(int xl, int yl)
     {
         super(xl, yl, 100);
+        if(image == null)
+            image = new ImageIcon(getClass().getResource("img/box.png")).getImage();
     }
     
     public int getSize()
@@ -29,13 +32,12 @@ public class Box extends Obstacle
         }
         else
         {
-            drawImage(g, "box", getX() - getSize()/2 + xShift, getY() - getSize()/2 + yShift, getSize(), getSize());
+            drawImage(g, getX() - getSize()/2 + xShift, getY() - getSize()/2 + yShift, getSize(), getSize());
         }
     }
     
-    public void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
+    public void drawImage(Graphics g, int xImage, int yImage, int iWidth, int iHeight)
     {
-        Image image = new ImageIcon("img/" + file + ".png").getImage();
         g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
     }
 }

@@ -26,6 +26,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
     public static final int HAND_SIZE = (int)(18 * GAME_SCALE);
 
+    private static final Map<String, Image> images = new HashMap<String, Image>();
+    private static Class<?> thisClass;
+
     private static int screenLocationX;
     private static int screenLocationY;
     
@@ -42,6 +45,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     private Map<Integer, Bullet> bullets;
     
     private Map<Integer, Item> items;
+
     
     private Network network;
     private ReadWriteLock lock;
@@ -51,6 +55,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public Game() {
         final Game self = this;
+        thisClass = getClass();
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     frame = new JFrame();
@@ -77,7 +82,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         bullets = new HashMap<Integer, Bullet>();
         items = new HashMap<Integer, Item>();
         
-      gameState = State.CONNECTING;
+        gameState = State.CONNECTING;
         
         network = new Network("http://localhost:5000", this, lock);
         //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
@@ -262,7 +267,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             String text = "You Died";
             g.drawString(text, Game.GAME_WIDTH/2 - metrics.stringWidth(text), Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/20);
         }
-        //System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
+        System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
     
     public void drawBoundary(Graphics g)
@@ -313,8 +318,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     }
     public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
-        Image image = new ImageIcon("img/" + file + ".png").getImage();
-        g.drawImage(image, xImage, yImage, iWidth, iHeight, null);
+        if(!images.containsKey(file)) 
+            images.put(file, new ImageIcon(thisClass.getResource("img/" + file + ".png")).getImage());
+        g.drawImage(images.get(file), xImage, yImage, iWidth, iHeight, null);
     }
 
     public void updateScreenLocation()
