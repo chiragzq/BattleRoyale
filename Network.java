@@ -125,6 +125,8 @@ public class Network {
                             } else {
                                 throw new RuntimeException("Unknown gun type! " + update.getString("gt"));
                             }
+                            gun.setClip(0);
+                            gun.setSpare(update.getInt("spare"));
                             player.getGuns().put(update.getInt("index"), gun);
                         } else {
                             throw new RuntimeException("Unknown Update Type! " + type);

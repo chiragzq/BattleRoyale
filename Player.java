@@ -436,6 +436,7 @@ public class Player
     public void updateAmmo(int index, int clip, int spare) {
         Gun gun = guns.get(index);
         if(gun == null) {
+            
             return;
         }
 

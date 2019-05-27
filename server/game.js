@@ -364,11 +364,7 @@ class Player {
                         type: "pickup_weapon",
                         gt: item.type,
                         id: this.index,
-                        index:1
-                    });
-                    this.socket.emit("ammo", {
-                        equip: 1,
-                        clip: pickup.clipSize,
+                        index:1,
                         spare: pickup.ammo
                     });
                     this.weapons[0] = pickup;
@@ -377,11 +373,7 @@ class Player {
                         type: "pickup_weapon",
                         gt: item.type,
                         id: this.index,
-                        index: 2
-                    });
-                    this.socket.emit("ammo", {
-                        equip: 2,
-                        clip: pickup.clipSize,
+                        index: 2,
                         spare: pickup.ammo
                     });
                     this.weapons[1] = pickup;
