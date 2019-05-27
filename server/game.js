@@ -376,8 +376,8 @@ class Player {
             if(item != null && item.collision(this.x, this.y, 25)) {
                 if(item.type == "ammo") {
                     if(!this.weapons[this.equippedWeapon - 1])
-                        return true;
-                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 2;
+                        return false;
+                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 1.5;
                     this.socket.emit("ammo", {
                         equip: this.equippedWeapon,
                         clip: this.weapons[this.equippedWeapon - 1].clipSize,
@@ -418,6 +418,45 @@ class Player {
                         spare: pickup.ammo
                     });
                     this.weapons[1] = pickup;
+                } else if(this.weapons[this.equippedWeapon - 1]) {
+                    //item exchange
+                    const oldGun = this.weapons[this.equippedWeapon - 1];
+                    this.weapons[this.equippedWeapon - 1] = pickup;
+                    this.game.updates.push({
+                        type: "pickup_weapon",
+                        gt: item.type,
+                        id: this.index,
+                        index: this.equippedWeapon,
+                        spare: pickup.ammo
+                    });
+                    let moveAngle = Math.random() * 360;
+                    let newDrop;
+                    if(oldGun.name == "rifle") {
+                        newDrop = new DroppedRifle(this.x, this.y, moveAngle);
+                    } else if(oldGun.name == "shotgun") {
+                        newDrop = new DroppedShotgun(this.x, this.y, moveAngle);
+                    } else if(oldGun.name == "sniper") {
+                        newDrop = new DroppedSniper(this.x, this.y, moveAngle);
+                    } else {
+                        newDrop = new DroppedPistol(this.x, this.y, moveAngle);
+                    }
+                    this.game.io.emit("new_dropped_item", {
+                        type: newDrop.type,
+                        x: this.x,
+                        y: this.y,
+                        id: this.game.items.length
+                    });
+                    this.game.items.push(newDrop);
+                    for(let i = 0;i < parseInt(oldGun.ammo / oldGun.magSize / 1.5);i ++) {
+                        const ammo = new Ammo(this.x, this.y, Math.random() * 360, Math.random() * 800)
+                        this.game.io.emit("new_dropped_item", {
+                            type: ammo.type,
+                            x: this.x,
+                            y: this.y,
+                            id: this.game.items.length
+                        });
+                        this.game.items.push(ammo);
+                    }
                 } else {
                     return false;
                 }
@@ -601,7 +640,7 @@ function killPlayer(player, game) {
             id: game.items.length
         });
         game.items.push(dropWeapon);
-        for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize);i ++) {
+        for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize / 1.5);i ++) {
             const ammo = new Ammo(player.x, player.y, Math.random() * 360, Math.random() * 800)
             game.io.emit("new_dropped_item", {
                 type: ammo.type,

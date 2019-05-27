@@ -44,7 +44,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3);
+        super("rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3);
     }
 
     fire() {
@@ -59,7 +59,7 @@ class Rifle extends Gun {
 
 class Sniper extends Gun {
     constructor(player) {
-        super("Sniper", player, 5, 0, 100, 80, 100, 800, 1000, 4000, 0.95, 7);
+        super("sniper", player, 5, 0, 100, 80, 100, 800, 1000, 4000, 0.95, 7);
     }
 
     fire() {
@@ -81,7 +81,7 @@ class Sniper extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3)
+        super("shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3)
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
@@ -113,7 +113,7 @@ class Shotgun extends Gun {
 
 class Pistol extends Gun {
     constructor(player) {
-        super("Pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3);
+        super("pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3);
     }
 
     fire() {
