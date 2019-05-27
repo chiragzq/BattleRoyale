@@ -350,7 +350,19 @@ class Player {
         this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
                 if(item.type == "ammo") {
-                    //todo...
+                    if(!this.weapons[this.equippedWeapon - 1])
+                        return true;
+                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 2;
+                    this.socket.emit("ammo", {
+                        equip: this.equippedWeapon,
+                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                        spare: this.weapons[this.equippedWeapon - 1].ammo,
+                    });
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    });
+                    this.game.items[index] = null;
                     return true;
                 }
                 let pickup;
