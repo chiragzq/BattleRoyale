@@ -201,7 +201,7 @@ public class Network {
                 } catch(Exception e) {e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
-                }
+                } 
 
             }
         });
