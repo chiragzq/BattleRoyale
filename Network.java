@@ -184,6 +184,12 @@ public class Network {
                     else if(type.equals("ammo")) {
                         game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y")));
                     }
+                    else if(type.equals("pistol")) {
+                        game.getItems().put(update.getInt("id"), new DroppedPistol(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("sniper")) {
+                        game.getItems().put(update.getInt("id"), new DroppedSniper(update.getInt("x"), update.getInt("y")));
+                    }
                     else {
                         throw new RuntimeException("Invalid obstacle type: " + type);
                     }

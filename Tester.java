@@ -19,6 +19,7 @@ public class Tester extends JComponent implements MouseListener
     private ArrayList<Bullet> items;
     private ArrayList<Obstacle> ob;
     private Player player;
+    private ArrayList<Item> ite;
     /**
      * The constructor for SolitaireDisplay
      * @param game the game of Solitaire
@@ -45,6 +46,10 @@ public class Tester extends JComponent implements MouseListener
         ob.get(0).setHealth(0);
 
         player = new Player(100, 100, 100, 100);
+        
+        ite = new ArrayList<Item>();
+        ite.add(new DroppedSniper(300, 300));
+        ite.add(new DroppedPistol(400, 400));
     }
     
     /**
@@ -64,6 +69,11 @@ public class Tester extends JComponent implements MouseListener
         for(Obstacle obs : ob)
         {
             obs.draw(g, 0 ,0);
+        }
+        
+        for(Item ob: ite)
+        {
+            ob.draw(g, 0, 0);
         }
         player.drawWeaponSelections(g);
     }

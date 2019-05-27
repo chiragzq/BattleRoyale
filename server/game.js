@@ -15,6 +15,9 @@ const Barrel = _obstacle.Barrel;
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
 const Ammo = _item.Ammo;
+const DroppedSniper = _item.DroppedSniper;
+const DroppedPistol = _item.DroppedPistol;
+const DroppedGun = _item.DroppedGun;
 const Bandage = _item.Bandage;
 
 /**
@@ -73,6 +76,35 @@ class Game {
                             this.bullets.push(bullet);
                         });
                     }
+                    // else if(obstacle.isDead() && obstacle instanceof Box) {
+                    //     let dropItem;
+                    //     let moveAngle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
+                    //     switch(Math.round(Math.random() * 5 - .5)) {
+                    //         case 0:
+                    //             dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
+                    //             break;
+                    //         case 1:
+                    //             dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
+                    //             break;
+                    //         case 2:
+                    //             dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
+                    //             break;
+                    //         case 3:
+                    //             dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
+                    //             break;
+                    //         case 4:
+                    //             dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
+                    //             break;
+                    //     } 
+                    //     console.log(dropItem);
+                    //     this.updates.push("new_dropped_item", {
+                    //         type: dropItem.type,
+                    //         x: obstacle.x,
+                    //         y: obstacle.y,
+                    //         id: this.items.length
+                    //     });
+                    //     this.items.push(dropItem);
+                    // }
                     this.updates.push({
                         type: "obstacle",
                         id: index2,
@@ -268,7 +300,7 @@ class Player {
                         if(obstacle.isDead() && obstacle instanceof Box) {
                             let dropItem;
                             let moveAngle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
-                            switch(Math.round(Math.random() * 3 - .5)) {
+                            switch(Math.round(Math.random() * 5 - .5)) {
                                 case 0:
                                     dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
                                     break;
@@ -278,7 +310,35 @@ class Player {
                                 case 2:
                                     dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
                                     break;
+                                case 3:
+                                    dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
+                                    break;
+                                case 4:
+                                    dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
+                                    break;
                             } 
+                            if(dropItem instanceof DroppedGun) {
+                                const shiftAngle = Math.PI/4
+                                const droppedAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle + shiftAngle);
+                                console.log(droppedAmmo);
+                                this.game.io.emit("new_dropped_item", {
+                                    type: droppedAmmo.type,
+                                    x: obstacle.x,
+                                    y: obstacle.y,
+                                    id: this.game.items.length
+                                });
+                                this.game.items.push(droppedAmmo);
+
+                                const dropAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle - shiftAngle);
+                                console.log(dropAmmo);
+                                this.game.io.emit("new_dropped_item", {
+                                    type: dropAmmo.type,
+                                    x: obstacle.x,
+                                    y: obstacle.y,
+                                    id: this.game.items.length
+                                });
+                                this.game.items.push(dropAmmo);
+                            }
                             console.log(dropItem);
                             this.game.io.emit("new_dropped_item", {
                                 type: dropItem.type,
