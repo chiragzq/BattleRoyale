@@ -97,6 +97,7 @@ public class Network {
                             updatedPlayer.punch();
                         } else if(type.equals("new_bullet")) {
                             Bullet newBullet = new Bullet(update.getInt("x"), update.getInt("y"), update.getInt("dir"));
+                            newBullet.setThickness(update.getInt("thickness"));
                             game.getBullets().put(update.getInt("id"), newBullet);
                         } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));
@@ -194,6 +195,12 @@ public class Network {
                     }
                     else if(type.equals("ammo")) {
                         game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("pistol")) {
+                        game.getItems().put(update.getInt("id"), new DroppedPistol(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("sniper")) {
+                        game.getItems().put(update.getInt("id"), new DroppedSniper(update.getInt("x"), update.getInt("y")));
                     }
                     else {
                         throw new RuntimeException("Invalid obstacle type: " + type);

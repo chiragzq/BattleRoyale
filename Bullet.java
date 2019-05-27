@@ -79,6 +79,11 @@ public class Bullet
     {
         return thicknessOfBullet;
     }
+    
+    public void setThickness(int thick)
+    {
+        thicknessOfBullet = thick;
+    }
 
     /**
      * Draws the Bullet

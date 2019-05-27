@@ -365,6 +365,13 @@ public class Player
                 xShift = 25;
                 yShift = 25;
             }
+            else if(guns.get(3-i + 1) instanceof Sniper) {
+                name = "sniper";
+                iWidth = 120;
+                iLength = 35;
+                xShift = 14;
+                yShift = 20;
+            }
             else
             {
                 name = "fist2";
@@ -460,7 +467,7 @@ public class Player
         this.direction = direction;
         direcRadian = Math.toRadians(direction);
         // faceCursor(); 
-        // WHY AARON!!!
+        // WHY CHIRAG!!!
         if(equipped != -1) {
             guns.get(equipped).setDirection(direction);
         }

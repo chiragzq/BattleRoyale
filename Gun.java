@@ -13,7 +13,17 @@ public abstract class Gun
     private Player player;
     private int numberInCarbine;
     private int spare;
+    
+    public Gun(Player player2) 
+    {
+        player = player2;
+        direction = player2.getDirection();
 
+        numberInCarbine = 0;
+        spare = 0;
+    }
+    
+    
     /**
      * Constructor
      * @param player2 the player

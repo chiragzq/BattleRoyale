@@ -34,7 +34,7 @@ class Item {
             let dis = Date.now() - this.start;
             if (Date.now() - this.start < 100)
                 dis = 100;
-            movement = (this.moveAway/(dis) * 2);
+            movement = (this.moveAway/(dis) * 3);
         }
         if(movement < 1) return false;
         this.x = this.x + movement * Math.cos(this.angle);
@@ -67,6 +67,18 @@ class DroppedShotgun extends DroppedGun {
     }
 }
 
+class DroppedPistol extends DroppedGun {
+    constructor(x, y, angle) {
+        super("pistol", x, y, angle);
+    }
+}
+
+class DroppedSniper extends DroppedGun {
+    constructor(x, y, angle) {
+        super("sniper", x, y, angle);
+    }
+}
+
 class Bandage extends Item {
     constructor(x, y, angle) {
         super(x, y, false, 8, angle);
@@ -78,4 +90,6 @@ module.exports.Ammo = Ammo;
 module.exports.DroppedGun = DroppedGun;
 module.exports.DroppedRifle = DroppedRifle;
 module.exports.DroppedShotgun = DroppedShotgun;
+module.exports.DroppedPistol = DroppedPistol;
+module.exports.DroppedSniper = DroppedSniper;
 module.exports.Bandage = Bandage;

@@ -1,6 +1,6 @@
 let timeout = setTimeout(()=>{},0);
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff) {
+    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff, thickness) {
         this.name = name;
         this.player = player;
 
@@ -21,6 +21,7 @@ class Gun {
 
         this.bulletDistance = bulletDistance;
         this.bulletFallOff = bulletFallOff;
+        this.thickness = thickness;
     }
 
     fireBullet(direction) {
@@ -43,7 +44,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9);
+        super("Rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3);
     }
 
     fire() {
@@ -56,9 +57,31 @@ class Rifle extends Gun {
     }
 }
 
+class Sniper extends Gun {
+    constructor(player) {
+        super("Sniper", player, 5, 0, 95, 80, 90, 1000, 500, 500, 0.99, 7);
+    }
+
+    fire() {
+        if(!this.canShoot()) return [];
+        this.clipSize--;
+        this.player.speed = 5;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 250);
+        return [this.fireBullet(Math.round((Math.random()- 0.5) * this.spread + this.player.direction))];
+    }
+
+    reload() {
+        if(this.ammo && this.clipSize < this.magSize) {
+            this.clipSize++;
+            this.ammo--;
+        }
+    }
+}
+
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82)
+        super("Shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3)
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
@@ -139,3 +162,4 @@ module.exports.Gun = Gun;
 module.exports.Bullet = Bullet;
 module.exports.Rifle = Rifle;
 module.exports.Shotgun = Shotgun;
+module.exports.Sniper = Sniper;
