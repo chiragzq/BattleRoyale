@@ -14,6 +14,7 @@ let players = 0;
 let waitTime = 100000;
 let startWaitTime = Date.now();
 let waitTimeout = setTimeout(()=>{},0);
+let io;
 
 const server = http.createServer((req, res) => {
     const url = urllib.parse(req.url, true);
@@ -24,7 +25,7 @@ const server = http.createServer((req, res) => {
         game.players.forEach((player) => {
             player.socket.disconnect();
         });
-        game.generateRandomMap();
+        game = new Game(io);
         
         sockets = [];
         accepting = true;
@@ -52,7 +53,7 @@ document.getElementById("c").onclick=()=>{
     }
 }).listen(process.env.PORT || 5000);
 
-const io = socketIO(server);
+io = socketIO(server);
 
 
 game = new Game(io);

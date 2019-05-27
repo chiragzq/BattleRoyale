@@ -107,6 +107,10 @@ class Box extends Obstacle {
         this.health = Math.max(this.health, 0);
         if(this.health < 25) this.solid = false;
     }
+
+    isDead() {
+        return this.health < 25;
+    }
 }
 
 class Barrel extends Obstacle {

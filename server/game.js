@@ -122,13 +122,14 @@ class Game {
         }); 
         this.items.forEach((item, index3) => {
             if(item != null){
-                item.move();
-                this.updates.push({
-                    type: "item",
-                    id: index3,
-                    x: item.x,
-                    y: item.y
-                })
+                if(item.move()) {
+                    this.updates.push({
+                        type: "item",
+                        id: index3,
+                        x: item.x,
+                        y: item.y
+                    })
+                }
             }
         });
     }
@@ -263,33 +264,30 @@ class Player {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
-                            var thing = parseInt((Math.random() * 3));
-                            var stuff;
-                            var typeOf;
-                            var angle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
-                            if(thing == 0) {
-                                stuff = new DroppedRifle(obstacle.x, obstacle.y, angle);
-                                typeOf = "rifle";
-                            }
-                            else if(thing == 1) {
-                                stuff = new DroppedShotgun(obstacle.x, obstacle.y, angle);
-                                typeOf = "shotgun";
-                            }
-                            else if(thing == 2) {
-                                stuff = new Ammo(obstacle.x, obstacle.y, angle);
-                                typeOf = "ammo"
-                            }
-                                
+                            let dropItem;
+                            let moveAngle = Math.atan2(obstacle.y - this.y, obstacle.x - this.x);
+                            switch(Math.round(Math.random() * 3 - .5)) {
+                                case 0:
+                                    dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
+                                    break;
+                                case 1:
+                                    dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
+                                    break;
+                                case 2:
+                                    dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
+                                    break;
+                            }   
+                            console.log(dropItem);
                             this.game.io.emit("new_dropped_item", {
-                                type: typeOf,
+                                type: dropItem.type,
                                 x: obstacle.x,
                                 y: obstacle.y,
                                 id: this.game.items.length
                             });
-                            this.game.items.push(stuff);
+                            this.game.items.push(dropItem);
                         }
                         if(obstacle.isDead() && obstacle instanceof Barrel) {
-                            const project = obstacle.spawnBullets(12);
+                            const project = obstacle.spawnBullets(128);
                             project.forEach((bullet) => {
                                 this.game.updates.push({
                                     type: "new_bullet",

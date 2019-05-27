@@ -171,6 +171,7 @@ public class Network {
             public void call(Object... arg0) {
                 lock.writeLock().lock();
                 JSONObject update = (JSONObject)(arg0[0]);
+                System.out.println(update);
                 try {
                     String type = update.getString("type");
                     if(type.equals("rifle")) {
