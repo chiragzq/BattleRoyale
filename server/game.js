@@ -431,7 +431,7 @@ class Player {
 
     reload() {
         const weapon = this.weapons[this.equippedWeapon - 1];
-        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize) return;
+        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
         this.lastReloadTime = Date.now();
         this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
     }
