@@ -116,7 +116,20 @@ public class Network {
                             item.setY(update.getInt("y"));
                         } else if(type.equals("remove_item")) {
                             game.getItems().remove(update.getInt("id"));
-                        }else {
+                        } else if(type.equals("pickup_weapon")) {
+                            Player player = game.getPlayers().get(update.getInt("id"));
+                            Gun gun;
+                            if(update.getString("gt").equals("rifle")) {
+                                gun = new Rifle(player);
+                            } else if(update.getString("gt").equals("shotgun")) {
+                                gun = new Shotgun(player);
+                            } else {
+                                throw new RuntimeException("Unknown gun type! " + update.getString("gt"));
+                            }
+                            gun.setClip(0);
+                            gun.setSpare(update.getInt("spare"));
+                            player.getGuns().put(update.getInt("index"), gun);
+                        } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }
@@ -172,7 +185,6 @@ public class Network {
             public void call(Object... arg0) {
                 lock.writeLock().lock();
                 JSONObject update = (JSONObject)(arg0[0]);
-                System.out.println(update);
                 try {
                     String type = update.getString("type");
                     if(type.equals("rifle")) {
@@ -196,7 +208,7 @@ public class Network {
                 } catch(Exception e) {e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
-                }
+                } 
 
             }
         });
@@ -207,7 +219,6 @@ public class Network {
                 try {
                     int id = (int)arg0[0];
                     game.getPlayers().remove(id); 
-                    System.out.println(id + " " + playerId);
                     if(id == playerId) {
                         socket.disconnect();
                         game.gameState = Game.State.DEAD;

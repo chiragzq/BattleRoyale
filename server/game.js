@@ -132,8 +132,7 @@ class Game {
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
-                        this.io.emit("delete_player", index2); 
-                        delete this.players[player.index];
+                        killPlayer(player, this);
                     }
                     return true;
                 }
@@ -211,7 +210,7 @@ class Player {
             y: 0
         }
 
-        this.weapons = [new Sniper(this), new Shotgun(this)];
+        this.weapons = [];
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
@@ -383,8 +382,7 @@ class Player {
                             health: player.health
                         });
                         if(player.isDead()) {
-                            this.game.io.emit("delete_player", player.index); 
-                            delete this.game.players[player.index];
+                            killPlayer(player, this.game);
                         }
                         return collided = true;
                     }
@@ -410,13 +408,57 @@ class Player {
     }
 
     pickUp() {
-        this.game.items.forEach((item, index) => {
+        this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
+                if(item.type == "ammo") {
+                    if(!this.weapons[this.equippedWeapon - 1])
+                        return true;
+                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 2;
+                    this.socket.emit("ammo", {
+                        equip: this.equippedWeapon,
+                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                        spare: this.weapons[this.equippedWeapon - 1].ammo,
+                    });
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    });
+                    this.game.items[index] = null;
+                    return true;
+                }
+                let pickup;
+                if(item.type == "rifle") {
+                    pickup = new Rifle(this);
+                } else {
+                    pickup = new Shotgun(this);
+                }
+                if(!this.weapons[0]) {
+                    this.game.updates.push({
+                        type: "pickup_weapon",
+                        gt: item.type,
+                        id: this.index,
+                        index:1,
+                        spare: pickup.ammo
+                    });
+                    this.weapons[0] = pickup;
+                } else if(!this.weapons[1]) {
+                    this.game.updates.push({
+                        type: "pickup_weapon",
+                        gt: item.type,
+                        id: this.index,
+                        index: 2,
+                        spare: pickup.ammo
+                    });
+                    this.weapons[1] = pickup;
+                } else {
+                    return false;
+                }
                 this.game.updates.push({
                     type: "remove_item",
                     id: index
-                })
+                });
                 this.game.items[index] = null;
+                return true;
             }   
         });
     }
@@ -463,7 +505,7 @@ class Player {
 
     reload() {
         const weapon = this.weapons[this.equippedWeapon - 1];
-        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize) return;
+        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
         this.lastReloadTime = Date.now();
         this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
     }
@@ -570,6 +612,36 @@ function fixCollidedObjectSquare(x1, y1, size, x2, y2, r2) { //(x1, y1) is a sta
     return [Math.round(x1 + xOff * 1.02), Math.round(y1 + yOff * 1.02)];
 }
 
+function killPlayer(player, game) {
+    game.io.emit("delete_player", player.index); 
+    player.weapons.forEach((weapon) => {
+        if(weapon == null) return;
+        let dropWeapon;
+        if(weapon.name == "rifle") {
+            dropWeapon = new DroppedRifle(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        } else {
+            dropWeapon = new DroppedShotgun(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        }
+        game.io.emit("new_dropped_item", {
+            type: dropWeapon.type,
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(dropWeapon);
+        for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize);i ++) {
+            const ammo = new Ammo(player.x, player.y, Math.random() * 360, Math.random() * 800)
+            game.io.emit("new_dropped_item", {
+                type: ammo.type,
+                x: player.x,
+                y: player.y,
+                id: game.items.length
+            });
+            game.items.push(ammo);
+        }
+    });
+    delete game.players[player.index];
+}
 
 module.exports.Game = Game;
 module.exports.Player = Player;

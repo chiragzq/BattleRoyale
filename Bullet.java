@@ -14,8 +14,7 @@ public class Bullet
     private int backY;
     private int direction;
     
-    //How far the bullet traveled
-    private static final int LENGTH = (int)(75* Game.GAME_SCALE);
+    private static final int LENGTH = (int)(100* Game.GAME_SCALE);
     private int thicknessOfBullet;
     
     /**

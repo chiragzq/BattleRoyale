@@ -26,8 +26,8 @@ class Gun {
 
     fireBullet(direction) {
         this.lastShootTime = Date.now();
-        const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * (120) + this.player.x);
-        const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * (120) + this.player.y);
+        const bulletX = Math.round(Math.cos(this.player.direction * Math.PI / 180) * (150) + this.player.x);
+        const bulletY = Math.round(Math.sin(this.player.direction * Math.PI / 180) * (150) + this.player.y);
         return new Bullet(bulletX, bulletY, direction, this.speed, this.damage, this.bulletDistance, this.bulletFallOff);
     }
 
@@ -44,7 +44,7 @@ class Gun {
 
 class Rifle extends Gun {
     constructor(player) {
-        super("Rifle", player, 20, 3, 22, 90, 80, 2400, 250, 2000, 0.9, 3);
+        super("Rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3);
     }
 
     fire() {
@@ -81,7 +81,7 @@ class Sniper extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("Shotgun", player, 5, 35, 8, 75, 80, 700, 300, 250, 0.82, 3)
+        super("Shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3)
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
     }
 
@@ -115,7 +115,7 @@ class Bullet {
     constructor(x, y, direction, speed, damage, maxDistance, fallOff) {
         this.x = x;
         this.y = y; 
-        this.length = 75;
+        this.length = 100;
 
         this.direction = direction;
         this.backX = this.x - Math.round(Math.cos(direction * Math.PI / 180) * this.length);
