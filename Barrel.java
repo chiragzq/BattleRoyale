@@ -25,7 +25,7 @@ public class Barrel extends Obstacle
         //out:7B7B7B
         //in:585858
         //circle: 1C1817
-        if(getHealth() <= 25)
+        if(getHealth() < 25)
         {
             Game.drawImage(g, "barrel_death", getX() + xShift - DEATH/2, getY() + yShift - DEATH/2, DEATH, DEATH);
             //Credits to Surviv

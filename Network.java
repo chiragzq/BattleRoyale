@@ -97,6 +97,7 @@ public class Network {
                             updatedPlayer.punch();
                         } else if(type.equals("new_bullet")) {
                             Bullet newBullet = new Bullet(update.getInt("x"), update.getInt("y"), update.getInt("dir"));
+                            newBullet.setThickness(update.getInt("thickness"));
                             game.getBullets().put(update.getInt("id"), newBullet);
                         } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));

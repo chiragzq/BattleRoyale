@@ -4,6 +4,7 @@ const _item = require("./item");
 
 const Rifle = _weapon.Rifle;
 const Shotgun = _weapon.Shotgun;
+const Sniper = _weapon.Sniper;
 
 const Rock = _obstacle.Rock;
 const Bush = _obstacle.Bush;
@@ -66,6 +67,7 @@ class Game {
                                 id: this.bullets.length,
                                 x: bullet.x,
                                 y: bullet.y,
+                                thickness: 3,
                                 dir: bullet.direction
                             });
                             this.bullets.push(bullet);
@@ -177,7 +179,7 @@ class Player {
             y: 0
         }
 
-        this.weapons = [new Rifle(this), new Shotgun(this)];
+        this.weapons = [new Sniper(this), new Shotgun(this)];
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
@@ -276,7 +278,7 @@ class Player {
                                 case 2:
                                     dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
                                     break;
-                            }   
+                            } 
                             console.log(dropItem);
                             this.game.io.emit("new_dropped_item", {
                                 type: dropItem.type,
@@ -294,6 +296,7 @@ class Player {
                                     id: this.game.bullets.length,
                                     x: bullet.x,
                                     y: bullet.y,
+                                    thickness: 3,
                                     dir: bullet.direction
                                 }); 
                                 this.game.bullets.push(bullet);
@@ -371,6 +374,7 @@ class Player {
                     id: this.game.bullets.length,
                     x: bullet.x,
                     y: bullet.y,
+                    thickness: this.weapons[this.equippedWeapon - 1].thickness,
                     dir: bullet.direction
                 });
                 this.game.bullets.push(bullet);
