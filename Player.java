@@ -52,8 +52,6 @@ public class Player
         this.health = health;
         //The health of the player
         guns = new HashMap<Integer, Gun>();
-        guns.put(1, new Rifle(this));
-        guns.put(2, new Shotgun(this));
         equipped = -1;
 
         lastReloadTime = 0;
@@ -420,6 +418,10 @@ public class Player
      */
     public Gun getEquippedGun() {
         return guns.get(equipped);
+    }
+
+    public Map<Integer, Gun> getGuns() {
+        return guns;
     }
 
     public void setReloading(int duration) {

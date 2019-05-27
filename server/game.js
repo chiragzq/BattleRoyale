@@ -177,7 +177,7 @@ class Player {
             y: 0
         }
 
-        this.weapons = [new Rifle(this), new Shotgun(this)];
+        this.weapons = [];
         this.equippedWeapon = -1;
 
         this.lastPunchTime = 0;
@@ -347,13 +347,53 @@ class Player {
     }
 
     pickUp() {
-        this.game.items.forEach((item, index) => {
+        this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
+                if(item.type == "ammo") {
+                    //todo...
+                    return true;
+                }
+                let pickup;
+                if(item.type == "rifle") {
+                    pickup = new Rifle(this);
+                } else {
+                    pickup = new Shotgun(this);
+                }
+                if(!this.weapons[0]) {
+                    this.game.updates.push({
+                        type: "pickup_weapon",
+                        gt: item.type,
+                        id: this.index,
+                        index:1
+                    });
+                    this.socket.emit("ammo", {
+                        equip: 1,
+                        clip: pickup.clipSize,
+                        spare: pickup.ammo
+                    });
+                    this.weapons[0] = pickup;
+                } else if(!this.weapons[1]) {
+                    this.game.updates.push({
+                        type: "pickup_weapon",
+                        gt: item.type,
+                        id: this.index,
+                        index: 2
+                    });
+                    this.socket.emit("ammo", {
+                        equip: 2,
+                        clip: pickup.clipSize,
+                        spare: pickup.ammo
+                    });
+                    this.weapons[1] = pickup;
+                } else {
+                    return false;
+                }
                 this.game.updates.push({
                     type: "remove_item",
                     id: index
-                })
+                });
                 this.game.items[index] = null;
+                return true;
             }   
         });
     }

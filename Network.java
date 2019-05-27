@@ -115,7 +115,18 @@ public class Network {
                             item.setY(update.getInt("y"));
                         } else if(type.equals("remove_item")) {
                             game.getItems().remove(update.getInt("id"));
-                        }else {
+                        } else if(type.equals("pickup_weapon")) {
+                            Player player = game.getPlayers().get(update.getInt("id"));
+                            Gun gun;
+                            if(update.getString("gt").equals("rifle")) {
+                                gun = new Rifle(player);
+                            } else if(update.getString("gt").equals("shotgun")) {
+                                gun = new Shotgun(player);
+                            } else {
+                                throw new RuntimeException("Unknown gun type! " + update.getString("gt"));
+                            }
+                            player.getGuns().put(update.getInt("index"), gun);
+                        } else {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }
@@ -171,7 +182,6 @@ public class Network {
             public void call(Object... arg0) {
                 lock.writeLock().lock();
                 JSONObject update = (JSONObject)(arg0[0]);
-                System.out.println(update);
                 try {
                     String type = update.getString("type");
                     if(type.equals("rifle")) {
