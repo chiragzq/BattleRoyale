@@ -287,6 +287,7 @@ class Player {
                                 id: this.game.items.length
                             });
                             this.game.items.push(stuff);
+                        }
                         if(obstacle.isDead() && obstacle instanceof Barrel) {
                             const project = obstacle.spawnBullets(12);
                             project.forEach((bullet) => {
