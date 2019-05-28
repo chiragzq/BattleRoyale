@@ -81,7 +81,13 @@ class DroppedSniper extends DroppedGun {
 
 class Bandage extends Item {
     constructor(x, y, angle) {
-        super(x, y, false, 8, angle);
+        super(x, y, false, 15, angle);
+    }
+}
+
+class Medkit extends Item {
+    constructor(x, y, angle) {
+        super(x, y, false, 15, angle);
     }
 }
 
@@ -93,3 +99,4 @@ module.exports.DroppedShotgun = DroppedShotgun;
 module.exports.DroppedPistol = DroppedPistol;
 module.exports.DroppedSniper = DroppedSniper;
 module.exports.Bandage = Bandage;
+module.exports.Medkit = Medkit;

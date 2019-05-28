@@ -20,6 +20,7 @@ const DroppedSniper = _item.DroppedSniper;
 const DroppedPistol = _item.DroppedPistol;
 const DroppedGun = _item.DroppedGun;
 const Bandage = _item.Bandage;
+const Medkit = _item.Medkit;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
