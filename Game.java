@@ -138,6 +138,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int y = e.getY();
+        int x = e.getX();
         network.click();    
     }
 

@@ -330,7 +330,7 @@ public class Network {
         if(game.gameState == Game.State.PLAYING)
             socket.emit("3", nil);
     }
- 
+
     public void mouseLocation(int x, int y) {
         if(game.gameState != Game.State.PLAYING)
             return;

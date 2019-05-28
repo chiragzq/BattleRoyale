@@ -534,6 +534,10 @@ class Player {
         }
     }
 
+    useItem(y) {
+        
+    }
+
     isReloading() {
         if(!this.weapons[this.equippedWeapon - 1]) return false;
         return Date.now() - this.lastReloadTime < this.weapons[this.equippedWeapon - 1].reloadTime;
