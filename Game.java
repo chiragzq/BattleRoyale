@@ -267,6 +267,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
         System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
+
+    public Player getThisPlayer()
+    {
+        return thisPlayer;
+    }
     
     public void drawBoundary(Graphics g)
     {

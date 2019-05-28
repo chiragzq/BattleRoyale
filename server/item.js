@@ -81,13 +81,13 @@ class DroppedSniper extends DroppedGun {
 
 class Bandage extends Item {
     constructor(x, y, angle) {
-        super(x, y, false, 15, angle);
+        super("bandage", x, y, false, 15, angle);
     }
 }
 
 class Medkit extends Item {
     constructor(x, y, angle) {
-        super(x, y, false, 15, angle);
+        super("medkit", x, y, false, 15, angle);
     }
 }
 

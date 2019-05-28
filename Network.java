@@ -116,6 +116,8 @@ public class Network {
                             item.setY(update.getInt("y"));
                         } else if(type.equals("remove_item")) {
                             game.getItems().remove(update.getInt("id"));
+                        } else if(type.equals("new_bandage")) {
+                            game.getThisPlayer().setBandages(game.getThisPlayer().getBandages());
                         } else if(type.equals("pickup_weapon")) {
                             Player player = game.getPlayers().get(update.getInt("id"));
                             Gun gun;
@@ -205,6 +207,12 @@ public class Network {
                     }
                     else if(type.equals("sniper")) {
                         game.getItems().put(update.getInt("id"), new DroppedSniper(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("bandage")) {
+                        game.getItems().put(update.getInt("id"), new Bandage(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("medkit")) {
+                        game.getItems().put(update.getInt("id"), new Medkit(update.getInt("x"), update.getInt("y")));
                     }
                     else {
                         throw new RuntimeException("Invalid dropped item type: " + type);

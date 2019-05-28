@@ -175,6 +175,8 @@ class Player {
         this.moveL = false;
         this.moveD = false;
         this.moveR = false;
+        
+        this.bandages = 0;
 
         this.speed = 13;
 
@@ -273,14 +275,28 @@ class Player {
                             let dropItem;
                             let moveAngle = Math.random() * 360;
                             const chance = Math.random() * 100;
+
+                            // const sniperChance = 5; //in terms of percentage
+                            // const rifleChance = 25;
+                            // const shotgunChance = 25;
+                            // const pistolChance = 35;
+                            // const ammoChance = 5;
+                            // const bandageChance = 5;
+                            // const medkitChange = 5;
+
+
                             if(chance < 5)
                                 dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
                             else if(chance < 30)
                                 dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 55)
+                            else if(chance < 50)
                                 dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 90)
+                            else if (chance < 70)
                                 dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 80)
+                                dropItem = new Bandage(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 90)
+                                dropItem = new Medkit(obstacle.x, obstacle.y, moveAngle);
                             else
                                 dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
                             if(dropItem instanceof DroppedGun) {
@@ -388,6 +404,18 @@ class Player {
                         type: "remove_item",
                         id: index
                     });
+                    this.game.items[index] = null;
+                    return true;
+                }
+                else if(item.type == "medkit" || item.type == "bandage") {
+                    this.bandages ++;
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    });
+                    this.game.updates.push({
+                        type: "new_bandage",
+                    })
                     this.game.items[index] = null;
                     return true;
                 }

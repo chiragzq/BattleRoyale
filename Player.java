@@ -36,6 +36,10 @@ public class Player
     private int reloadDuration;
     //Milliseconds
     private boolean isReloading;
+    
+    private int bandages;
+    private int medkits;
+    
 
     /**
      * Constructs Player at location(x, y)
@@ -56,7 +60,31 @@ public class Player
 
         lastReloadTime = 0;
         reloadDuration = 0;
+        bandages = 0;
+        medkits = 0;
     }
+    
+    public void setBandages(int k)
+    {
+        bandages = k;
+        
+    }
+    
+    public int getBandages()
+    {
+        return bandages;
+    }
+    
+    public void setMedkits(int k)
+    {
+        bandages = k;
+    }
+    
+    public int getMedkits()
+    {
+        return medkits;
+    }
+    
 
     /**
      * Punches
@@ -115,6 +143,7 @@ public class Player
         drawReload(g);
         drawHealth(g);
         drawAmmoCount(g);
+        drawPack(g);
     }
 
     public void drawReload(Graphics g)
@@ -330,6 +359,24 @@ public class Player
         Game.drawCircle(g2, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
         Game.drawCircle(g2, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
     }
+    
+    public void drawPack(Graphics g)
+    {
+        int startHeight = Game.GAME_HEIGHT/4;
+        int width = Game.GAME_WIDTH;
+        int between = 20;
+        int thickness = 60;
+        int height = 30;
+        Graphics2D g2 = (Graphics2D) g;
+        
+        g2.setFont(new Font("Arial", Font.BOLD, 20));
+        
+        g2.drawString("" + bandages, width - thickness, startHeight + height);
+        Game.drawImage(g2, "bandage", width - thickness/2 - thickness/6, startHeight + height - 3 * height/5, thickness/2, height);
+        
+        g2.drawString("" + medkits, width - thickness, startHeight + 2 * height + between);
+        Game.drawImage(g2, "medkit", width - thickness/2 - thickness/6, startHeight + 2 * height + between - 3 * height/5, thickness/2, height);
+    }
 
     public void drawWeaponSelections(Graphics g) {
         g.setColor(Color.BLACK);
@@ -437,7 +484,6 @@ public class Player
     public void updateAmmo(int index, int clip, int spare) {
         Gun gun = guns.get(index);
         if(gun == null) {
-            
             return;
         }
 

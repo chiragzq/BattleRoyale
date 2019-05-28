@@ -76,6 +76,7 @@ public class Tester extends JComponent implements MouseListener
             ob.draw(g, 0, 0);
         }
         player.drawWeaponSelections(g);
+        player.drawPack(g);
     }
    
 

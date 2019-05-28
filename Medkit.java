@@ -9,14 +9,14 @@ public class Medkit extends RoundItem
 {
     public Medkit(int x, int y)
     {
-         super(x, y, 15);
+         super(x, y, 30);
     }
     
     public void draw(Graphics g, int xShift, int yShift)
     {
-        int sizeI = getSize();
+        int sizeI = getSize()/2;
         g.setColor(new Color(0, 0, 0));
         super.draw(g, xShift, yShift);
-        Game.drawImage(g, "bandage", getX() - sizeI, getY() - sizeI, 2 * sizeI, 2 * sizeI);
+        Game.drawImage(g, "bandage", getX() - sizeI + xShift, getY() - sizeI + yShift, 2 * sizeI, 2 * sizeI);
     }
 }
