@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.awt.*;
 
 public class Network {
     private Socket socket;
@@ -53,6 +54,35 @@ public class Network {
                 }
             }
         });
+        socket.on("player_updates", new Emitter.Listener() {
+            @Override
+            public void call(Object... arg0) {
+                lock.writeLock().lock();
+                JSONObject update = (JSONObject)(arg0[0]);
+                try {
+                    String type = update.getString("type");
+                    if(type.equals("new_bandage")) {
+                        game.getThisPlayer().setBandages(update.getInt("nums"));
+                    } else if(type.equals("new_medkit")){
+                        game.getThisPlayer().setMedkits(update.getInt("nums"));
+                    } else if(type.equals("helmet")) {
+                        game.getThisPlayer().setHelmet(update.getInt("level"));
+                    } else if(type.equals("chestplate")) {
+                        game.getThisPlayer().setChestplate(update.getInt("level"));
+                    } else if(type.equals("update_health")) {
+                        game.getThisPlayer().setHealth(update.getInt("health"));
+                        game.getThisPlayer().setTotalHealth(update.getInt("totalHealth"));
+                    } else if(type.equals("blueAmmo")) {
+                        game.getThisPlayer().setBlueAmmo(update.getInt("num"));
+                    } else if(type.equals("redAmmo")) {
+                        game.getThisPlayer().setRedAmmo(update.getInt("num"));
+                    } 
+                } catch(Exception e) {e.printStackTrace();}
+                finally {
+                    lock.writeLock().unlock();
+                } 
+            }
+        });
         socket.on("new_player", new Emitter.Listener(){
             @Override
             public void call(Object... arg) {
@@ -90,6 +120,7 @@ public class Network {
                             updatedPlayer.setY(update.getInt("y"));
                             updatedPlayer.setDirection(update.getInt("dir"));
                             updatedPlayer.setHealth(update.getInt("health"));
+                            updatedPlayer.setTotalHealth(update.getInt("totalHealth"));
                         } else if(type.equals("punch")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.punch();
@@ -147,13 +178,14 @@ public class Network {
                 lock.writeLock().lock();
                 JSONObject update = (JSONObject)(arg0[0]);
                 try {
-                    game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
+                    game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("blue"), update.getInt("red"));
                 } catch(Exception e){e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
                 }
             }
         });
+
         socket.on("new_obstacle", new Emitter.Listener() {
             @Override
             public void call(Object... arg0) {
@@ -195,14 +227,29 @@ public class Network {
                     else if(type.equals("shotgun")) {
                         game.getItems().put(update.getInt("id"), new DroppedShotgun(update.getInt("x"), update.getInt("y")));
                     }
-                    else if(type.equals("ammo")) {
-                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y")));
+                    else if(type.equals("redAmmo")) {
+                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y"), Color.RED));
+                    }
+                    else if(type.equals("blueAmmo")) {
+                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y"), Color.BLUE));
                     }
                     else if(type.equals("pistol")) {
                         game.getItems().put(update.getInt("id"), new DroppedPistol(update.getInt("x"), update.getInt("y")));
                     }
                     else if(type.equals("sniper")) {
                         game.getItems().put(update.getInt("id"), new DroppedSniper(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("bandage")) {
+                        game.getItems().put(update.getInt("id"), new Bandage(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("medkit")) {
+                        game.getItems().put(update.getInt("id"), new Medkit(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("helmet1")) {
+                        game.getItems().put(update.getInt("id"), new HelmetOne(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("chestplate1")) {
+                        game.getItems().put(update.getInt("id"), new ChestPlateOne(update.getInt("x"), update.getInt("y")));
                     }
                     else {
                         throw new RuntimeException("Invalid dropped item type: " + type);
@@ -237,6 +284,7 @@ public class Network {
                 game.getPlayer().setReloading((int)arg0[0]);
             }
         });
+
         socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
             @Override
             public void call(Object... arg0) {
@@ -328,7 +376,17 @@ public class Network {
         if(game.gameState == Game.State.PLAYING)
             socket.emit("3", nil);
     }
- 
+
+    public void useBandages() {
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("useBandages", nil);
+    }
+
+    public void useMedkit() {
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("useMedkits", nil);
+    }
+
     public void mouseLocation(int x, int y) {
         if(game.gameState != Game.State.PLAYING)
             return;

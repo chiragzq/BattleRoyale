@@ -50,6 +50,8 @@ public class Tester extends JComponent implements MouseListener
         ite = new ArrayList<Item>();
         ite.add(new DroppedSniper(300, 300));
         ite.add(new DroppedPistol(400, 400));
+        
+        ite.add(new Bandage(500, 500));
     }
     
     /**
@@ -76,6 +78,7 @@ public class Tester extends JComponent implements MouseListener
             ob.draw(g, 0, 0);
         }
         player.drawWeaponSelections(g);
+        player.drawPack(g);
     }
    
 

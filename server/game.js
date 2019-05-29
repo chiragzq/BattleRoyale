@@ -16,10 +16,16 @@ const Barrel = _obstacle.Barrel;
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
 const Ammo = _item.Ammo;
+const BlueAmmo = _item.BlueAmmo;
+const RedAmmo = _item.RedAmmo;
 const DroppedSniper = _item.DroppedSniper;
 const DroppedPistol = _item.DroppedPistol;
 const DroppedGun = _item.DroppedGun;
 const Bandage = _item.Bandage;
+const Medkit = _item.Medkit;
+const Armor = _item.Medkit;
+const ChestPlateOne = _item.ChestPlateOne;
+const HelmetOne = _item.HelmetOne;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -47,7 +53,8 @@ class Game {
                     x: player.x,
                     y: player.y,
                     dir: player.direction,
-                    health: player.health
+                    health: player.health,
+                    totalHealth: player.totalHealth
                 })
             }
         });
@@ -100,7 +107,8 @@ class Game {
                         x: player.x,
                         y: player.y,
                         dir: player.direction,
-                        health: player.health
+                        health: player.health,
+                        totalHealth: player.totalHealth
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
@@ -169,11 +177,22 @@ class Player {
 
         this.direction = 180;
         this.health = 100;
+        this.totalHealth = 100;
+
+        this.helmet = 0;
+        this.chestplate = 0;
+        this.redAmmo = 0;
+        this.blueAmmo = 0;
 
         this.moveU = false;
         this.moveL = false;
         this.moveD = false;
         this.moveR = false;
+        
+
+
+        this.bandages = 0;
+        this.medkits = 0;
 
         this.speed = 13;
 
@@ -244,7 +263,8 @@ class Player {
             this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: reloadedGun.clipSize,
-                spare: reloadedGun.ammo
+                blue: this.blueAmmo,
+                red: this.redAmmo
             });
             this.reload();
         }
@@ -272,33 +292,60 @@ class Player {
                             let dropItem;
                             let moveAngle = Math.random() * 360;
                             const chance = Math.random() * 100;
+
+                            // const sniperChance = 5; //in terms of percentage
+                            // const rifleChance = 25;
+                            // const shotgunChance = 25;
+                            // const pistolChance = 35;
+                            // const ammoChance = 5;
+                            // const bandageChance = 5;
+                            // const medkitChange = 5;
+
+
                             if(chance < 5)
                                 dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 30)
+                            else if(chance < 20)
                                 dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 55)
+                            else if(chance < 20)
                                 dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 90)
+                            else if (chance < 20)
                                 dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 60)
+                                dropItem = new Bandage(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 100)
+                                dropItem = new Medkit(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 100)
+                                dropItem = new ChestPlateOne(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 100)
+                                dropItem = new HelmetOne(obstacle.x, obstacle.y, moveAngle);
+                            else if(change < 10)
+                                dropItem = new BlueAmmo(obstacle.x, obstacle.y, moveAngle);
                             else
-                                dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
+                                dropItem = new RedAmmo(obstacle.x, obstacle.y, moveAngle);
                             if(dropItem instanceof DroppedGun) {
-                                const droppedAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+                                
+                                var droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                if(dropItem.color === "red")
+                                    droppedAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
                                 this.game.io.emit("new_dropped_item", {
                                     type: droppedAmmo.type,
                                     x: obstacle.x,
                                     y: obstacle.y,
-                                    id: this.game.items.length
+                                    id: this.game.items.length,
+                                    color: droppedAmmo.color
                                 });
                                 this.game.items.push(droppedAmmo);
 
-                                const dropAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle - Math.random() * 360);
-                                console.log(dropAmmo);
+                                var dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                if(dropItem.color === "red")
+                                    dropAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+
                                 this.game.io.emit("new_dropped_item", {
                                     type: dropAmmo.type,
                                     x: obstacle.x,
                                     y: obstacle.y,
-                                    id: this.game.items.length
+                                    id: this.game.items.length,
+                                    color: dropAmmo.color
                                 });
                                 this.game.items.push(dropAmmo);
                             }
@@ -343,7 +390,8 @@ class Player {
                             x: player.x,
                             y: player.y,
                             dir: player.direction,
-                            health: player.health
+                            health: player.health,
+                            totalHealth: player.totalHealth
                         });
                         if(player.isDead()) {
                             killPlayer(player, this.game);
@@ -374,19 +422,121 @@ class Player {
     pickUp() {
         this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
-                if(item.type == "ammo") {
-                    if(!this.weapons[this.equippedWeapon - 1])
-                        return false;
-                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 1.5;
-                    this.socket.emit("ammo", {
-                        equip: this.equippedWeapon,
-                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
-                        spare: this.weapons[this.equippedWeapon - 1].ammo,
-                    });
+                if(item.type.indexOf("Ammo") != -1) {
+                    if(item.color == "blue") {
+                    this.blueAmmo += 60;
+                    if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1].color == "blue") {
+                        this.weapons[this.equippedWeapon - 1].ammo = this.blueAmmo;
+                        this.socket.emit("ammo", {
+                            equip: this.equippedWeapon,
+                            clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                            spare: this.weapons[this.equippedWeapon - 1].ammo,
+                            blue: this.blueAmmo,
+                            red: this.redAmmo
+                        });
+                    }
+                    else {
+                        this.socket.emit("player_updates", {
+                            type: "blueAmmo",
+                            num: this.blueAmmo
+                        });
+                    }
+                    }
+                    else {
+                        this.redAmmo += 60;
+                    if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1] == "red") {
+                        this.weapons[this.equippedWeapon - 1].ammo = this.redAmmo;
+                        this.socket.emit("ammo", {
+                            equip: this.equippedWeapon,
+                            clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                            spare: this.weapons[this.equippedWeapon - 1].ammo,
+                            blue: this.blueAmmo,
+                            red: this.redAmmo
+                        });
+                    }
+                    else {
+                        this.socket.emit("player_updates", {
+                            type: "redAmmo",
+                            num: this.redAmmo
+                        })
+                    }
+                    }
                     this.game.updates.push({
                         type: "remove_item",
                         id: index
                     });
+                    this.game.items[index] = null;
+                    return true;
+                }
+                else if(item.type == "medkit" || item.type == "bandage") {
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index,
+                    });
+                    if(item.type == "bandage") {
+                        this.bandages++;
+                        console.log(this.bandages);
+                        this.socket.emit("player_updates", {
+                           type: "new_bandage",
+                           nums: this.bandages
+                        });
+                    }
+                    else{
+                        this.medkits ++;
+                        console.log(this.medkits);
+                        this.socket.emit("player_updates", {
+                            type: "new_medkit",
+                            nums: this.medkits
+                         });
+                    }
+                    this.game.items[index] = null;
+                    return true;
+                }
+                else if(item.type.indexOf("helmet") != -1 || item.type.indexOf("chestplate") != -1) {
+                    var helm;
+                    var largness;
+                    if(item.type.indexOf("helmet") != -1) {
+                        helm = true;
+                        largness = item.type.substring(6);
+                        if(this.helmet >= largness)
+                            return false;
+                        else {
+                            this.totalHealth += (largness - this.helmet) * 25;
+                            this.health += (largness - this.helmet) * 25;
+                        }
+                    }
+                    else {
+                        helm = false;
+                        largness = item.type.substring(10);
+                        if(this.chestplate >= largness)
+                            return false;
+                        else {
+                            this.totalHealth += (largness - this.chestplate) * 25;
+                            this.health += (largness - this.chestplate) * 25;
+                        }
+                    }
+
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    })
+
+                    if(helm) {
+                        this.socket.emit("player_updates", {
+                            type: "helmet",
+                            id: index,
+                            level: largness
+                        });
+                    }
+                    else {
+                        this.socket.emit("player_updates", {
+                            type: "chestplate",
+                            id: index,
+                            level: largness
+                        });
+                    }
+
+
                     this.game.items[index] = null;
                     return true;
                 }
@@ -470,6 +620,29 @@ class Player {
         });
     }
 
+    useBandage() {
+        if(this.bandages > 0) {
+            this.bandages-= 1;
+            this.health += 25;
+            this.health = Math.min(this.health, this.totalHealth);
+            this.socket.emit("player_updates", {
+                type: "new_bandage",
+                nums: this.bandages
+            });
+        }
+
+    }
+    useMedkit() {
+        if(this.medkits > 0) {
+            this.medkits -= 1;
+            this.health = this.totalHealth;
+            this.socket.emit("player_updates", {
+                type: "new_medkit",
+                nums: this.medkits
+            });
+        }
+    }
+
     click() {
         if(this.isReloading()) {
             this.lastReloadTime = 0;
@@ -488,10 +661,15 @@ class Player {
                 });
                 this.game.bullets.push(bullet);
             });
+            var ammo = this.blueAmmo;
+            if(this.weapons[this.equippedWeapon - 1].color == "red")
+                ammo = this.redAmmo;
             this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: this.weapons[this.equippedWeapon - 1].clipSize,
-                spare: this.weapons[this.equippedWeapon - 1].ammo,
+                spare: ammo,
+                blue: this.blueAmmo,
+                red: this.redAmmo
             });
         } else { //using fists
             if(Date.now() - this.punchTime > this.lastPunchTime) {
@@ -512,9 +690,19 @@ class Player {
 
     reload() {
         const weapon = this.weapons[this.equippedWeapon - 1];
-        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
-        this.lastReloadTime = Date.now();
-        this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        if(weapon) {
+        if(weapon.color == "red")
+        {
+            if(!weapon || this.isReloading() || !this.redAmmo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
+            this.lastReloadTime = Date.now();
+            this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        }
+        else {
+            if(!weapon || this.isReloading() || !this.blueAmmo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
+            this.lastReloadTime = Date.now();
+            this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        }
+        }
     }
 
     hurt(damage) {
