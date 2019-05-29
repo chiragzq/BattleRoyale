@@ -187,6 +187,9 @@ function initializeSocket(socket) {
         player.useMedkit();
     })
 
+    socket.on("PING", (time) => {
+        socket.emit("PONG", time);
+    });
 
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)

@@ -48,7 +48,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     
     private Network network;
     private ReadWriteLock lock;
-    private int ping;
+    private long ping;
 
     public State gameState;
 
@@ -84,6 +84,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         gameState = State.CONNECTING;
         
         network = new Network("http://localhost:5000", this, lock);
+        //network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
         //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
       
         new Timer().scheduleAtFixedRate(new TimerTask(){
@@ -99,11 +100,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     network.mouseLocation(Game.getMouseX(), Game.getMouseY());
                     updateScreenLocation();
                     repaint();
+
+                    network.ping();
                 }
             }, 100, 1000/FRAME_RATE);
     }
 
-    public void setPing(int millis) {
+    public void setPing(long millis) {
         this.ping = millis;
     }
 

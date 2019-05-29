@@ -10,7 +10,7 @@ import javax.swing.*;
  */
 public class Player
 {
-    private static final int TOTAL_PUNCH_TIME = (int)(Game.GAME_SCALE *300);
+    private static final int TOTAL_PUNCH_TIME = (int)(300);
     //In Milli seconds
     private static final int TOTAL_ARM_EXTEND = (int)(Game.GAME_SCALE *20);
 
@@ -498,8 +498,8 @@ public class Player
                 xShift = 25;
                 yShift = 15;
             }
-
-            Game.drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
+            if(!(name.equals("fist2") && 4-i < 3)) 
+                Game.drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
             //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
             g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
         }
