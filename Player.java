@@ -105,7 +105,7 @@ public class Player
     
     public void setMedkits(int k)
     {
-        bandages = k;
+        medkits = k;
     }
     
     public int getMedkits()
@@ -429,6 +429,7 @@ public class Player
         int thickness = 60;
         int height = 30;
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.WHITE);
         
         g2.setFont(new Font("Arial", Font.BOLD, 20));
         

@@ -179,6 +179,14 @@ function initializeSocket(socket) {
         player.pickUp();
     })
 
+    socket.on("useBandages", () => {
+        player.useBandage();
+    })
+
+    socket.on("useMedkits", () => {
+        player.useMedkit();
+    })
+
 
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)

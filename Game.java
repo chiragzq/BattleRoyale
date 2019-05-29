@@ -141,7 +141,26 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public void mousePressed(MouseEvent e) {
         int y = e.getY();
         int x = e.getX();
-        network.click();    
+        int thickness  =60;
+        int between = 20;
+        int height = 30;
+        int start = Game.GAME_HEIGHT/4;
+        System.out.println(y + " " + x);
+        if(x <= Game.GAME_WIDTH && x >= Game.GAME_WIDTH - thickness)
+        {
+            if(y >= start + 2 * height /3&& y <= start + height + between) {
+                System.out.println("true");
+                //thisPlayer.setBandages(0);
+                network.useBandages();
+            }
+            else if(y >= start + 2 * height& y <= start + 3 * height)
+            {
+                System.out.println("false");
+                network.useMedkit();
+            }
+        }
+        else
+            network.click();    
     }
 
     @Override
@@ -268,7 +287,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             String text = "You Died";
             g.drawString(text, Game.GAME_WIDTH/2 - metrics.stringWidth(text), Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/20);
         }
-        System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
+        //System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
 
     public Player getThisPlayer()
@@ -348,7 +367,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     }
 
     public static int getMouseY()
-    {
+    {   
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 

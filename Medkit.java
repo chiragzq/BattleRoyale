@@ -14,6 +14,7 @@ public class Medkit extends RoundItem
     
     public void draw(Graphics g, int xShift, int yShift)
     {
+        int size = 30;
         int sizeI = getSize()/2 - getSize()/5;
         g.setColor(new Color(0, 0, 0));
         super.draw(g, xShift, yShift);
