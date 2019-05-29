@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
+import java.awt.*;
 
 public class Network {
     private Socket socket;
@@ -126,6 +127,10 @@ public class Network {
                         } else if(type.equals("update_health")) {
                             game.getThisPlayer().setHealth(update.getInt("health"));
                             game.getThisPlayer().setTotalHealth(update.getInt("totalHealth"));
+                        } else if(type.equals("blueAmmo")) {
+                            game.getThisPlayer().setBlueAmmo(update.getInt("num"));
+                        } else if(type.equals("redAmmo")) {
+                            game.getThisPlayer().setRedAmmo(update.getInt("num"));
                         } else if(type.equals("pickup_weapon")) {
                             Player player = game.getPlayers().get(update.getInt("id"));
                             Gun gun;
@@ -159,7 +164,7 @@ public class Network {
                 lock.writeLock().lock();
                 JSONObject update = (JSONObject)(arg0[0]);
                 try {
-                    game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("spare"));
+                    game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("blue"), update.getInt("red"));
                 } catch(Exception e){e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
@@ -207,8 +212,11 @@ public class Network {
                     else if(type.equals("shotgun")) {
                         game.getItems().put(update.getInt("id"), new DroppedShotgun(update.getInt("x"), update.getInt("y")));
                     }
-                    else if(type.equals("ammo")) {
-                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y")));
+                    else if(type.equals("redAmmo")) {
+                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y"), Color.RED));
+                    }
+                    else if(type.equals("blueAmmo")) {
+                        game.getItems().put(update.getInt("id"), new Ammo(update.getInt("x"), update.getInt("y"), Color.BLUE));
                     }
                     else if(type.equals("pistol")) {
                         game.getItems().put(update.getInt("id"), new DroppedPistol(update.getInt("x"), update.getInt("y")));

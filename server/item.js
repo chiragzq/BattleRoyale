@@ -44,10 +44,27 @@ class Item {
 }
 
 class Ammo extends Item {
-    constructor(x, y, angle, vel) {
-        super("ammo", x, y, true, 15, angle, vel);
+    constructor(name, x, y, angle, vel) {
+        super(name, x, y, true, 15, angle, vel);
+        
     }
 }
+
+class BlueAmmo extends Ammo {
+    constructor(x, y, angle, vel) {
+        super("blueAmmo", x, y, angle, vel);
+        this.color = "blue";
+    }
+}
+
+class RedAmmo extends Ammo {
+    constructor(x, y, angle, vel) {
+        super("redAmmo", x, y, angle, vel);
+        this.color= "red";
+    }
+}
+
+
 
 class DroppedGun extends Item {
     constructor(name, x, y, angle, vel) {
@@ -58,24 +75,28 @@ class DroppedGun extends Item {
 class DroppedRifle extends DroppedGun {
     constructor(x, y, angle, vel) {
         super("rifle", x, y, angle, vel);
+        this.color = "blue";
     }
 }
 
 class DroppedShotgun extends DroppedGun {
     constructor(x, y, angle, vel) {
         super("shotgun", x, y, angle, vel);
+        this.color = "red";
     }
 }
 
 class DroppedPistol extends DroppedGun {
     constructor(x, y, angle, vel) {
         super("pistol", x, y, angle, vel);
+        this.color = "blue";
     }
 }
 
 class DroppedSniper extends DroppedGun {
     constructor(x, y, angle, vek) {
         super("sniper", x, y, angle, vek);
+        this.color = "red";
     }
 }
 
@@ -111,6 +132,8 @@ class HelmetOne extends Armor {
 
 module.exports.Item = Item;
 module.exports.Ammo = Ammo;
+module.exports.BlueAmmo = BlueAmmo;
+module.exports.RedAmmo = RedAmmo;
 module.exports.DroppedGun = DroppedGun;
 module.exports.DroppedRifle = DroppedRifle;
 module.exports.DroppedShotgun = DroppedShotgun;

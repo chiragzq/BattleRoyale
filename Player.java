@@ -42,6 +42,9 @@ public class Player
     private int medkits;
     private int helmet;
     private int chestplate;
+    private int redAmmo;
+    private int blueAmmo;
+    private int clip;
 
     /**
      * Constructs Player at location(x, y)
@@ -67,8 +70,18 @@ public class Player
         helmet = 0;
         chestplate = 0;
         totalHealth = 100;
+        redAmmo = 0;
+        blueAmmo = 0;
+    }
+
+    public void setBlueAmmo(int k) 
+    {
+        blueAmmo = k;
     }
     
+    public void setRedAmmo(int k) {
+        redAmmo = k;
+    }
     public void setBandages(int k)
     {
         bandages = k;
@@ -265,17 +278,25 @@ public class Player
             int letterSize = 50;
             g.setFont(new Font("Arial", 30, letterSize));
             g2.setColor(Color.WHITE);
-            int j = guns.get(equipped).getAmmo();
+            int j = clip;//guns.get(equipped).getAmmo();
             double length = (double)numDigits(j)/2;
 
-            g2.drawString(""+guns.get(equipped).getAmmo(), (int)( x - letterSize/2 * length), y + boxHeight/3);
+            g2.drawString(""+clip, (int)( x - letterSize/2 * length), y + boxHeight/3);
 
             g.setFont(new Font("Arial", 30, (int)((double)letterSize/2.5)));
 
-            int k = guns.get(equipped).getTotalAmmo();
-            double lengthOf = (double)numDigits(k)/2;
-
-            g2.drawString(""+guns.get(equipped).getTotalAmmo(), (int)( x + boxWidth/2 + boxWidth/10- letterSize/4 * lengthOf + boxWidth/4), y + boxHeight/3 -boxHeight/5 + boxHeight/9);
+            if(guns.get(equipped).getType().equals("red")) {
+                int k = redAmmo;
+                double lengthOf = (double)numDigits(k)/2;
+                g2.drawString(""+ redAmmo, (int)( x + boxWidth/2 + boxWidth/10- letterSize/4 * lengthOf + boxWidth/4), y + boxHeight/3 -boxHeight/5 + boxHeight/9);
+            }
+            else {
+                int k = blueAmmo;
+                double lengthOf = (double)numDigits(k)/2;
+                
+            
+                g2.drawString(""+ blueAmmo, (int)( x + boxWidth/2 + boxWidth/10- letterSize/4 * lengthOf + boxWidth/4), y + boxHeight/3 -boxHeight/5 + boxHeight/9);
+            }
         }
     }
 
@@ -416,6 +437,15 @@ public class Player
         
         g2.drawString("" + medkits, width - thickness, startHeight + 2 * height + between);
         Game.drawImage(g2, "medkit", width - thickness/2 - thickness/6, startHeight + 2 * height + between - 3 * height/5, thickness/2, height);
+        
+        int numDigits = numDigits(blueAmmo);
+        g2.drawString("" + blueAmmo, width - thickness - numDigits * 5, startHeight + 3 * height + 2 * between);
+        Game.drawImage(g2, "blueAmmo", width - thickness/2 - thickness/6, startHeight + 3 * height + 2 * between - 4* height/5, thickness/2, height);
+
+        numDigits = numDigits(redAmmo);
+        g2.drawString("" + redAmmo, width - thickness - numDigits * 5, startHeight + 4 * height + 3 * between);
+        Game.drawImage(g2, "redAmmo", width - thickness/2 - thickness/6, startHeight + 4 * height + 3 * between - 4* height/5, thickness/2, height);
+
     }
 
     public void drawWeaponSelections(Graphics g) {
@@ -521,14 +551,16 @@ public class Player
         equipped = index == 3 ? -1 : index;
     }
 
-    public void updateAmmo(int index, int clip, int spare) {
+    public void updateAmmo(int index, int clip, int blue, int red) {
         Gun gun = guns.get(index);
         if(gun == null) {
             return;
         }
-
+        this.clip = clip;
         gun.setClip(clip);
-        gun.setSpare(spare);
+
+        setBlueAmmo(blue);
+        setRedAmmo(red);
     }
 
     public void setX(int x) {

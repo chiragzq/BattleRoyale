@@ -15,6 +15,10 @@ public class Sniper extends Gun
     public int getBarrelLength() {
         return 90;
     }
+
+    public String getType() {
+        return "red";
+    }
     
     public void draw(Graphics g, int xShift, int yShift)
     {

@@ -93,6 +93,8 @@ public abstract class Gun
         this.spare = spare;
     }
 
+    public abstract String getType();
+
     /**
      * Draws the gun
      * @param g the gun

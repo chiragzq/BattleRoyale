@@ -16,6 +16,8 @@ const Barrel = _obstacle.Barrel;
 const DroppedRifle = _item.DroppedRifle;
 const DroppedShotgun = _item.DroppedShotgun;
 const Ammo = _item.Ammo;
+const BlueAmmo = _item.BlueAmmo;
+const RedAmmo = _item.RedAmmo;
 const DroppedSniper = _item.DroppedSniper;
 const DroppedPistol = _item.DroppedPistol;
 const DroppedGun = _item.DroppedGun;
@@ -179,6 +181,8 @@ class Player {
 
         this.helmet = 0;
         this.chestplate = 0;
+        this.redAmmo = 0;
+        this.blueAmmo = 0;
 
         this.moveU = false;
         this.moveL = false;
@@ -256,7 +260,8 @@ class Player {
             this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: reloadedGun.clipSize,
-                spare: reloadedGun.ammo
+                blue: this.blueAmmo,
+                red: this.redAmmo
             });
             this.reload();
         }
@@ -310,25 +315,34 @@ class Player {
                                 dropItem = new ChestPlateOne(obstacle.x, obstacle.y, moveAngle);
                             else if (chance < 100)
                                 dropItem = new HelmetOne(obstacle.x, obstacle.y, moveAngle);
+                            else if(change < 10)
+                                dropItem = new BlueAmmo(obstacle.x, obstacle.y, moveAngle);
                             else
-                                dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
+                                dropItem = new RedAmmo(obstacle.x, obstacle.y, moveAngle);
                             if(dropItem instanceof DroppedGun) {
-                                const droppedAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+                                
+                                var droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                if(dropItem.color === "red")
+                                    droppedAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
                                 this.game.io.emit("new_dropped_item", {
                                     type: droppedAmmo.type,
                                     x: obstacle.x,
                                     y: obstacle.y,
-                                    id: this.game.items.length
+                                    id: this.game.items.length,
+                                    color: droppedAmmo.color
                                 });
                                 this.game.items.push(droppedAmmo);
 
-                                const dropAmmo = new Ammo(obstacle.x, obstacle.y, moveAngle - Math.random() * 360);
-                                console.log(dropAmmo);
+                                var dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                if(dropItem.color === "red")
+                                    dropAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+
                                 this.game.io.emit("new_dropped_item", {
                                     type: dropAmmo.type,
                                     x: obstacle.x,
                                     y: obstacle.y,
-                                    id: this.game.items.length
+                                    id: this.game.items.length,
+                                    color: dropAmmo.color
                                 });
                                 this.game.items.push(dropAmmo);
                             }
@@ -405,15 +419,45 @@ class Player {
     pickUp() {
         this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
-                if(item.type == "ammo") {
-                    if(!this.weapons[this.equippedWeapon - 1])
-                        return false;
-                    this.weapons[this.equippedWeapon - 1].ammo += this.weapons[this.equippedWeapon - 1].magSize * 1.5;
-                    this.socket.emit("ammo", {
-                        equip: this.equippedWeapon,
-                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
-                        spare: this.weapons[this.equippedWeapon - 1].ammo,
-                    });
+                if(item.type.indexOf("Ammo") != -1) {
+                    if(item.color == "blue") {
+                    this.blueAmmo += 60;
+                    if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1].color == "blue") {
+                        this.weapons[this.equippedWeapon - 1].ammo = this.blueAmmo;
+                        this.socket.emit("ammo", {
+                            equip: this.equippedWeapon,
+                            clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                            spare: this.weapons[this.equippedWeapon - 1].ammo,
+                            blue: this.blueAmmo,
+                            red: this.redAmmo
+                        });
+                    }
+                    else {
+                        this.game.updates.push({
+                            type: "blueAmmo",
+                            num: this.blueAmmo
+                        })
+                    }
+                    }
+                    else {
+                        this.redAmmo += 60;
+                    if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1] == "red") {
+                        this.weapons[this.equippedWeapon - 1].ammo = this.redAmmo;
+                        this.socket.emit("ammo", {
+                            equip: this.equippedWeapon,
+                            clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                            spare: this.weapons[this.equippedWeapon - 1].ammo,
+                            blue: this.blueAmmo,
+                            red: this.redAmmo
+                        });
+                    }
+                    else {
+                        this.game.updates.push({
+                            type: "redAmmo",
+                            num: this.redAmmo
+                        })
+                    }
+                    }
                     this.game.updates.push({
                         type: "remove_item",
                         id: index
@@ -580,10 +624,15 @@ class Player {
                 });
                 this.game.bullets.push(bullet);
             });
+            var ammo = this.blueAmmo;
+            if(this.weapons[this.equippedWeapon - 1].color == "red")
+                ammo = this.redAmmo;
             this.socket.emit("ammo", {
                 equip: this.equippedWeapon,
                 clip: this.weapons[this.equippedWeapon - 1].clipSize,
-                spare: this.weapons[this.equippedWeapon - 1].ammo,
+                spare: ammo,
+                blue: this.blueAmmo,
+                red: this.redAmmo
             });
         } else { //using fists
             if(Date.now() - this.punchTime > this.lastPunchTime) {
@@ -608,9 +657,17 @@ class Player {
 
     reload() {
         const weapon = this.weapons[this.equippedWeapon - 1];
-        if(!weapon || this.isReloading() || !weapon.ammo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
-        this.lastReloadTime = Date.now();
-        this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        if(weapon.color == "red")
+        {
+            if(!weapon || this.isReloading() || !this.redAmmo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
+            this.lastReloadTime = Date.now();
+            this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        }
+        else {
+            if(!weapon || this.isReloading() || !this.blueAmmo || weapon.clipSize == weapon.magSize || Date.now() - weapon.shootDelay <= weapon.lastShootTime) return;
+            this.lastReloadTime = Date.now();
+            this.socket.emit("reload", this.weapons[this.equippedWeapon - 1].reloadTime);
+        }
     }
 
     hurt(damage) {

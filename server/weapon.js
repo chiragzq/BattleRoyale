@@ -1,6 +1,6 @@
 let timeout = setTimeout(()=>{},0);
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff, thickness) {
+    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff, thickness, color) {
         this.name = name;
         this.player = player;
 
@@ -22,6 +22,7 @@ class Gun {
         this.bulletDistance = bulletDistance;
         this.bulletFallOff = bulletFallOff;
         this.thickness = thickness;
+        this.color = color;
     }
 
     fireBullet(direction) {
@@ -36,15 +37,23 @@ class Gun {
     }
 
     reload() {
-        const reloadAmount = Math.min(this.magSize - this.clipSize, this.ammo);
-        this.ammo -= reloadAmount;
-        this.clipSize += reloadAmount;
+        if(this.color == "red") {
+            const reloadAmount = Math.min(this.magSize - this.clipSize, this.player.redAmmo);
+            this.player.redAmmo -= reloadAmount;
+            this.clipSize += reloadAmount;
+        }
+        else {
+            const reloadAmount = Math.min(this.magSize - this.clipSize, this.player.blueAmmo);
+            this.player.blueAmmo -= reloadAmount;
+            this.clipSize += reloadAmount;
+        }
     }
 }
 
 class Rifle extends Gun {
     constructor(player) {
-        super("rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3);
+        super("rifle", player, 20, 3, 22, 70, 80, 2400, 250, 2000, 0.9, 3, "blue");
+        this.color = "blue";
     }
 
     fire() {
@@ -59,7 +68,8 @@ class Rifle extends Gun {
 
 class Sniper extends Gun {
     constructor(player) {
-        super("sniper", player, 5, 0, 100, 80, 100, 800, 1000, 4000, 0.95, 7);
+        super("sniper", player, 5, 0, 100, 80, 100, 800, 1000, 4000, 0.95, 7, "red");
+        this.color = "red";
     }
 
     fire() {
@@ -72,17 +82,18 @@ class Sniper extends Gun {
     }
 
     reload() {
-        if(this.ammo && this.clipSize < this.magSize) {
+        if(this.player.redAmmo && this.clipSize < this.magSize) {
             this.clipSize++;
-            this.ammo--;
+            this.player.redAmmo--;
         }
     }
 }
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3)
+        super("shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3, "red")
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
+        this.color = "red";
     }
 
     fire() {
@@ -104,16 +115,17 @@ class Shotgun extends Gun {
     }
 
     reload() { 
-        if(this.ammo && this.clipSize < this.magSize) {
+        if(this.player.redAmmo && this.clipSize < this.magSize) {
             this.clipSize++;
-            this.ammo--;
+            this.player.redAmmo--;
         }
     }
 }
 
 class Pistol extends Gun {
     constructor(player) {
-        super("pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3);
+        super("pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3, "blue");
+        this.color = "blue";
     }
 
     fire() {

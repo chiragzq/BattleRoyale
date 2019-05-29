@@ -12,6 +12,10 @@ public class Shotgun extends Gun
         super(play, 5, 20);
     }
 
+    public String getType() {
+        return "red";
+    }
+
 
     public void draw(Graphics g, int xShift, int yShift)
     {
