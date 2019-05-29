@@ -411,10 +411,11 @@ class Player {
                     this.bandages ++;
                     this.game.updates.push({
                         type: "remove_item",
-                        id: index
+                        id: index,
                     });
                     this.game.updates.push({
                         type: "new_bandage",
+                        nums: this.bandages
                     })
                     this.game.items[index] = null;
                     return true;

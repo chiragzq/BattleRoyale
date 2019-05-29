@@ -117,7 +117,7 @@ public class Network {
                         } else if(type.equals("remove_item")) {
                             game.getItems().remove(update.getInt("id"));
                         } else if(type.equals("new_bandage")) {
-                            game.getThisPlayer().setBandages(game.getThisPlayer().getBandages());
+                            game.getThisPlayer().setBandages(update.getInt("nums"));
                         } else if(type.equals("pickup_weapon")) {
                             Player player = game.getPlayers().get(update.getInt("id"));
                             Gun gun;

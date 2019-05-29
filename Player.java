@@ -17,6 +17,7 @@ public class Player
     private int x;
     private int y;
     private int health;
+    private int totalHealth;
     private double direcRadian;
     private double direction;
     private long lastPunchTime;
@@ -62,6 +63,7 @@ public class Player
         reloadDuration = 0;
         bandages = 0;
         medkits = 0;
+        totalHealth = 100;
     }
     
     public void setBandages(int k)
@@ -73,6 +75,16 @@ public class Player
     public int getBandages()
     {
         return bandages;
+    }
+
+    public int getTotalHealth()
+    {
+        return totalHealth;
+    }
+
+    public void setTotalHealth(int k)
+    {
+        totalHealth = k;
     }
     
     public void setMedkits(int k)
@@ -196,11 +208,11 @@ public class Player
 
         int outline = 5;
 
-        int length = (int)((double)health/100 * (healthBarWidth - outline * 2));
+        int length = (int)((double)health/totalHealth * (healthBarWidth - outline * 2));
         
         g2.setColor(Color.WHITE);
         
-        if(health < 30)
+        if(health < 50)
         {
             g2.setColor(new Color(255, (int)(255/Math.pow(x, 1)), (int)(255/Math.pow(x, 1))));
         }
