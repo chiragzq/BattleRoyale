@@ -92,6 +92,7 @@ public class Network {
                             updatedPlayer.setY(update.getInt("y"));
                             updatedPlayer.setDirection(update.getInt("dir"));
                             updatedPlayer.setHealth(update.getInt("health"));
+                            updatedPlayer.setTotalHealth(update.getInt("totalHealth"));
                         } else if(type.equals("punch")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.punch();
@@ -118,6 +119,13 @@ public class Network {
                             game.getItems().remove(update.getInt("id"));
                         } else if(type.equals("new_bandage")) {
                             game.getThisPlayer().setBandages(update.getInt("nums"));
+                        } else if(type.equals("helemt")) {
+                            game.getThisPlayer().setHelmet(update.getInt("level"));
+                        } else if(type.equals("chestplate")) {
+                            game.getThisPlayer().setChestplate(update.getInt("level"));
+                        } else if(type.equals("update_health")) {
+                            game.getThisPlayer().setHealth(update.getInt("health"));
+                            game.getThisPlayer().setTotalHealth(update.getInt("totalHealth"));
                         } else if(type.equals("pickup_weapon")) {
                             Player player = game.getPlayers().get(update.getInt("id"));
                             Gun gun;
@@ -213,6 +221,12 @@ public class Network {
                     }
                     else if(type.equals("medkit")) {
                         game.getItems().put(update.getInt("id"), new Medkit(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("helmet1")) {
+                        game.getItems().put(update.getInt("id"), new HelmetOne(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("chestplate1")) {
+                        game.getItems().put(update.getInt("id"), new ChestPlateOne(update.getInt("x"), update.getInt("y")));
                     }
                     else {
                         throw new RuntimeException("Invalid dropped item type: " + type);

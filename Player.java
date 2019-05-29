@@ -40,7 +40,8 @@ public class Player
     
     private int bandages;
     private int medkits;
-    
+    private int helmet;
+    private int chestplate;
 
     /**
      * Constructs Player at location(x, y)
@@ -63,6 +64,8 @@ public class Player
         reloadDuration = 0;
         bandages = 0;
         medkits = 0;
+        helmet = 0;
+        chestplate = 0;
         totalHealth = 100;
     }
     
@@ -95,6 +98,15 @@ public class Player
     public int getMedkits()
     {
         return medkits;
+    }
+
+    public void setHelmet(int k)
+    {
+        helmet = k;
+    }
+
+    public void setChestplate(int k) {
+        chestplate = k;
     }
     
 
@@ -141,6 +153,22 @@ public class Player
     public void draw(Graphics g, int xShift, int yShift) {
         g.setColor(new Color(0xFAC47F));
         Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
+        Graphics2D g2 = (Graphics2D) g;
+        if(chestplate > 0) {
+            g2.setStroke(new BasicStroke(4));
+            if(chestplate == 1) {
+                g2.setColor(new Color(209, 209, 209));
+            }
+            Game.drawCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
+        }
+        if(helmet > 0) {
+            int s = Game.PLAYER_SIZE/3;
+            int shi = Game.PLAYER_SIZE/4;
+            if(helmet == 1)
+                g2.setColor(new Color(209, 209, 209));
+            double an = direcRadian;
+            Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
+        }
     }
 
     public void drawGun(Graphics g, int xShift, int yShift) {

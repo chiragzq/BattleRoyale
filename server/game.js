@@ -21,6 +21,9 @@ const DroppedPistol = _item.DroppedPistol;
 const DroppedGun = _item.DroppedGun;
 const Bandage = _item.Bandage;
 const Medkit = _item.Medkit;
+const Armor = _item.Medkit;
+const ChestPlateOne = _item.ChestPlateOne;
+const HelmetOne = _item.HelmetOne;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -101,7 +104,8 @@ class Game {
                         x: player.x,
                         y: player.y,
                         dir: player.direction,
-                        health: player.health
+                        health: player.health,
+                        totalHealth: player.totalHealth
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
@@ -170,6 +174,10 @@ class Player {
 
         this.direction = 180;
         this.health = 100;
+        this.totalHealth = 100;
+
+        this.helmet = 0;
+        this.chestplate = 0;
 
         this.moveU = false;
         this.moveL = false;
@@ -287,16 +295,20 @@ class Player {
 
                             if(chance < 5)
                                 dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 30)
+                            else if(chance < 10)
                                 dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 50)
+                            else if(chance < 20)
                                 dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 70)
+                            else if (chance < 30)
                                 dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 80)
+                            else if (chance < 40)
                                 dropItem = new Bandage(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 90)
+                            else if (chance < 50)
                                 dropItem = new Medkit(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 80)
+                                dropItem = new ChestPlateOne(obstacle.x, obstacle.y, moveAngle);
+                            else if (chance < 100)
+                                dropItem = new HelmetOne(obstacle.x, obstacle.y, moveAngle);
                             else
                                 dropItem = new Ammo(obstacle.x, obstacle.y, moveAngle);
                             if(dropItem instanceof DroppedGun) {
@@ -417,6 +429,54 @@ class Player {
                         type: "new_bandage",
                         nums: this.bandages
                     })
+                    this.game.items[index] = null;
+                    return true;
+                }
+                else if(item.type.indexOf("helmet") != -1 || item.type.indexOf("chestplate") != -1) {
+                    var helm;
+                    var largness;
+                    if(item.type.indexOf("helmet") != -1) {
+                        helm = true;
+                        largness = item.type.substring(6);
+                        if(this.helmet >= largness)
+                            return false;
+                        else {
+                            this.totalHealth += (largness - this.helmet) * 25;
+                            this.health += (largness - this.helmet) * 25;
+                        }
+                    }
+                    else {
+                        helm = false;
+                        largness = item.type.substring(10);
+                        if(this.chestplate >= largness)
+                            return false;
+                        else {
+                            this.totalHealth += (largness - this.chestplate) * 25;
+                            this.health += (largness - this.chestplate) * 25;
+                        }
+                    }
+
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    })
+
+                    if(helm) {
+                        this.game.updates.push({
+                            type: "helmet",
+                            id: index,
+                            level: largness
+                        });
+                    }
+                    else {
+                        this.game.updates.push({
+                            type: "chestplate",
+                            id: index,
+                            level: largness
+                        });
+                    }
+
+
                     this.game.items[index] = null;
                     return true;
                 }

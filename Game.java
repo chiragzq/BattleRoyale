@@ -26,7 +26,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
     public static final int HAND_SIZE = (int)(18 * GAME_SCALE);
 
-    private static final Map<String, Image> images = new HashMap<String, Image>();
+    private static Map<String, Image> images;
 
     private static int screenLocationX;
     private static int screenLocationY;
@@ -79,7 +79,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
         items = new HashMap<Integer, Item>();
-        
+        images = new HashMap<String, Image>();
+
         gameState = State.CONNECTING;
         
         network = new Network("http://localhost:5000", this, lock);
@@ -323,8 +324,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     }
     public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
-        if(!images.containsKey(file)) 
-            images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
+        if(!images.containsKey(file))
+            images.put(file, new ImageIcon("img/" + file + ".png").getImage());
+            //images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
         g.drawImage(images.get(file), xImage, yImage, iWidth, iHeight, null);
     }
 
