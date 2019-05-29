@@ -162,12 +162,12 @@ public class Player
             Game.drawCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
         }
         if(helmet > 0) {
-            int s = Game.PLAYER_SIZE/3;
-            int shi = Game.PLAYER_SIZE/4;
+            int s = (int)(Game.PLAYER_SIZE/1.8);
+            int shi = Game.PLAYER_SIZE/6;
             if(helmet == 1)
-                g2.setColor(new Color(209, 209, 209));
+                g2.setColor(new Color(153, 154, 155));
             double an = direcRadian;
-            Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
+            Game.fillCircle(g, x + xShift - (int)(shi * Math.cos(an)), y + yShift - (int)(shi * Math.sin(an)), s);
         }
     }
 

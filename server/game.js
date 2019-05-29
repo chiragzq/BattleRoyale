@@ -51,7 +51,8 @@ class Game {
                     x: player.x,
                     y: player.y,
                     dir: player.direction,
-                    health: player.health
+                    health: player.health,
+                    totalHealth: player.totalHealth
                 })
             }
         });
@@ -372,7 +373,8 @@ class Player {
                             x: player.x,
                             y: player.y,
                             dir: player.direction,
-                            health: player.health
+                            health: player.health,
+                            totalHealth: player.totalHealth
                         });
                         if(player.isDead()) {
                             killPlayer(player, this.game);

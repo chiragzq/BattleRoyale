@@ -119,7 +119,7 @@ public class Network {
                             game.getItems().remove(update.getInt("id"));
                         } else if(type.equals("new_bandage")) {
                             game.getThisPlayer().setBandages(update.getInt("nums"));
-                        } else if(type.equals("helemt")) {
+                        } else if(type.equals("helmet")) {
                             game.getThisPlayer().setHelmet(update.getInt("level"));
                         } else if(type.equals("chestplate")) {
                             game.getThisPlayer().setChestplate(update.getInt("level"));
