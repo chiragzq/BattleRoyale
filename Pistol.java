@@ -21,6 +21,7 @@ public class Pistol extends Gun
         g2.setColor(new Color(0, 0, 0));
         int x = getPlayer().getX();
         int y = getPlayer().getY();
+        x = 0; xShift = Game.GAME_WIDTH / 2; y = 0; yShift = Game.GAME_HEIGHT / 2;
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
         
         int radius = (int)(Game.GAME_SCALE *10);

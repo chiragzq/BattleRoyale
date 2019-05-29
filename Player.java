@@ -105,7 +105,7 @@ public class Player
 
     public void drawGun(Graphics g, int xShift, int yShift) {
         if(equipped != -1) {
-            guns.get(equipped).draw(g, xShift, yShift);
+            guns.get(equipped).draw(g, (int)(Game.GAME_SCALE * xShift), (int)(Game.GAME_SCALE * yShift));
         }
     }
 
@@ -381,14 +381,14 @@ public class Player
                 yShift = 15;
             }
             if(!(name.equals("fist2") && 4-i < 3)) 
-                Game.drawImage(g, name, (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, iWidth, iLength);
+                Game.drawImage(g, name, (int)(1/Game.GAME_SCALE * (Game.GAME_WIDTH - 140)) + xShift, (int)(1/Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)) + yShift, (int)(1/Game.GAME_SCALE * iWidth), (int)(1/Game.GAME_SCALE * iLength));
             //g.drawRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100 - 40)), (int)(120 * Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
-            g.drawString("" + (3 - i + 1), (int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 130)), (int)((Game.GAME_SCALE * (Game.GAME_HEIGHT - i * 100)) - 15 * Game.GAME_SCALE));
+            g.drawString("" + (3 - i + 1), (int)(1 * (Game.GAME_WIDTH - 130)), (int)((1 * (Game.GAME_HEIGHT - i * 100)) - 15 * 1));
         }
 
         int index = equipped == -1 ? 3 : equipped;
         g.setColor(new Color(0, 0, 0, 0.3f));
-        g.fillRect((int)(Game.GAME_SCALE * (Game.GAME_WIDTH - 140)), (int)(Game.GAME_SCALE * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)((120 * Game.GAME_SCALE) + 20*Game.GAME_SCALE), (int)(Game.GAME_SCALE * 100));
+        g.fillRect((int)(1 * (Game.GAME_WIDTH - 140)), (int)(1 * (Game.GAME_HEIGHT - (3 - index + 1) * 100 - 40)), (int)((120 * 1) + 20*1), (int)(1 * 100));
     }
     
     /**

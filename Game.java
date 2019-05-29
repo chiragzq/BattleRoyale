@@ -17,14 +17,28 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public enum State {
         CONNECTING, CONNECT_FAILURE, WAITING, PLAYING, DEAD
     }
+    public enum Scope {
+        X2(0.9), X4(0.6), X8(0.4), X15(0.2), X31(0.1);
+
+        private double scale;
+
+        private Scope(double scale) {
+            this.scale = scale;
+        }
+
+        public double getScale() {
+            return scale;
+        }
+        
+    }
 
     public static final int GAME_WIDTH = 1280;
     public static final int GAME_HEIGHT = 720;
-    public static final double GAME_SCALE = 1;
+    public static double GAME_SCALE = Scope.X2.getScale();
     public static final int FRAME_RATE = 30;
 
-    public static final int PLAYER_SIZE = (int)(50 * GAME_SCALE);
-    public static final int HAND_SIZE = (int)(18 * GAME_SCALE);
+    public static final int PLAYER_SIZE = (int)(50);
+    public static final int HAND_SIZE = (int)(18);
 
     private static final Map<String, Image> images = new HashMap<String, Image>();
 
@@ -63,7 +77,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
                     //Display the window.
                     self.setPreferredSize(new Dimension(
-                            (int)(GAME_WIDTH * GAME_SCALE), (int)(GAME_HEIGHT * GAME_SCALE)
+                            (int)(GAME_WIDTH), (int)(GAME_HEIGHT)
                         ));
                     frame.setFocusable(true);
                     frame.pack();
@@ -218,11 +232,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
             g.setColor(new Color(0x7DAE58));
             g.fillRect(0, 0, getWidth(), getHeight());
-            int xShift = Game.GAME_WIDTH/2;
-            int yShift = Game.GAME_HEIGHT/2;
-            xShift -= thisPlayer.getX();
-            yShift -= thisPlayer.getY();
-            drawBoundary(g);
+            int xShift = (int)(Game.GAME_WIDTH/2 / Game.GAME_SCALE) ;
+            int yShift = (int)(1/Game.GAME_SCALE * Game.GAME_HEIGHT/2);
+            xShift -= thisPlayer.getX();//(int)(thisPlayer.getX() * Game.GAME_SCALE);
+            yShift -= thisPlayer.getY();//(int)(thisPlayer.getY() * Game.GAME_SCALE);
+            drawBoundary(g, xShift, yShift);
 
             Collection<Obstacle> lObstacles = obstacles.values();
 
@@ -271,18 +285,14 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         //System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
     
-    public void drawBoundary(Graphics g)
+    public void drawBoundary(Graphics g, int xShift, int yShift)
     {
-        int xShift = Game.GAME_WIDTH/2 - thisPlayer.getX();
-        int yShift = Game.GAME_HEIGHT/2 - thisPlayer.getY();
-        
-        
-        int width = MAX_X - MIN_X;
-        int height = MAX_Y - MIN_Y;
-        int minX = MIN_X + xShift;
-        int maxX = MAX_X + xShift;
-        int minY = MIN_Y + yShift;
-        int maxY = MAX_Y + yShift;
+        int width = (int)(Game.GAME_SCALE * (MAX_X - MIN_X));
+        int height = (int)(Game.GAME_SCALE * (MAX_Y - MIN_Y));
+        int minX = (int)(Game.GAME_SCALE * (MIN_X + xShift));
+        int maxX = (int)(Game.GAME_SCALE * (MAX_X + xShift));
+        int minY = (int)(Game.GAME_SCALE * (MIN_Y + yShift));
+        int maxY = (int)(Game.GAME_SCALE * (MAX_Y + yShift));
         
         
         
@@ -309,19 +319,23 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static void fillOval(Graphics g, int x, int y, int width, int height) {
         x = x - width / 2;
         y = y - height / 2;
-        g.fillOval(x, y, width, height);
+        g.fillOval((int)(Game.GAME_SCALE * x), (int)(Game.GAME_SCALE * y), (int)(Game.GAME_SCALE * width), (int)(Game.GAME_SCALE * height));
     }
 
     public static void drawCircle(Graphics g, int x, int y, int r) {
         x = x - r / 2;
         y = y - r / 2;
-        g.drawOval(x, y, r, r);
+        g.drawOval((int)(Game.GAME_SCALE * x), (int)(Game.GAME_SCALE * y), (int)(Game.GAME_SCALE * r), (int)(Game.GAME_SCALE * r));
     }
     public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
         if(!images.containsKey(file)) 
             images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
-        g.drawImage(images.get(file), xImage, yImage, iWidth, iHeight, null);
+        g.drawImage(images.get(file), (int)(Game.GAME_SCALE * xImage), (int)(Game.GAME_SCALE * yImage), (int)(Game.GAME_SCALE * iWidth), (int)(Game.GAME_SCALE * iHeight), null);
+    }
+
+    public static void drawLine(Graphics g, int x1, int y1, int x2, int y2) {
+        g.drawLine((int)(Game.GAME_SCALE * x1), (int)(Game.GAME_SCALE * y1), (int)(Game.GAME_SCALE * x2), (int)(Game.GAME_SCALE * y2));
     }
 
     public void updateScreenLocation()

@@ -96,17 +96,17 @@ public class Bullet
         g2.setStroke(new BasicStroke(thicknessOfBullet));
         double x1 = ((double)x - backX)/3 * 2 + x;
         double y1 = ((double)y - backY)/3 * 2 + y;
-        g2.drawLine(x + xShift, y + yShift, (int)x1 + xShift, (int)y1+ yShift);
+        Game.drawLine(g, x + xShift, y + yShift, (int)x1 + xShift, (int)y1+ yShift);
         
         g.setColor(new Color(39, 99, 196, 150));
         double x2 = ((double)x - backX)/12 * 3 + x1;
         double y2 = ((double)y - backY)/12 * 3 + y1;
-        g2.drawLine((int)x1 + xShift, (int)y1+ yShift, (int)x2 + xShift, (int)y2+ yShift);
+        Game.drawLine(g, (int)x1 + xShift, (int)y1+ yShift, (int)x2 + xShift, (int)y2+ yShift);
         
         g.setColor(new Color(39, 99, 196, 50));
         double x3 = ((double)x - backX)/12 * 1 + x2;
         double y3 = ((double)y - backY)/12 * 1 + y2;
-        g2.drawLine((int)x2 + xShift, (int)y2+ yShift, (int)x3 + xShift, (int)y3+ yShift);
+        Game.drawLine(g, (int)x2 + xShift, (int)y2+ yShift, (int)x3 + xShift, (int)y3+ yShift);
         //These sets the alphas of parts of the bullet so it can fade in/out
         
     }

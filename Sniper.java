@@ -23,7 +23,7 @@ public class Sniper extends Gun
         int x = getPlayer().getX();
         int y = getPlayer().getY();
 
-        
+        x = 0; xShift = Game.GAME_WIDTH / 2; y = 0; yShift = Game.GAME_HEIGHT / 2;
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *10)));
         
         int increase = 10;
