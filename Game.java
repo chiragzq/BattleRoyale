@@ -48,7 +48,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     
     private Network network;
     private ReadWriteLock lock;
-    private int ping;
+    private long ping;
 
     public State gameState;
 
@@ -99,11 +99,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     network.mouseLocation(Game.getMouseX(), Game.getMouseY());
                     updateScreenLocation();
                     repaint();
+
+                    network.ping();
                 }
             }, 100, 1000/FRAME_RATE);
     }
 
-    public void setPing(int millis) {
+    public void setPing(long millis) {
         this.ping = millis;
     }
 
@@ -266,7 +268,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             String text = "You Died";
             g.drawString(text, Game.GAME_WIDTH/2 - metrics.stringWidth(text), Game.GAME_HEIGHT/2 - Game.GAME_HEIGHT/20);
         }
-        System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
+        //System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
     
     public void drawBoundary(Graphics g)

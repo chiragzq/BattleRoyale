@@ -82,9 +82,7 @@ public class Network {
                     }
                     for(JSONObject update : updates) {
                         String type = update.getString("type");
-                        if(type.equals("ping")) {
-                            game.setPing((int)(System.currentTimeMillis() - update.getLong("t")));
-                        } else if(type.equals("player")) {
+                        if(type.equals("player")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             if(updatedPlayer == null) 
                                 continue;
@@ -251,6 +249,14 @@ public class Network {
                 game.gameState = Game.State.CONNECT_FAILURE;
             }
         });
+        socket.on("PONG", new Emitter.Listener(){
+        
+            @Override
+            public void call(Object... arg0) {
+                System.out.println("PONG");
+                game.setPing((System.currentTimeMillis() - (long)arg0[0]));
+            }
+        });
         socket.connect();
     }
 
@@ -330,5 +336,9 @@ public class Network {
         coordinates.put("x", x);
         coordinates.put("y", y);
         socket.emit("mouse_loc", coordinates);
+    }
+
+    public void ping() {
+        socket.emit("PING", System.currentTimeMillis());
     }
 }

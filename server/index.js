@@ -179,6 +179,10 @@ function initializeSocket(socket) {
         player.pickUp();
     })
 
+    socket.on("PING", (time) => {
+        socket.emit("PONG", time);
+    });
+
     socket.on("disconnect", () => {
         io.emit("delete_player", player.index)
         delete game.players[player.index];

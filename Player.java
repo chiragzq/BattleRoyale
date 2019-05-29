@@ -10,7 +10,7 @@ import javax.swing.*;
  */
 public class Player
 {
-    private static final int TOTAL_PUNCH_TIME = (int)(Game.GAME_SCALE *300);
+    private static final int TOTAL_PUNCH_TIME = (int)(300);
     //In Milli seconds
     private static final int TOTAL_ARM_EXTEND = (int)(Game.GAME_SCALE *20);
 
