@@ -14,6 +14,9 @@ public class Pistol extends Gun
         super(play, 30, 20);
     }
 
+    public String getType() {
+        return "blue";
+    }
     public void draw(Graphics g, int xShift, int yShift)
     {
         

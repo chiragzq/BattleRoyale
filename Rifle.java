@@ -12,6 +12,10 @@ public class Rifle extends Gun
     {
         super(play, 30, 0);
     }
+
+    public String getType() {
+        return "blue";
+    }
     
     public void draw(Graphics g, int xShift, int yShift)
     {

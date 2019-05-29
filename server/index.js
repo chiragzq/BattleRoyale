@@ -179,6 +179,14 @@ function initializeSocket(socket) {
         player.pickUp();
     })
 
+    socket.on("useBandages", () => {
+        player.useBandage();
+    })
+
+    socket.on("useMedkits", () => {
+        player.useMedkit();
+    })
+
     socket.on("PING", (time) => {
         socket.emit("PONG", time);
     });

@@ -40,7 +40,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int PLAYER_SIZE = (int)(50);
     public static final int HAND_SIZE = (int)(18);
 
-    private static final Map<String, Image> images = new HashMap<String, Image>();
+    private static Map<String, Image> images;
 
     private static int screenLocationX;
     private static int screenLocationY;
@@ -93,7 +93,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         players = new HashMap<Integer, Player>();
         bullets = new HashMap<Integer, Bullet>();
         items = new HashMap<Integer, Item>();
-        
+        images = new HashMap<String, Image>();
+
         gameState = State.CONNECTING;
         
         network = new Network("http://localhost:5000", this, lock);
@@ -155,7 +156,28 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        network.click();    
+        int y = e.getY();
+        int x = e.getX();
+        int thickness  =60;
+        int between = 20;
+        int height = 30;
+        int start = Game.GAME_HEIGHT/4;
+        System.out.println(y + " " + x);
+        if(x <= Game.GAME_WIDTH && x >= Game.GAME_WIDTH - thickness)
+        {
+            if(y >= start + 2 * height /3&& y <= start + height + between) {
+                System.out.println("true");
+                //thisPlayer.setBandages(0);
+                network.useBandages();
+            }
+            else if(y >= start + 2 * height& y <= start + 3 * height)
+            {
+                System.out.println("false");
+                network.useMedkit();
+            }
+        }
+        else
+            network.click();    
     }
 
     @Override
@@ -284,6 +306,11 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         }
         //System.out.println("Draw loop took " + (System.currentTimeMillis() - startTime) + " ms");
     }   
+
+    public Player getThisPlayer()
+    {
+        return thisPlayer;
+    }
     
     public void drawBoundary(Graphics g, int xShift, int yShift)
     {
@@ -356,7 +383,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     }
 
     public static int getMouseY()
-    {
+    {   
         return (int)MouseInfo.getPointerInfo().getLocation().getY() - screenLocationY;
     }
 
