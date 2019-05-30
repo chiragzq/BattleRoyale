@@ -251,6 +251,9 @@ public class Network {
                     else if(type.equals("chestplate1")) {
                         game.getItems().put(update.getInt("id"), new ChestPlateOne(update.getInt("x"), update.getInt("y")));
                     }
+                    else if(type.equals("scope2")) {
+                        game.getItems().put(update.getInt("id"), new Scope2(update.getInt("x"), update.getInt("y")));
+                    }
                     else {
                         throw new RuntimeException("Invalid dropped item type: " + type);
                     }

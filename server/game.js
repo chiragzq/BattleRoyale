@@ -26,6 +26,7 @@ const Medkit = _item.Medkit;
 const Armor = _item.Medkit;
 const ChestPlateOne = _item.ChestPlateOne;
 const HelmetOne = _item.HelmetOne;
+const Scope2 = _item.Scope2;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -291,7 +292,7 @@ class Player {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
                             let moveAngle = Math.random() * 360;
-                            let dropItem = getRandomItem(obstalce.x, obstacle.y, moveAngle);
+                            let dropItem = getRandomItem(obstacle.x, obstacle.y, moveAngle);
                             
                             if(dropItem instanceof DroppedGun) {
                                 
@@ -828,6 +829,8 @@ function getRandomItem(x, y, angle) {
         dropItem = new DroppedShotgun(x, y, angle);
     else if (chance < 20)
         dropItem = new DroppedPistol(x, y, angle);
+    else if (true)
+        dropItem = new Scope2(x, y, angle);
     else if (chance < 60)
         dropItem = new Bandage(x, y, angle);
     else if (chance < 100)
