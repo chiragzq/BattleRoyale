@@ -162,17 +162,14 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         int between = 20;
         int height = 30;
         int start = Game.GAME_HEIGHT/4;
-        System.out.println(y + " " + x);
         if(x <= Game.GAME_WIDTH && x >= Game.GAME_WIDTH - thickness)
         {
             if(y >= start + 2 * height /3&& y <= start + height + between) {
-                System.out.println("true");
                 //thisPlayer.setBandages(0);
                 network.useBandages();
             }
             else if(y >= start + 2 * height& y <= start + 3 * height)
             {
-                System.out.println("false");
                 network.useMedkit();
             }
         }
@@ -356,8 +353,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     }
     public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
-        if(!images.containsKey(file)) 
-            images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
+        if(images != null && !images.containsKey(file)) 
+            images.put(file, new ImageIcon("img/" + file + ".png").getImage());
         g.drawImage(images.get(file), (int)(Game.GAME_SCALE * xImage), (int)(Game.GAME_SCALE * yImage), (int)(Game.GAME_SCALE * iWidth), (int)(Game.GAME_SCALE * iHeight), null);
     }
 

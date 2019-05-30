@@ -24,6 +24,7 @@ public class Bush extends Obstacle
 
     public void draw(Graphics g, int xShift, int yShift)
     {
+        System.out.println(getHealth());
         if(getHealth() <= 25)
         {
             Graphics2D g2 = (Graphics2D)g;

@@ -301,7 +301,6 @@ public class Network {
         
             @Override
             public void call(Object... arg0) {
-                System.out.println("PONG");
                 game.setPing((System.currentTimeMillis() - (long)arg0[0]));
             }
         });

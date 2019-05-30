@@ -425,6 +425,8 @@ public class Player
     {
         int startHeight = Game.GAME_HEIGHT/4;
         int width = Game.GAME_WIDTH;
+        int increment = Game.GAME_WIDTH/9;
+        int vincrement = Game.GAME_HEIGHT/26;
         int between = 20;
         int thickness = 60;
         int height = 30;
@@ -433,19 +435,19 @@ public class Player
         
         g2.setFont(new Font("Arial", Font.BOLD, 20));
         
-        g2.drawString("" + bandages, width - thickness, startHeight + height);
-        Game.drawImage(g2, "bandage", width - thickness/2 - thickness/6, startHeight + height - 3 * height/5, thickness/2, height);
+        g2.drawString("" + bandages, width - thickness, startHeight + height + vincrement/2 - height/9);
+        Game.drawImage(g2, "bandage", width - thickness/2 - thickness/6 + increment, startHeight + height - 2 * height/5 + vincrement, thickness/2, height);
         
         g2.drawString("" + medkits, width - thickness, startHeight + 2 * height + between);
-        Game.drawImage(g2, "medkit", width - thickness/2 - thickness/6, startHeight + 2 * height + between - 3 * height/5, thickness/2, height);
+        Game.drawImage(g2, "medkit", width - thickness/2 - thickness/6 + increment, startHeight + 2 * height + between - 3 * height/5 + vincrement, thickness/2, height);
         
         int numDigits = numDigits(blueAmmo);
-        g2.drawString("" + blueAmmo, width - thickness - numDigits * 5, startHeight + 3 * height + 2 * between);
-        Game.drawImage(g2, "blueAmmo", width - thickness/2 - thickness/6, startHeight + 3 * height + 2 * between - 4* height/5, thickness/2, height);
+        g2.drawString("" + blueAmmo, width - thickness - numDigits * 5, startHeight + 3 * height + 2 * between - 6* height/5 + vincrement);
+        Game.drawImage(g2, "blueAmmo", width - thickness/2 - thickness/6 + increment, startHeight + 3 * height + 2 * between - 4* height/5 + vincrement, thickness/2, height);
 
         numDigits = numDigits(redAmmo);
-        g2.drawString("" + redAmmo, width - thickness - numDigits * 5, startHeight + 4 * height + 3 * between);
-        Game.drawImage(g2, "redAmmo", width - thickness/2 - thickness/6, startHeight + 4 * height + 3 * between - 4* height/5, thickness/2, height);
+        g2.drawString("" + redAmmo, width - thickness - numDigits * 5, startHeight + 4 * height + 2 * between);
+        Game.drawImage(g2, "redAmmo", width - thickness/2 - thickness/6 + increment, startHeight + 4 * height + 3 * between - 5* height/5 + vincrement, thickness/2, height);
 
     }
 
