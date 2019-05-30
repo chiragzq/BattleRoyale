@@ -857,7 +857,7 @@ function killPlayer(player, game) {
 function getRandomItem(x, y, angle) {
     const chance = Math.random() * 100;
     let dropItem;
-    if(chance < 2)
+    if(chance < 4)
         dropItem = new DroppedSniper(x, y, angle, 0);
     else if(chance < 9)
         dropItem = new DroppedRifle(x, y, angle, 0);
