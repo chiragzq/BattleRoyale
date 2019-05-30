@@ -168,7 +168,7 @@ public class Network {
                             throw new RuntimeException("Unknown Update Type! " + type);
                         }
                     }
-                }catch(Exception e){System.out.println(e); e.printStackTrace();
+                }catch(Exception e){e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }
