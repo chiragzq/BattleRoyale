@@ -829,13 +829,13 @@ function killPlayer(player, game) {
 function getRandomItem(x, y, angle) {
     const chance = Math.random() * 100;
     let dropItem;
-    if(chance < 5)
+    if(chance < 25)
         dropItem = new DroppedSniper(x, y, angle, 0);
-    else if(chance < 20)
+    else if(chance < 50)
         dropItem = new DroppedRifle(x, y, angle, 0);
-    else if(chance < 20)
+    else if(chance < 75)
         dropItem = new DroppedShotgun(x, y, angle, 0);
-    else if (chance < 20)
+    else if (chance < 100)
         dropItem = new DroppedPistol(x, y, angle, 0);
     else if (chance < 100)
         dropItem = new Scope2(x, y, angle, 0);

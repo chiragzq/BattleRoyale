@@ -48,7 +48,9 @@ public class Network {
                     JSONObject info = (JSONObject) arg[0];
                     Player player = new Player(info.getInt("x"), info.getInt("y"), info.getInt("dir"), info.getInt("health"));
                     game.setPlayer(player, info.getInt("id"));
-                    playerId = info.getInt("id");                }catch(Exception e){e.printStackTrace();
+                    playerId = info.getInt("id");
+                    SoundManager.playSound("flare", 1.0);
+                }catch(Exception e){e.printStackTrace();
                 } finally {
                     lock.writeLock().unlock();
                 }
@@ -130,6 +132,11 @@ public class Network {
                             Bullet newBullet = new Bullet(update.getInt("x"), update.getInt("y"), update.getInt("dir"));
                             newBullet.setThickness(update.getInt("thickness"));
                             game.getBullets().put(update.getInt("id"), newBullet);
+
+                            double distance = Math.sqrt(Math.pow(newBullet.getBackX() - game.getPlayer().getX(), 2) + Math.pow(newBullet.getBackY() - game.getPlayer().getY(), 2));
+                            if(distance < 5000) {
+                                SoundManager.playSound("gun", Math.max(1, 100.0 / distance));
+                            }
                         } else if(type.equals("bullet")) {
                             Bullet updatedBullet = game.getBullets().get(update.getInt("id"));
                             updatedBullet.setX(update.getInt("x"));
@@ -296,7 +303,14 @@ public class Network {
         socket.on("reload", new Emitter.Listener() {
             @Override
             public void call(Object... arg0) {
-                game.getPlayer().setReloading((int)arg0[0]);
+                int time = (int)arg0[0];
+                game.getPlayer().setReloading(time);
+                if(time == 0) return;
+                if(time < 1000) {
+                    SoundManager.playSound("reload_01", 1.0);
+                } else {
+                    SoundManager.playSound("reload_02", 1.0);
+                }
             }
         });
 
