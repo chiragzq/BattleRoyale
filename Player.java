@@ -247,7 +247,7 @@ public class Player
             g.setColor(Color.WHITE);
             g.drawString("" + ((double)((int)((double)(reloadDuration -k)/100)))/10, x + width/13, y - height/40);
 
-            g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*stroke));
+            g2.setStroke(new BasicStroke(stroke));
             g2.drawArc(x - width/5, y -(int)((double) height/6 * 3.9), width, height, 90, -360 + (int)angle);
 
             int widthRect = 100;
@@ -464,6 +464,8 @@ public class Player
         
         g2.setFont(new Font("Arial", Font.BOLD, 20));
         
+        Game.drawImageNoScale(g2, "scope" + scope, Game.GAME_WIDTH/2 - height, height, height, height);
+
         g2.drawString("" + bandages, width - thickness, startHeight + height + vincrement/2 - height/9);
         Game.drawImageNoScale(g2, "bandage", width - thickness/2 - thickness/6, startHeight + height - 2 * height/5 + vincrement - aincrement, thickness/2, height);
         
@@ -482,7 +484,7 @@ public class Player
 
     public void drawWeaponSelections(Graphics g) {
         g.setColor(Color.BLACK);
-        ((Graphics2D)g).setStroke(new BasicStroke((int)(Game.GAME_SCALE*4)));
+        ((Graphics2D)g).setStroke(new BasicStroke(4));
         g.setFont(new Font("Arial", 20, 20));
         for(int i = 1;i <= 3;i ++) {
             String name = "";

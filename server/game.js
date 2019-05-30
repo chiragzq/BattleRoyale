@@ -586,6 +586,12 @@ class Player {
                         y: this.y,
                         id: this.game.items.length
                     });
+                    this.game.io.emit("ammo", {
+                        item: this.equippedWeapon,
+                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                        blue: this.blueAmmo,
+                        red: this.redAmmo
+                    });
                     this.game.items.push(newDrop);
                     for(let i = 0;i < parseInt(oldGun.ammo / oldGun.magSize / 1.5);i ++) {
                         const ammo = new Ammo(this.x, this.y, Math.random() * 360, Math.random() * 800)
