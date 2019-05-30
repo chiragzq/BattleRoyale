@@ -124,9 +124,34 @@ class ChestPlateOne extends Armor {
     }
 }
 
+class ChestPlateTwo extends Armor {
+    constructor(x, y, angle) {
+        super("chestplate2", x, y, angle);
+    }
+}
+
+class ChestPlateThree extends Armor {
+    constructor(x, y, angle) {
+        super("chestplate3", x, y, angle);
+    }
+}
+
+
 class HelmetOne extends Armor {
     constructor(x, y, angle) {
         super("helmet1", x, y, angle);
+    }
+}
+
+class HelmetTwo extends Armor {
+    constructor(x, y, angle) {
+        super("helmet2", x, y, angle);
+    }
+}
+
+class HelmetThree extends Armor {
+    constructor(x, y, angle) {
+        super("helmet3", x, y, angle);
     }
 }
 
@@ -173,7 +198,11 @@ module.exports.Bandage = Bandage;
 module.exports.Medkit = Medkit;
 module.exports.Armor = Armor;
 module.exports.ChestPlateOne = ChestPlateOne;
+module.exports.ChestPlateTwo = ChestPlateTwo;
+module.exports.ChestPlateThree = ChestPlateThree;
 module.exports.HelmetOne = HelmetOne;
+module.exports.HelmetTwo = HelmetTwo;
+module.exports.HelmetThree = HelmetThree;
 module.exports.Scope2 = Scope2;
 module.exports.Scope4 = Scope4;
 module.exports.Scope8 = Scope8;

@@ -250,8 +250,20 @@ public class Network {
                     else if(type.equals("helmet1")) {
                         game.getItems().put(update.getInt("id"), new HelmetOne(update.getInt("x"), update.getInt("y")));
                     }
+                    else if(type.equals("helmet2")) {
+                        game.getItems().put(update.getInt("id"), new HelmetTwo(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("helmet3")) {
+                        game.getItems().put(update.getInt("id"), new HelmetThree(update.getInt("x"), update.getInt("y")));
+                    }
                     else if(type.equals("chestplate1")) {
                         game.getItems().put(update.getInt("id"), new ChestPlateOne(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("chestplate2")) {
+                        game.getItems().put(update.getInt("id"), new ChestPlateTwo(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("chestplate3")) {
+                        game.getItems().put(update.getInt("id"), new ChestPlateThree(update.getInt("x"), update.getInt("y")));
                     }
                     else if(type.equals("scope2")) {
                         game.getItems().put(update.getInt("id"), new Scope2(update.getInt("x"), update.getInt("y")));
