@@ -114,7 +114,6 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                     network.mouseLocation(Game.getMouseX(), Game.getMouseY());
                     updateScreenLocation();
                     repaint();
-
                     network.ping();
                 }
             }, 100, 1000/FRAME_RATE);

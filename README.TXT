@@ -20,3 +20,16 @@ Shotgun: https://dygtyjqp7pi0m.cloudfront.net/i/7633/9302134_1.jpg?v=8CC887D5507
 Rifle: https://www.noveske.com/pub/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/0/2/02000424_-_Gen_III_14.5_Afghan_M-LOK_logo.jpg
 Sniper: http://www.military-today.com/firearms/arctic_warfare_magnum.jpg
 Crate, Barrel death graphic come from the surviv creator kit.
+
+
+Library credits:
+Tinysound -- Finn Kuusisto
+Socket.io Java Client -- https://github.com/socketio/socket.io-client-java
+Engine.io Java Client -- https://github.com/socketio/engine.io-client-java
+JOrbis -- Kyle Repinski
+jSon -- Sean Leary
+okhttp / okio -- Square
+vorbisspi / tritonus - Patrik Duditš
+
+Sound credits:
+All sounds taken from the surviv.io creator kit.

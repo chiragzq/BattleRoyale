@@ -270,6 +270,7 @@ public class Network {
                     game.getPlayers().remove(id); 
                     if(id == playerId) {
                         socket.disconnect();
+                        SoundManager.shutdown();
                         game.gameState = Game.State.DEAD;
                     }               
                 }catch(Exception e){e.printStackTrace();
