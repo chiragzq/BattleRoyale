@@ -150,12 +150,6 @@ class Game {
     }
 
     getUpdates() {
-        //if(this.updates.length) {
-        //    this.updates.push({
-        //        type: "ping",
-        //        t: Date.now(),
-        //    });
-        //}
         const ret = this.updates;
         this.updates = [];
         if(ret.length) {

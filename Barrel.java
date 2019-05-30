@@ -1,6 +1,7 @@
 import java.awt.*;
+
 /**
- * Write a description of class Barrel here.
+ * Represents an explosive barrel.
  * 
  * @author (your name) 
  * @version (a version number or a date)

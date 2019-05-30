@@ -7,7 +7,7 @@ class Item {
         this.moveAway = vel ? vel : 300;
         this.start = Date.now();
         this.angle = angle;
-
+        
         this.type = name;
     }
 
@@ -131,32 +131,32 @@ class HelmetOne extends Armor {
 }
 
 class Scope extends Item {
-    constructor(name, x, y, angle) {
-        super(name, x, y, angle);
+    constructor(name, x, y, angle, vel) {
+        super(name, x, y, false, 30, angle, vel);
     }
 }
 
 class Scope2 extends Scope {
-    constructor(x, y, angle) {
-        super("scope2", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("scope2", x, y, angle, vel);
     }
 }
 
 class Scope4 extends Scope {
-    constructor(x, y, angle) {
-        super("scope4", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("scope4", x, y, angle, vel);
     }
 }
 
 class Scope8 extends Scope {
-    constructor(x, y, angle) {
-        super("scope8", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("scope8", x, y, angle, vel);
     }
 }
 
 class Scope15 extends Scope {
-    constructor(x, y, angle) {
-        super("scope15", x, y, angle);
+    constructor(x, y, angle, vel) {
+        super("scope15", x, y, angle, vel);
     }
 }
 
