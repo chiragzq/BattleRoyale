@@ -190,7 +190,7 @@ class Player {
         this.moveL = false;
         this.moveD = false;
         this.moveR = false;
-        
+        this.currentScope = 1;
 
 
         this.bandages = 0;
@@ -509,6 +509,20 @@ class Player {
                     }
 
 
+                    this.game.items[index] = null;
+                    return true;
+                }
+                else if(item.type.indexOf("scope") != -1) {
+                    if(this.currentScope >= parseInt(item.substring(5)))
+                        return false;
+                    this.game.updates.push({
+                        type: "remove_item",
+                        id: index
+                    });
+                    this.socket.emit("player_updates", {
+                        type: "scope",
+                        level: getInt(item.substring(5))
+                    });
                     this.game.items[index] = null;
                     return true;
                 }
@@ -831,6 +845,12 @@ function getRandomItem(x, y, angle) {
         dropItem = new DroppedPistol(x, y, angle);
     else if (true)
         dropItem = new Scope2(x, y, angle);
+    else if(chance < 10)
+        dropItem = new Scope4(x, y, angle);
+    else if(chance < 20)
+        dropItem = new Scope8(x, y, angle);
+    else if(change < 30)
+        dropItem = new Scope15(x, y, angle);
     else if (chance < 60)
         dropItem = new Bandage(x, y, angle);
     else if (chance < 100)

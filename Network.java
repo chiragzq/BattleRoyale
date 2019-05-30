@@ -76,7 +76,9 @@ public class Network {
                         game.getThisPlayer().setBlueAmmo(update.getInt("num"));
                     } else if(type.equals("redAmmo")) {
                         game.getThisPlayer().setRedAmmo(update.getInt("num"));
-                    } 
+                    } else if(type.equals("scope")) {
+                        game.getThisPlayer().setScope(update.getInt("level"));
+                    }
                 } catch(Exception e) {e.printStackTrace();}
                 finally {
                     lock.writeLock().unlock();
@@ -253,6 +255,15 @@ public class Network {
                     }
                     else if(type.equals("scope2")) {
                         game.getItems().put(update.getInt("id"), new Scope2(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("scope4")) {
+                        game.getItems().put(update.getInt("id"), new Scope4(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("scope8")) {
+                        game.getItems().put(update.getInt("id"), new Scope8(update.getInt("x"), update.getInt("y")));
+                    }
+                    else if(type.equals("scope15")) {
+                        game.getItems().put(update.getInt("id"), new Scope15(update.getInt("x"), update.getInt("y")));
                     }
                     else {
                         throw new RuntimeException("Invalid dropped item type: " + type);
