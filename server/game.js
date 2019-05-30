@@ -836,33 +836,33 @@ function getRandomItem(x, y, angle) {
     const chance = Math.random() * 100;
     let dropItem;
     if(chance < 5)
-        dropItem = new DroppedSniper(x, y, angle);
+        dropItem = new DroppedSniper(x, y, angle, 0);
     else if(chance < 20)
-        dropItem = new DroppedRifle(x, y, angle);
+        dropItem = new DroppedRifle(x, y, angle, 0);
     else if(chance < 20)
-        dropItem = new DroppedShotgun(x, y, angle);
+        dropItem = new DroppedShotgun(x, y, angle, 0);
     else if (chance < 20)
-        dropItem = new DroppedPistol(x, y, angle);
-    else if (true)
-        dropItem = new Scope2(x, y, angle);
+        dropItem = new DroppedPistol(x, y, angle, 0);
+    else if (chance < 100)
+        dropItem = new Scope2(x, y, angle, 0);
     else if(chance < 10)
-        dropItem = new Scope4(x, y, angle);
+        dropItem = new Scope4(x, y, angle, 0);
     else if(chance < 20)
-        dropItem = new Scope8(x, y, angle);
+        dropItem = new Scope8(x, y, angle, 0);
     else if(change < 30)
-        dropItem = new Scope15(x, y, angle);
+        dropItem = new Scope15(x, y, angle, 0);
     else if (chance < 60)
-        dropItem = new Bandage(x, y, angle);
+        dropItem = new Bandage(x, y, angle, 0);
     else if (chance < 100)
-        dropItem = new Medkit(x, y, angle);
+        dropItem = new Medkit(x, y, angle, 0);
     else if (chance < 100)
-        dropItem = new ChestPlateOne(x, y, angle);
+        dropItem = new ChestPlateOne(x, y, angle, 0);
     else if (chance < 100)
         dropItem = new HelmetOne(x, y, angle);
     else if(change < 10)
-        dropItem = new BlueAmmo(x, y, angle);
+        dropItem = new BlueAmmo(x, y, angle, 0);
     else
-        dropItem = new RedAmmo(x, y, angle);
+        dropItem = new RedAmmo(x, y, angle, 0);
     return dropItem;
 }
 

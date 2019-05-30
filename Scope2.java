@@ -11,7 +11,7 @@ public class Scope2 extends Scope {
     {
         super.draw(g, xShift, yShift);
         //drawImage(g);
-        Game.drawImage(g, "scope2", getX() - getSize()/3, getY() - getSize() / 3, 2 * getSize()/3, 2 * getSize()/3);
+        Game.drawImage(g, "scope2", getX() - getSize()/3 + xShift, getY() - getSize() / 3 + yShift, 2 * getSize()/3, 2 * getSize()/3);
     }
     
     public void drawImage(Graphics g)
