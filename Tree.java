@@ -1,9 +1,8 @@
 import java.awt.*;
 /**
- * Write a description of class Tree here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * This isa client class Tree, which draws it at the constructred location, and its size decreases as health decreases
+ * @author Aaron Lo
+ * @version ????
  */
 public class Tree extends Obstacle
 {

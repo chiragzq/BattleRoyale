@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Stone here.
+ * This is client class stone, which draws it at its constructed location and decreases the size
  * 
  * @author Aaron Lo
  * @version 5-8-19
