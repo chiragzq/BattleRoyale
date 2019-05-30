@@ -186,7 +186,7 @@ public class Player
         Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
         Graphics2D g2 = (Graphics2D) g;
         if(chestplate > 0) {
-            g2.setStroke(new BasicStroke(4));
+            g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*4)));
             if(chestplate == 1) {
                 g2.setColor(new Color(209, 209, 209));
             }
@@ -247,7 +247,7 @@ public class Player
             g.setColor(Color.WHITE);
             g.drawString("" + ((double)((int)((double)(reloadDuration -k)/100)))/10, x + width/13, y - height/40);
 
-            g2.setStroke(new BasicStroke(stroke));
+            g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*stroke));
             g2.drawArc(x - width/5, y -(int)((double) height/6 * 3.9), width, height, 90, -360 + (int)angle);
 
             int widthRect = 100;
@@ -441,7 +441,7 @@ public class Player
         Game.fillCircle(g, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*2)));
         g2.setColor(new Color(0x322819));
         Game.drawCircle(g2, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
         Game.drawCircle(g2, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
@@ -482,11 +482,11 @@ public class Player
 
     public void drawWeaponSelections(Graphics g) {
         g.setColor(Color.BLACK);
-        ((Graphics2D)g).setStroke(new BasicStroke(4));
+        ((Graphics2D)g).setStroke(new BasicStroke((int)(Game.GAME_SCALE*4)));
         g.setFont(new Font("Arial", 20, 20));
         for(int i = 1;i <= 3;i ++) {
             String name = "";
-            int iWidth = 200;
+            int iWidth = 200; 
             int iLength = 100;
             int xShift = 0;
             int yShift = 0;
