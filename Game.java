@@ -18,7 +18,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         CONNECTING, CONNECT_FAILURE, WAITING, PLAYING, DEAD
     }
     public enum Scope {
-        X2(0.9), X4(0.6), X8(0.4), X15(0.2), X31(0.1);
+        X1(1), X2(0.9), X4(0.6), X8(0.4), X15(0.2), X31(0.1);
 
         private double scale;
 
@@ -34,7 +34,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static final int GAME_WIDTH = 1280;
     public static final int GAME_HEIGHT = 720;
-    public static double GAME_SCALE = Scope.X2.getScale();
+    public static double GAME_SCALE = Scope.X1.getScale();
     public static final int FRAME_RATE = 30;
 
     public static final int PLAYER_SIZE = (int)(50);

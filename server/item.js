@@ -130,6 +130,36 @@ class HelmetOne extends Armor {
     }
 }
 
+class Scope extends Item {
+    constructor(name, x, y, angle) {
+        super(name, x, y, angle);
+    }
+}
+
+class Scope2 extends Scope {
+    constructor(x, y, angle) {
+        super("scope2", x, y, angle);
+    }
+}
+
+class Scope4 extends Scope {
+    constructor(x, y, angle) {
+        super("scope4", x, y, angle);
+    }
+}
+
+class Scope8 extends Scope {
+    constructor(x, y, angle) {
+        super("scope8", x, y, angle);
+    }
+}
+
+class Scope15 extends Scope {
+    constructor(x, y, angle) {
+        super("scope15", x, y, angle);
+    }
+}
+
 module.exports.Item = Item;
 module.exports.Ammo = Ammo;
 module.exports.BlueAmmo = BlueAmmo;
@@ -144,3 +174,7 @@ module.exports.Medkit = Medkit;
 module.exports.Armor = Armor;
 module.exports.ChestPlateOne = ChestPlateOne;
 module.exports.HelmetOne = HelmetOne;
+module.exports.Scope2 = Scope2;
+module.exports.Scope4 = Scope4;
+module.exports.Scope8 = Scope8;
+module.exports.Scope15 = Scope15;

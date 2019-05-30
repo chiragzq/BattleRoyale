@@ -45,6 +45,7 @@ public class Player
     private int redAmmo;
     private int blueAmmo;
     private int clip;
+    private int scope;
 
     /**
      * Constructs Player at location(x, y)
@@ -72,6 +73,7 @@ public class Player
         totalHealth = 100;
         redAmmo = 0;
         blueAmmo = 0;
+        scope = 1;
     }
 
     public void setBlueAmmo(int k) 
@@ -120,6 +122,22 @@ public class Player
 
     public void setChestplate(int k) {
         chestplate = k;
+    }
+
+    public void setScope(int k) {
+        scope = k;
+        if(scope == 2)
+            Game.GAME_SCALE = Game.Scope.X2.getScale();
+        else if(scope == 4)
+            Game.GAME_SCALE = Game.Scope.X4.getScale();
+        else if(scope == 8)
+            Game.GAME_SCALE = Game.Scope.X8.getScale();
+        else if(scope == 15)
+            Game.GAME_SCALE = Game.Scope.X15.getScale();
+    }
+
+    public int getScope() {
+        return scope;
     }
     
 

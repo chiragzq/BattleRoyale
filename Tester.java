@@ -52,6 +52,7 @@ public class Tester extends JComponent implements MouseListener
         ite.add(new DroppedPistol(400, 400));
         
         ite.add(new Bandage(500, 500));
+        ite.add(new Scope2(600, 600));
     }
     
     /**
@@ -61,24 +62,25 @@ public class Tester extends JComponent implements MouseListener
     public void paintComponent(Graphics g)
     {
         //background
-        
-        
-        for(int i = 0; i < items.size(); i++)
-        {
-            items.get(i).draw(g, 0, 0);
-        }
-        
-        for(Obstacle obs : ob)
-        {
-            obs.draw(g, 0 ,0);
-        }
-        
-        for(Item ob: ite)
-        {
-            ob.draw(g, 0, 0);
-        }
-        player.drawWeaponSelections(g);
-        player.drawPack(g);
+        Image image = new ImageIcon("img/scope2.png").getImage();
+         g.drawImage(image, 400, 400, 30, 30, null);
+        ite.get(3).draw(g, 0, 0);
+//         for(int i = 0; i < items.size(); i++)
+//         {
+//             items.get(i).draw(g, 0, 0);
+//         }
+//         
+// //         for(Obstacle obs : ob)
+// //         {
+// //             obs.draw(g, 0 ,0);
+// //         }
+//         
+//         for(Item ob: ite)
+//         {
+//             ob.draw(g, 0, 0);
+//         }
+//         player.drawWeaponSelections(g);
+//         player.drawPack(g);
     }
    
 
