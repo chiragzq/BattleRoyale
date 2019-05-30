@@ -109,6 +109,16 @@ function initializeSocket(socket) {
         });
     });
 
+    game.items.forEach((item, index) => {
+        socket.emit("new_dropped_item", {
+            type: item.type,
+            x: item.x,
+            y: item.y,
+            id: index,
+            color: item.color
+        });
+    })
+
     io.emit("new_player", {
         id: player.index,
         x: player.x,
