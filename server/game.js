@@ -34,9 +34,10 @@ class Game {
     constructor(io) {
         this.players = [];
         this.bullets = [];
-        this.obstacles = generateRandomMap();
-        
         this.items = [];
+        this.obstacles = [];
+        generateRandomMap(this);
+        
 
         this.updates = [];
 
@@ -289,39 +290,9 @@ class Player {
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
-                            let dropItem;
                             let moveAngle = Math.random() * 360;
-                            const chance = Math.random() * 100;
-
-                            // const sniperChance = 5; //in terms of percentage
-                            // const rifleChance = 25;
-                            // const shotgunChance = 25;
-                            // const pistolChance = 35;
-                            // const ammoChance = 5;
-                            // const bandageChance = 5;
-                            // const medkitChange = 5;
-
-
-                            if(chance < 5)
-                                dropItem = new DroppedSniper(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 20)
-                                dropItem = new DroppedRifle(obstacle.x, obstacle.y, moveAngle);
-                            else if(chance < 20)
-                                dropItem = new DroppedShotgun(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 20)
-                                dropItem = new DroppedPistol(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 60)
-                                dropItem = new Bandage(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 100)
-                                dropItem = new Medkit(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 100)
-                                dropItem = new ChestPlateOne(obstacle.x, obstacle.y, moveAngle);
-                            else if (chance < 100)
-                                dropItem = new HelmetOne(obstacle.x, obstacle.y, moveAngle);
-                            else if(change < 10)
-                                dropItem = new BlueAmmo(obstacle.x, obstacle.y, moveAngle);
-                            else
-                                dropItem = new RedAmmo(obstacle.x, obstacle.y, moveAngle);
+                            let dropItem = getRandomItem(obstalce.x, obstacle.y, moveAngle);
+                            
                             if(dropItem instanceof DroppedGun) {
                                 
                                 var droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
@@ -336,7 +307,7 @@ class Player {
                                 });
                                 this.game.items.push(droppedAmmo);
 
-                                var dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                let dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
                                 if(dropItem.color === "red")
                                     dropAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
 
@@ -723,13 +694,14 @@ class Player {
     }
 }
 
-function generateRandomMap() {
-    const ret = [];
+function generateRandomMap(game) {
+    const ret = game.obstacles;
     let bushes = 60;
     let trees = 60;
     let rocks = 60;
     let boxes = 60;
     let barrels = 30;
+    let items = 60;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
@@ -745,8 +717,11 @@ function generateRandomMap() {
     while(barrels--) {
         ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
-    return ret;
+    while(items--) {
+        game.items.push(getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360));
+    }
 }
+
 
 function collisionCircle(x1, y1, r1, x2, y2, r2) {
     return ((x2-x1) * (x2-x1) + (y1-y2) * (y1 - y2)) <= ((r1+r2) * (r1+r2));
@@ -840,6 +815,32 @@ function killPlayer(player, game) {
         }
     });
     delete game.players[player.index];
+}
+
+function getRandomItem(x, y, angle) {
+    const chance = Math.random() * 100;
+    let dropItem;
+    if(chance < 5)
+        dropItem = new DroppedSniper(x, y, angle);
+    else if(chance < 20)
+        dropItem = new DroppedRifle(x, y, angle);
+    else if(chance < 20)
+        dropItem = new DroppedShotgun(x, y, angle);
+    else if (chance < 20)
+        dropItem = new DroppedPistol(x, y, angle);
+    else if (chance < 60)
+        dropItem = new Bandage(x, y, angle);
+    else if (chance < 100)
+        dropItem = new Medkit(x, y, angle);
+    else if (chance < 100)
+        dropItem = new ChestPlateOne(x, y, angle);
+    else if (chance < 100)
+        dropItem = new HelmetOne(x, y, angle);
+    else if(change < 10)
+        dropItem = new BlueAmmo(x, y, angle);
+    else
+        dropItem = new RedAmmo(x, y, angle);
+    return dropItem;
 }
 
 module.exports.Game = Game;
