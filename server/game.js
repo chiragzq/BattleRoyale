@@ -289,6 +289,7 @@ class Player {
             hands.forEach((hand) => {
                 if(collided) return;
                 this.game.obstacles.some((obstacle, index) => {
+                    if(!obstacle) return;
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
@@ -719,7 +720,7 @@ function generateRandomMap(game) {
     let rocks = 60;
     let boxes = 60;
     let barrels = 30;
-    let items = 60;
+    let items = 20;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
@@ -736,8 +737,20 @@ function generateRandomMap(game) {
         ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     while(items--) {
-        game.items.push(getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360));
+        var itemz = getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360);
+        if(itemz instanceof DroppedGun)  {
+            if(itemz.color == "red") {
+                game.items.push(new RedAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new RedAmmo(itemz.x + 37, itemz.y + 37, itemz.angle, 0));
+            }
+            else {
+                game.items.push(new BlueAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new BlueAmmo(itemz.x +37, itemz.y + 37, itemz.angle, 0));
+            }
+        }
+        game.items.push(itemz);
     }
+    return ret;
 }
 
 

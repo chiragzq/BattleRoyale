@@ -47,7 +47,7 @@ public class Tree extends Obstacle
             
             g2.setColor(new Color(17, 99, 43, 175));
             Game.fillCircle(g2, getX() + xShift, getY() + yShift, (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100)));
-            g2.setStroke(new BasicStroke(5));
+            g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*5)));
 
             g2.setColor(new Color(0, 0, 0));
             Game.drawCircle(g2, getX() + xShift, getY() + yShift, (int)(SIZE * Math.sqrt((double)getHealth()/100)));
