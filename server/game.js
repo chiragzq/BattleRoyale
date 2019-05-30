@@ -507,7 +507,7 @@ class Player {
                     return true;
                 }
                 else if(item.type.indexOf("scope") != -1) {
-                    if(this.currentScope >= parseInt(item.name.substring(5)))
+                    if(this.currentScope >= parseInt(item.type.substring(5)))
                         return false;
                     this.game.updates.push({
                         type: "remove_item",
@@ -515,7 +515,7 @@ class Player {
                     });
                     this.socket.emit("player_updates", {
                         type: "scope",
-                        level: getInt(item.name.substring(5))
+                        level: parseInt(item.type.substring(5))
                     });
                     this.game.items[index] = null;
                     return true;
