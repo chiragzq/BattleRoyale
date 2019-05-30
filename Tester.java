@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 /**
- * The display for Solitarie
+ * This is the tester copied over from Solitare for easy of testing
  * @author Aaron Lo
  * @version 11-7-18
  */

@@ -25,8 +25,15 @@ const Bandage = _item.Bandage;
 const Medkit = _item.Medkit;
 const Armor = _item.Medkit;
 const ChestPlateOne = _item.ChestPlateOne;
+const ChestPlateTwo = _item.ChestPlateTwo;
+const ChestPlateThree = _item.ChestPlateThree;
 const HelmetOne = _item.HelmetOne;
+const HelmetTwo = _item.HelmetTwo;
+const HelmetThree = _item.HelmetThree;
 const Scope2 = _item.Scope2;
+const Scope4 = _item.Scope4;
+const Scope8 = _item.Scope8;
+const Scope15 = _item.Scope15;
 
 /**
  * Manages the state of the game and manage updates between previous game states.
@@ -282,6 +289,7 @@ class Player {
             hands.forEach((hand) => {
                 if(collided) return;
                 this.game.obstacles.some((obstacle, index) => {
+                    if(!obstacle) return;
                     if(!obstacle.isDead() && collisionCircle(hand.x, hand.y, handRadius, obstacle.x, obstacle.y, obstacle.getSize())) {
                         obstacle.hurt(18);
                         if(obstacle.isDead() && obstacle instanceof Box) {
@@ -461,6 +469,7 @@ class Player {
                 else if(item.type.indexOf("helmet") != -1 || item.type.indexOf("chestplate") != -1) {
                     var helm;
                     var largness;
+                    
                     if(item.type.indexOf("helmet") != -1) {
                         helm = true;
                         largness = item.type.substring(6);
@@ -485,7 +494,8 @@ class Player {
                     this.game.updates.push({
                         type: "remove_item",
                         id: index
-                    })
+                    });
+
 
                     if(helm) {
                         this.socket.emit("player_updates", {
@@ -575,6 +585,12 @@ class Player {
                         x: this.x,
                         y: this.y,
                         id: this.game.items.length
+                    });
+                    this.game.io.emit("ammo", {
+                        item: this.equippedWeapon,
+                        clip: this.weapons[this.equippedWeapon - 1].clipSize,
+                        blue: this.blueAmmo,
+                        red: this.redAmmo
                     });
                     this.game.items.push(newDrop);
                     for(let i = 0;i < parseInt(oldGun.ammo / oldGun.magSize / 1.5);i ++) {
@@ -710,7 +726,7 @@ function generateRandomMap(game) {
     let rocks = 60;
     let boxes = 60;
     let barrels = 30;
-    let items = 60;
+    let items = 20;
     while(bushes--) {
         ret.push(new Bush(Math.round(Math.random() * 4000), Math.round(Math.random() * 4000)));
     }
@@ -727,8 +743,20 @@ function generateRandomMap(game) {
         ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     while(items--) {
-        game.items.push(getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360));
+        var itemz = getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360);
+        if(itemz instanceof DroppedGun)  {
+            if(itemz.color == "red") {
+                game.items.push(new RedAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new RedAmmo(itemz.x + 37, itemz.y + 37, itemz.angle, 0));
+            }
+            else {
+                game.items.push(new BlueAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new BlueAmmo(itemz.x +37, itemz.y + 37, itemz.angle, 0));
+            }
+        }
+        game.items.push(itemz);
     }
+    return ret;
 }
 
 
@@ -829,31 +857,39 @@ function killPlayer(player, game) {
 function getRandomItem(x, y, angle) {
     const chance = Math.random() * 100;
     let dropItem;
-    if(chance < 25)
+    if(chance < 4)
         dropItem = new DroppedSniper(x, y, angle, 0);
-    else if(chance < 50)
+    else if(chance < 9)
         dropItem = new DroppedRifle(x, y, angle, 0);
-    else if(chance < 75)
+    else if(chance < 16)
         dropItem = new DroppedShotgun(x, y, angle, 0);
-    else if (chance < 100)
+    else if (chance < 31)
         dropItem = new DroppedPistol(x, y, angle, 0);
-    else if (chance < 100)
+    else if (chance < 40)
         dropItem = new Scope2(x, y, angle, 0);
-    else if(chance < 10)
+    else if(chance < 46)
         dropItem = new Scope4(x, y, angle, 0);
-    else if(chance < 20)
+    else if(chance < 49)
         dropItem = new Scope8(x, y, angle, 0);
-    else if(change < 30)
+    else if(chance < 49.5)
         dropItem = new Scope15(x, y, angle, 0);
     else if (chance < 60)
         dropItem = new Bandage(x, y, angle, 0);
-    else if (chance < 100)
+    else if (chance < 63)
         dropItem = new Medkit(x, y, angle, 0);
-    else if (chance < 100)
+    else if (chance < 73)
         dropItem = new ChestPlateOne(x, y, angle, 0);
-    else if (chance < 100)
+    else if (chance < 76)
+        dropItem = new ChestPlateTwo(x, y, angle, 0);
+    else if(chance < 77)
+        dropItem = new ChestPlateThree(x, y, angle, 0);
+    else if (chance < 87)
         dropItem = new HelmetOne(x, y, angle);
-    else if(change < 10)
+    else if(chance < 90)
+        dropItem = new HelmetTwo(x, y, angle);
+    else if(chance < 92)
+        dropItem = new HelmetThree(x, y, angle);
+    else if(chance < 96)
         dropItem = new BlueAmmo(x, y, angle, 0);
     else
         dropItem = new RedAmmo(x, y, angle, 0);

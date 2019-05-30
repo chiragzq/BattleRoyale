@@ -19,7 +19,7 @@ public class RoundItem extends Item
         int radius = getSize();
         int thickness = getSize()/50;
         Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(new BasicStroke(thickness));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*thickness)));
         Game.drawCircle(g2, xLoc + xShift, yLoc + yShift, radius - thickness);
         g2.setColor(new Color(186, 186, 186, 75));
         Game.fillCircle(g2, xLoc + xShift, yLoc + yShift, radius- thickness );
@@ -32,7 +32,7 @@ public class RoundItem extends Item
         int radius = si;
         int thickness = si/50;
         Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(new BasicStroke(thickness));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *thickness)));
         Game.drawCircle(g2, xLoc + xShift, yLoc + yShift, radius - thickness);
         g2.setColor(new Color(186, 186, 186, 75));
         Game.fillCircle(g2, xLoc + xShift, yLoc + yShift, radius- thickness );

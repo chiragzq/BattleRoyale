@@ -186,17 +186,25 @@ public class Player
         Game.fillCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
         Graphics2D g2 = (Graphics2D) g;
         if(chestplate > 0) {
-            g2.setStroke(new BasicStroke(4));
+            g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*4)));
             if(chestplate == 1) {
                 g2.setColor(new Color(209, 209, 209));
             }
+            else if(chestplate == 2)
+                g2.setColor(new Color(140, 140, 140));
+            else if(chestplate == 3)
+                g2.setColor(new Color(0, 0, 0));
             Game.drawCircle(g, x + xShift, y + yShift, Game.PLAYER_SIZE);
         }
         if(helmet > 0) {
-            int s = (int)(Game.PLAYER_SIZE/1.8);
+            int s = (int)(Game.PLAYER_SIZE/1.7);
             int shi = Game.PLAYER_SIZE/6;
             if(helmet == 1)
-                g2.setColor(new Color(153, 154, 155));
+                g2.setColor(new Color(54, 165, 209));
+            else if(helmet == 2)
+                g2.setColor(new Color(127, 127, 127));
+            else if(helmet == 3)
+                g2.setColor(new Color(0 ,0, 0));
             double an = direcRadian;
             Game.fillCircle(g, x + xShift - (int)(shi * Math.cos(an)), y + yShift - (int)(shi * Math.sin(an)), s);
         }
@@ -433,7 +441,7 @@ public class Player
         Game.fillCircle(g, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*2)));
         g2.setColor(new Color(0x322819));
         Game.drawCircle(g2, x + leftXOff + xShift, y + leftYOff + yShift, Game.HAND_SIZE);
         Game.drawCircle(g2, x + rightXOff + xShift, y + rightYOff + yShift, Game.HAND_SIZE);
@@ -456,19 +464,21 @@ public class Player
         
         g2.setFont(new Font("Arial", Font.BOLD, 20));
         
+        Game.drawImageNoScale(g2, "scope" + scope, Game.GAME_WIDTH/2 - height, height, height, height);
+
         g2.drawString("" + bandages, width - thickness, startHeight + height + vincrement/2 - height/9);
-        Game.drawImage(g2, "bandage", width - thickness/2 - thickness/6, startHeight + height - 2 * height/5 + vincrement - aincrement, thickness/2, height);
+        Game.drawImageNoScale(g2, "bandage", width - thickness/2 - thickness/6, startHeight + height - 2 * height/5 + vincrement - aincrement, thickness/2, height);
         
         g2.drawString("" + medkits, width - thickness, startHeight + 2 * height + between);
-        Game.drawImage(g2, "medkit", width - thickness/2 - thickness/6, startHeight + 2 * height + between - 3 * height/5 + vincrement - aincrement, thickness/2, height);
+        Game.drawImageNoScale(g2, "medkit", width - thickness/2 - thickness/6, startHeight + 2 * height + between - 3 * height/5 + vincrement - aincrement, thickness/2, height);
         
         int numDigits = numDigits(blueAmmo);
         g2.drawString("" + blueAmmo, width - thickness - numDigits * 5, startHeight + 3 * height + 2 * between - 5* height/5 + vincrement + height/10);
-        Game.drawImage(g2, "blueAmmo", width - thickness/2 - thickness/6, startHeight + 3 * height + 2 * between - 4* height/5 + vincrement - aincrement, thickness/2, height);
+        Game.drawImageNoScale(g2, "blueAmmo", width - thickness/2 - thickness/6, startHeight + 3 * height + 2 * between - 4* height/5 + vincrement - aincrement, thickness/2, height);
 
         numDigits = numDigits(redAmmo);
         g2.drawString("" + redAmmo, width - thickness - numDigits * 5, startHeight + 4 * height + 2 * between + height/3 + height/10);
-        Game.drawImage(g2, "redAmmo", width - thickness/2 - thickness/6, startHeight + 4 * height + 3 * between - 5* height/5 + vincrement - aincrement, thickness/2, height);
+        Game.drawImageNoScale(g2, "redAmmo", width - thickness/2 - thickness/6, startHeight + 4 * height + 3 * between - 5* height/5 + vincrement - aincrement, thickness/2, height);
 
     }
 
@@ -478,7 +488,7 @@ public class Player
         g.setFont(new Font("Arial", 20, 20));
         for(int i = 1;i <= 3;i ++) {
             String name = "";
-            int iWidth = 200;
+            int iWidth = 200; 
             int iLength = 100;
             int xShift = 0;
             int yShift = 0;

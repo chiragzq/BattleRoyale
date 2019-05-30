@@ -92,7 +92,7 @@ public class Bullet
     {
         g.setColor(new Color(39, 99, 196, 255));
         Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(new BasicStroke(thicknessOfBullet));
+        g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE * thicknessOfBullet)));
         double x1 = ((double)x - backX)/3 * 2 + x;
         double y1 = ((double)y - backY)/3 * 2 + y;
         Game.drawLine(g, x + xShift, y + yShift, (int)x1 + xShift, (int)y1+ yShift);
