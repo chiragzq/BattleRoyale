@@ -585,6 +585,11 @@ public class Player
         equipped = index == 3 ? -1 : index;
     }
 
+    public void updateClip(int index, int clip) {
+        this.clip = clip;
+        guns.get(index).setClip(clip);
+    }
+
     public void updateAmmo(int index, int clip, int blue, int red) {
         Gun gun = guns.get(index);
         if(gun == null) {

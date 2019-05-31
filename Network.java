@@ -128,7 +128,7 @@ public class Network {
                             updatedPlayer.setHelmet(update.getInt("helmet"));
                             updatedPlayer.setChestplate(update.getInt("chestplate"));
                             updatedPlayer.setBandages(update.getInt("bandages"));
-                            updatedPlayer.setMedkits(update.getInt("medkits"));
+                            updatedPlayer.setMedkits(update.getInt("medkit"));
                         } else if(type.equals("punch")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.punch();
@@ -148,6 +148,8 @@ public class Network {
                         } else if(type.equals("equip")) {
                             Player equipPlayer = game.getPlayers().get(update.getInt("id"));
                             equipPlayer.setEquippedIndex(update.getInt("index"));
+                            if(update.getInt("index") != -1)
+                                equipPlayer.updateClip(update.getInt("index"), update.getInt("clip"));
                         } else if(type.equals("remove_bullet")) {
                             game.getBullets().remove(update.getInt("id"));
                         } else if(type.equals("obstacle")) {

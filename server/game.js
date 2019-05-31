@@ -391,11 +391,22 @@ class Player {
 
         if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
-            this.game.updates.push({
-                type: "equip",
-                id: this.index,
-                index: this.equippedWeapon
-            });
+            if(this.equippedWeapon == -1) {
+                this.game.updates.push({
+                    type: "equip",
+                    id: this.index,
+                    index: this.equippedWeapon
+                });
+            }
+            else {
+                this.game.updates.push({
+                    type: "equip",
+                    id: this.index,
+                    index: this.equippedWeapon,
+                    clip: this.weapons[this.equippedWeapon - 1].clipSize
+                });
+
+            }
             this.socket.emit("reload", 0); //cancel reload
             this.lastReloadTime = 0;
             this.lastPunchTime = 0;
@@ -583,6 +594,8 @@ class Player {
                         index: this.equippedWeapon,
                         spare: pickup.ammo
                     });
+
+                    this.game.items[index] = null;
                     let moveAngle = Math.random() * 360;
                     let newDrop;
                     if(oldGun.name == "rifle") {
