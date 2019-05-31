@@ -125,7 +125,7 @@ class Game {
                         helmet: player.helmet,
                         chestplate: player.chestplate,
                         bandages: player.bandages,
-                        medkits: player.medkits
+                        medkit: player.medkits
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
@@ -377,7 +377,7 @@ class Player {
                             helmet: player.helmet,
                             chestplate: player.chestplate,
                             bandages: player.bandages,
-                            medkits: player.medkits
+                            medkit: player.medkits
                         });
                         if(player.isDead()) {
                             killPlayer(player, this.game);
