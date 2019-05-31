@@ -26,7 +26,7 @@ public class SoundManager {
     public static void playSound(String name, double volume) {
         if(!sounds.containsKey(name)) {
             String path = "sound/" + name + ".wav";
-            Sound sound = TinySound.loadSound(path);
+            Sound sound = TinySound.loadSound(SoundManager.class.getResource(path));
             sounds.put(name, sound);
         }
         Sound sound = sounds.get(name);
