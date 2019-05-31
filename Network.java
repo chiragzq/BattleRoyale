@@ -125,6 +125,10 @@ public class Network {
                             updatedPlayer.setDirection(update.getInt("dir"));
                             updatedPlayer.setHealth(update.getInt("health"));
                             updatedPlayer.setTotalHealth(update.getInt("totalHealth"));
+                            updatedPlayer.setHelmet(update.getInt("helmet"));
+                            updatedPlayer.setChestplate(update.getInt("chestplate"));
+                            updatedPlayer.setBandages(update.getInt("bandages"));
+                            updatedPlayer.setMedkits(update.getInt("medkits"));
                         } else if(type.equals("punch")) {
                             Player updatedPlayer = game.getPlayers().get(update.getInt("id"));
                             updatedPlayer.punch();
