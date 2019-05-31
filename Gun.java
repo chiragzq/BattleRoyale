@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public abstract class Gun
 {
-    private final static int BARREL_LENGTH = (int)(80 * Game.GAME_SCALE);
+    private final static int BARREL_LENGTH = (int)(90);
     
     private double direction;
     private Player player;
