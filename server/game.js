@@ -392,14 +392,14 @@ class Player {
         if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             if(this.equippedWeapon == -1) {
-                this.game.updates.push({
+                this.game.io.emit("player_updates", {
                     type: "equip",
                     id: this.index,
                     index: this.equippedWeapon
                 });
             }
             else {
-                this.game.updates.push({
+                this.game.io.emit("player_updates", {
                     type: "equip",
                     id: this.index,
                     index: this.equippedWeapon,
