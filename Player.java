@@ -590,6 +590,7 @@ public class Player
         guns.get(index).setClip(clip);
     }
 
+
     public void updateAmmo(int index, int clip, int blue, int red) {
         Gun gun = guns.get(index);
         if(gun == null) {
