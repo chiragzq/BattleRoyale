@@ -44,22 +44,22 @@ class Item {
 }
 
 class Ammo extends Item {
-    constructor(name, x, y, angle, vel) {
+    constructor(name, x, y, angle, vel, size) {
         super(name, x, y, true, 15, angle, vel);
-        
+        this.size = size;
     }
 }
 
 class BlueAmmo extends Ammo {
-    constructor(x, y, angle, vel) {
-        super("blueAmmo", x, y, angle, vel);
+    constructor(x, y, angle, vel, size) {
+        super("blueAmmo", x, y, angle, vel, size);
         this.color = "blue";
     }
 }
 
 class RedAmmo extends Ammo {
-    constructor(x, y, angle, vel) {
-        super("redAmmo", x, y, angle, vel);
+    constructor(x, y, angle, vel, size) {
+        super("redAmmo", x, y, angle, vel, size);
         this.color= "red";
     }
 }
