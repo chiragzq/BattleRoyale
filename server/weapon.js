@@ -91,7 +91,7 @@ class Sniper extends Gun {
 
 class Shotgun extends Gun {
     constructor(player) {
-        super("shotgun", player, 5, 35, 8, 55, 80, 700, 300, 250, 0.82, 3, "red")
+        super("shotgun", player, 2, 20, 12, 55, 80, 2800, 300, 250, 0.7, 3, "red")
         //super("Shotgun", player, 20, 70, 20, 75, 80, 100)
         this.color = "red";
     }
@@ -103,7 +103,7 @@ class Shotgun extends Gun {
         clearTimeout(timeout);
         timeout = setTimeout(() => {this.player.speed = 13}, this.shootDelay + 100);
         const ret = [];
-        const numBullets = 7;
+        const numBullets = 8;
         for(let i = 0;i <= numBullets;i ++) {
             ret.push(this.fireBullet(Math.round(
                 this.player.direction + 
@@ -114,17 +114,12 @@ class Shotgun extends Gun {
         return ret;
     }
 
-    reload() { 
-        if(this.player.redAmmo && this.clipSize < this.magSize) {
-            this.clipSize++;
-            this.player.redAmmo--;
-        }
-    }
+
 }
 
 class Pistol extends Gun {
     constructor(player) {
-        super("pistol", player, 13, 5, 15, 65, 55, 2200, 100, 800, 0.87, 3, "blue");
+        super("pistol", player, 7, 8, 15, 65, 55, 2800, 200, 800, 0.8, 4, "blue");
         this.color = "blue";
     }
 
