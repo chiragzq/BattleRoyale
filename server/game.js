@@ -867,17 +867,89 @@ function killPlayer(player, game) {
             id: game.items.length
         });
         game.items.push(dropWeapon);
-        for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize / 1.5);i ++) {
-            const ammo = new Ammo(player.x, player.y, Math.random() * 360, Math.random() * 800)
-            game.io.emit("new_dropped_item", {
-                type: ammo.type,
-                x: player.x,
-                y: player.y,
-                id: game.items.length
-            });
-            game.items.push(ammo);
-        }
+        
+
+        
+
+        // for(let i = 0;i < parseInt(weapon.ammo / weapon.magSize / 1.5);i ++) {
+        //     const ammo = new Ammo(player.x, player.y, Math.random() * 360, Math.random() * 800)
+        //     game.io.emit("new_dropped_item", {
+        //         type: ammo.type,
+        //         x: player.x,
+        //         y: player.y,
+        //         id: game.items.length
+        //     });
+        //     game.items.push(ammo);
+        // }
     });
+    for(let i = 0; i < parseInt(player.redAmmo/60); i++) {
+        game.io.emit("new_dropped_item", {
+            type: "redAmmo",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new RedAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+    }
+    for(let i = 0; i < parseInt(player.blueAmmo/60); i++) {
+        game.io.emit("new_dropped_item", {
+            type: "blueAmmo",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new BlueAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+    }
+    for(let i = 0; i < parseInt(player.bandages); i++) {
+        game.io.emit("new_dropped_item", {
+            type: "bandage",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new Bandage(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+    }
+    for(let i = 0; i < parseInt(player.medkits); i++) {
+        game.io.emit("new_dropped_item", {
+            type: "medkit",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new Medkit(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+    }
+    if(player.helmet > 0) {
+        var helm;
+        if(player.helmet == 1) 
+            helm = new HelmetOne(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else if(player.helmet == 2)
+            helm = new HelmetTwo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else 
+            helm = new HelmetThree(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        game.io.emit("new_dropped_item", {
+            type: "helmet" + player.helmet,
+            x: helm.x,
+            y: helm.y,
+            id: game.items.length
+        });
+        game.items.push(helm);
+    }
+    if(player.chestplate > 0) {
+        var helm;
+        if(player.chestplate == 1) 
+            helm = new ChestPlateOne(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else if(player.chestplate == 2)
+            helm = new ChestPlateTwo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else 
+            helm = new ChestPlateThree(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        game.io.emit("new_dropped_item", {
+            type: "chestplate" + player.chestplate,
+            x: helm.x,
+            y: helm.y,
+            id: game.items.length
+        });
+        game.items.push(helm);
+    }
     delete game.players[player.index];
 }
 
