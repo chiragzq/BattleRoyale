@@ -168,7 +168,7 @@ class Game {
         const ret = this.updates;
         this.updates = [];
         if(ret.length) {
-            console.log(ret);
+            //console.log(ret);
         }
         return ret;
     }
@@ -246,12 +246,12 @@ class Player {
                 if(obstacle instanceof Box) {
                     if(obstacle.solid && collisionCircleSquare(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                         [this.x, this.y] = fixCollidedObjectSquare(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
-                        console.log("collision");
+                        //("collision");
                         return true;
                     }
                 } else if(obstacle.solid && collisionCircle(this.x, this.y, 25, obstacle.x, obstacle.y, obstacle.getSize())) {
                     [this.x, this.y] = fixCollidedObject(obstacle.x, obstacle.y, obstacle.getSize(), this.x, this.y, 25);
-                    console.log("collision");
+                    //console.log("collision");
 
                     return true;
                 }
@@ -274,7 +274,7 @@ class Player {
             const reloadedGun = this.weapons[this.equippedWeapon - 1];
             reloadedGun.reload();
             this.socket.emit("ammo", {
-                equip: this.equippedWeapon,
+                item: this.equippedWeapon,
                 clip: reloadedGun.clipSize,
                 blue: this.blueAmmo,
                 red: this.redAmmo
@@ -308,9 +308,9 @@ class Player {
                             
                             if(dropItem instanceof DroppedGun) {
                                 
-                                let droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                let droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360, 0, 60);
                                 if(dropItem.color === "red")
-                                    droppedAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+                                    droppedAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360,0,  5);
                                 this.game.io.emit("new_dropped_item", {
                                     type: droppedAmmo.type,
                                     x: obstacle.x,
@@ -320,9 +320,9 @@ class Player {
                                 });
                                 this.game.items.push(droppedAmmo);
 
-                                let dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                let dropAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360,0,  60);
                                 if(dropItem.color === "red")
-                                    dropAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
+                                    dropAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360,0, 5);
 
                                 this.game.io.emit("new_dropped_item", {
                                     type: dropAmmo.type,
@@ -333,7 +333,7 @@ class Player {
                                 });
                                 this.game.items.push(dropAmmo);
                             }
-                            console.log(dropItem);
+                            //console.log(dropItem);
                             this.game.io.emit("new_dropped_item", {
                                 type: dropItem.type,
                                 x: obstacle.x,
@@ -421,14 +421,15 @@ class Player {
     pickUp() {
         if(this.isHealing) return;
         this.game.items.some((item, index) => {
+            console.log(item);
             if(item != null && item.collision(this.x, this.y, 25)) {
                 if(item.type.indexOf("Ammo") != -1) {
                     if(item.color == "blue") {
-                    this.blueAmmo += 60;
+                    this.blueAmmo += item.size;
                     if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1].color == "blue") {
                         this.weapons[this.equippedWeapon - 1].ammo = this.blueAmmo;
                         this.socket.emit("ammo", {
-                            equip: this.equippedWeapon,
+                            item: this.equippedWeapon,
                             clip: this.weapons[this.equippedWeapon - 1].clipSize,
                             spare: this.weapons[this.equippedWeapon - 1].ammo,
                             blue: this.blueAmmo,
@@ -443,11 +444,11 @@ class Player {
                     }
                     }
                     else {
-                        this.redAmmo += 60;
+                        this.redAmmo += item.size;
                     if( this.weapons[this.equippedWeapon - 1]!= null &&  this.weapons[this.equippedWeapon - 1] == "red") {
                         this.weapons[this.equippedWeapon - 1].ammo = this.redAmmo;
                         this.socket.emit("ammo", {
-                            equip: this.equippedWeapon,
+                            item: this.equippedWeapon,
                             clip: this.weapons[this.equippedWeapon - 1].clipSize,
                             spare: this.weapons[this.equippedWeapon - 1].ammo,
                             blue: this.blueAmmo,
@@ -475,7 +476,7 @@ class Player {
                     });
                     if(item.type == "bandage") {
                         this.bandages++;
-                        console.log(this.bandages);
+                        //console.log(this.bandages);
                         this.socket.emit("player_updates", {
                            type: "new_bandage",
                            nums: this.bandages
@@ -483,7 +484,7 @@ class Player {
                     }
                     else{
                         this.medkits ++;
-                        console.log(this.medkits);
+                        //console.log(this.medkits);
                         this.socket.emit("player_updates", {
                             type: "new_medkit",
                             nums: this.medkits
@@ -709,7 +710,7 @@ class Player {
             if(this.weapons[this.equippedWeapon - 1].color == "red")
                 ammo = this.redAmmo;
             this.socket.emit("ammo", {
-                equip: this.equippedWeapon,
+                item: this.equippedWeapon,
                 clip: this.weapons[this.equippedWeapon - 1].clipSize,
                 spare: ammo,
                 blue: this.blueAmmo,
@@ -795,12 +796,12 @@ function generateRandomMap(game) {
         const itemz = getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360);
         if(itemz instanceof DroppedGun)  {
             if(itemz.color == "red") {
-                game.items.push(new RedAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
-                game.items.push(new RedAmmo(itemz.x + 37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new RedAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0, 5));
+                game.items.push(new RedAmmo(itemz.x + 37, itemz.y + 37, itemz.angle, 0, 5));
             }
             else {
-                game.items.push(new BlueAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
-                game.items.push(new BlueAmmo(itemz.x +37, itemz.y + 37, itemz.angle, 0));
+                game.items.push(new BlueAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0, 60));
+                game.items.push(new BlueAmmo(itemz.x +37, itemz.y + 37, itemz.angle, 0, 60));
             }
         }
         game.items.push(itemz);
@@ -904,14 +905,25 @@ function killPlayer(player, game) {
         //     game.items.push(ammo);
         // }
     });
-    for(let i = 0; i < parseInt(player.redAmmo/60); i++) {
+    for(let i = 0; i < parseInt(player.redAmmo/5); i++) {
         game.io.emit("new_dropped_item", {
             type: "redAmmo",
             x: player.x,
             y: player.y,
             id: game.items.length
         });
-        game.items.push(new RedAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+        player.redAmmo -= 5;
+        game.items.push(new RedAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800, 5));
+    }
+    if(player.redAmmo > 0) {
+        game.io.emit("new_dropped_item", {
+            type: "redAmmo",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new RedAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800, player.redAmmo));
+        player.redAmmo = 0;
     }
     for(let i = 0; i < parseInt(player.blueAmmo/60); i++) {
         game.io.emit("new_dropped_item", {
@@ -920,7 +932,18 @@ function killPlayer(player, game) {
             y: player.y,
             id: game.items.length
         });
-        game.items.push(new BlueAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
+        player.blueAmmo -= 60;
+        game.items.push(new BlueAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800, 60));
+    }
+    if(player.blueAmmo > 0) {
+        game.io.emit("new_dropped_item", {
+            type: "blueAmmo",
+            x: player.x,
+            y: player.y,
+            id: game.items.length
+        });
+        game.items.push(new BlueAmmo(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800, player.blueAmmo));
+        player.blueAmmo = 0;
     }
     for(let i = 0; i < parseInt(player.bandages); i++) {
         game.io.emit("new_dropped_item", {
@@ -1027,10 +1050,10 @@ function getRandomItem(x, y, angle) {
         dropItem = new HelmetTwo(x, y, angle);
     else if(chance < 86)
         dropItem = new HelmetThree(x, y, angle);
-    else if(chance < 93)
-        dropItem = new BlueAmmo(x, y, angle, 0);
+    else if(chance < 96)
+        dropItem = new BlueAmmo(x, y, angle, 0, 60)
     else
-        dropItem = new RedAmmo(x, y, angle, 0);
+        dropItem = new RedAmmo(x, y, angle, 0, 5);
     return dropItem;
 }
 

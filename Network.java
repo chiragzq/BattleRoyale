@@ -193,7 +193,7 @@ public class Network {
                     lock.writeLock().lock();
                     JSONObject update = (JSONObject)(arg0[0]);
                     try {
-                        game.getPlayer().updateAmmo(update.getInt("equip"), update.getInt("clip"), update.getInt("blue"), update.getInt("red"));
+                        game.getPlayer().updateAmmo(update.getInt("item"), update.getInt("clip"), update.getInt("blue"), update.getInt("red"));
                     } catch(Exception e){e.printStackTrace();}
                     finally {
                         lock.writeLock().unlock();
