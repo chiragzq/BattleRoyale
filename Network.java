@@ -322,7 +322,7 @@ public class Network {
                 @Override
                 public void call(Object... arg0) {
                     int time = (int)arg0[0];
-                    game.getPlayer().setReloading(time);
+                    game.getPlayer().setReloading(time, false);
                     if(time == 0) return;
                     if(time < 1000) {
                         SoundManager.playSound("reload_01", 1.0);
@@ -331,7 +331,14 @@ public class Network {
                     }
                 }
             });
-
+        socket.on("heal", new Emitter.Listener(){
+        
+            @Override
+            public void call(Object... arg0) {
+                System.out.println((int)arg0[0]);
+                game.getPlayer().setReloading((int)arg0[0], true);
+            }
+        })   ;
         socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
                 @Override
                 public void call(Object... arg0) {

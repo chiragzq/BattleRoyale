@@ -205,7 +205,7 @@ class Player {
         this.bandages = 0;
         this.medkits = 0;
 
-        this.speed = 13;
+        this.speed = 11;
 
         this.mouse = {
             x: 0,
@@ -221,6 +221,8 @@ class Player {
         this.lastReloadTime = 0;
 
         this.socket = socket;
+
+        this.isHealing = false;
     }
 
     update() {
@@ -267,7 +269,7 @@ class Player {
             updated = true;
         }
 
-        if(!this.isReloading() && this.lastReloadTime > 0) {
+        if(!this.isReloading() && !this.isHealing && this.lastReloadTime > 0) {
             this.lastReloadTime = 0;
             const reloadedGun = this.weapons[this.equippedWeapon - 1];
             reloadedGun.reload();
@@ -306,7 +308,7 @@ class Player {
                             
                             if(dropItem instanceof DroppedGun) {
                                 
-                                var droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
+                                let droppedAmmo = new BlueAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);;
                                 if(dropItem.color === "red")
                                     droppedAmmo = new RedAmmo(obstacle.x, obstacle.y, moveAngle + Math.random() * 360);
                                 this.game.io.emit("new_dropped_item", {
@@ -389,7 +391,7 @@ class Player {
             this.didPunchCollision = true;
         }
 
-        if(this.newEquip && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
+        if(this.newEquip && !this.isHealing && !(this.newEquip == this.equippedWeapon || this.newEquip * this.equippedWeapon == -3) && !(this.newEquip > 0 && !this.weapons[this.newEquip - 1])) {
             this.equippedWeapon = this.newEquip;
             if(this.equippedWeapon == -1) {
                 this.game.io.emit("player_updates", {
@@ -417,6 +419,7 @@ class Player {
     }
 
     pickUp() {
+        if(this.isHealing) return;
         this.game.items.some((item, index) => {
             if(item != null && item.collision(this.x, this.y, 25)) {
                 if(item.type.indexOf("Ammo") != -1) {
@@ -490,8 +493,8 @@ class Player {
                     return true;
                 }
                 else if(item.type.indexOf("helmet") != -1 || item.type.indexOf("chestplate") != -1) {
-                    var helm;
-                    var largness;
+                    let helm;
+                    let largness;
                     
                     if(item.type.indexOf("helmet") != -1) {
                         helm = true;
@@ -644,29 +647,46 @@ class Player {
     }
 
     useBandage() {
-        if(this.bandages > 0) {
-            this.bandages-= 1;
-            this.health += 25;
-            this.health = Math.min(this.health, this.totalHealth);
-            this.socket.emit("player_updates", {
-                type: "new_bandage",
-                nums: this.bandages
-            });
+        if(this.isHealing) return;
+        if(this.bandages) {
+            this.bandages--;
+            this.speed = 5;
+            this.isHealing = true;
+            setTimeout(() => {
+                this.health += 15;
+                this.speed = 11;
+                this.health = Math.min(this.health, this.totalHealth);
+                this.socket.emit("player_updates", {
+                    type: "new_bandage",
+                    nums: this.bandages
+                });
+                this.isHealing = false;
+            }, 2700);
+            this.socket.emit("heal", 2700);
         }
 
     }
     useMedkit() {
-        if(this.medkits > 0) {
-            this.medkits -= 1;
-            this.health = this.totalHealth;
-            this.socket.emit("player_updates", {
-                type: "new_medkit",
-                nums: this.medkits
-            });
+        if(this.isHealing) return;
+        if(this.medkits) {
+            this.medkits --;
+            this.speed = 5;
+            this.isHealing = true;
+            setTimeout(() => {
+                this.health = this.totalHealth;
+                this.speed = 11;
+                this.socket.emit("player_updates", {
+                    type: "new_medkit",
+                    nums: this.medkits
+                });
+                this.isHealing = false;
+            }, 6000);
+            this.socket.emit("heal", 6000);
         }
     }
 
     click() {
+        if(this.isHealing) return;
         if(this.isReloading()) {
             this.lastReloadTime = 0;
             this.socket.emit("reload", 0); //cancel reload
@@ -684,7 +704,7 @@ class Player {
                 });
                 this.game.bullets.push(bullet);
             });
-            var ammo = this.blueAmmo;
+            let ammo = this.blueAmmo;
             if(this.weapons[this.equippedWeapon - 1].color == "red")
                 ammo = this.redAmmo;
             this.socket.emit("ammo", {
@@ -712,6 +732,7 @@ class Player {
     }
 
     reload() {
+        if(this.isHealing) return;
         const weapon = this.weapons[this.equippedWeapon - 1];
         if(weapon) {
         if(weapon.color == "red")
@@ -770,7 +791,7 @@ function generateRandomMap(game) {
         ret.push(new Barrel(Math.round(Math.random() * 2000), Math.round(Math.random() * 2000)));
     }
     while(items--) {
-        var itemz = getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360);
+        const itemz = getRandomItem(Math.random() * 4000, Math.random() * 4000, Math.random() * 360);
         if(itemz instanceof DroppedGun)  {
             if(itemz.color == "red") {
                 game.items.push(new RedAmmo(itemz.x - 37, itemz.y + 37, itemz.angle, 0));
@@ -919,7 +940,7 @@ function killPlayer(player, game) {
         game.items.push(new Medkit(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800));
     }
     if(player.helmet > 0) {
-        var helm;
+        let helm;
         if(player.helmet == 1) 
             helm = new HelmetOne(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
         else if(player.helmet == 2)
@@ -935,7 +956,7 @@ function killPlayer(player, game) {
         game.items.push(helm);
     }
     if(player.chestplate > 0) {
-        var helm;
+        let helm;
         if(player.chestplate == 1) 
             helm = new ChestPlateOne(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
         else if(player.chestplate == 2)
