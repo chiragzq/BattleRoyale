@@ -544,6 +544,7 @@ class Player {
                 else if(item.type.indexOf("scope") != -1) {
                     if(this.currentScope >= parseInt(item.type.substring(5)))
                         return false;
+                    this.currentScope = parseInt(item.type.substring(5));
                     this.game.updates.push({
                         type: "remove_item",
                         id: index
@@ -950,45 +951,62 @@ function killPlayer(player, game) {
         });
         game.items.push(helm);
     }
+
+    if(player.scope > 1) {
+        var scop;
+        if(player.scope == 2)
+            scop = new Scope2(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else if(player.scope == 4)
+            scop = new Scope4(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        else if(player.scope == 8)
+            scop = new Scope8(player.x, player.y, Math.random() * 360, Math.random() * 400 + 800);
+        game.io.emit("new_dropped_item", {
+            type: "scope" + player.scope,
+            x: scop.x,
+            y: scop.y,
+            id: game.items.length
+        });
+        game.items.push(scop);
+    }
     delete game.players[player.index];
 }
 
 function getRandomItem(x, y, angle) {
     const chance = Math.random() * 100;
     let dropItem;
-    if(chance < 2)
+    if(chance < 3)
         dropItem = new DroppedSniper(x, y, angle, 0);
     else if(chance < 9)
         dropItem = new DroppedRifle(x, y, angle, 0);
-    else if(chance < 16)
+    else if(chance < 15)
         dropItem = new DroppedShotgun(x, y, angle, 0);
-    else if (chance < 31)
+    else if (chance < 25)
         dropItem = new DroppedPistol(x, y, angle, 0);
-    else if (chance < 40)
+    else if (chance < 35)
         dropItem = new Scope2(x, y, angle, 0);
-    else if(chance < 46)
+    else if(chance < 40)
         dropItem = new Scope4(x, y, angle, 0);
-    else if(chance < 49)
+    else if(chance < 43)
         dropItem = new Scope8(x, y, angle, 0);
-    else if(chance < 49.5)
+    else if(chance < 43.25)
         dropItem = new Scope15(x, y, angle, 0);
-    else if (chance < 60)
+    else if (chance < 52)
         dropItem = new Bandage(x, y, angle, 0);
-    else if (chance < 63)
+    else if (chance < 54)
         dropItem = new Medkit(x, y, angle, 0);
-    else if (chance < 73)
+    else if (chance < 64)
         dropItem = new ChestPlateOne(x, y, angle, 0);
-    else if (chance < 76)
+    else if (chance < 69)
         dropItem = new ChestPlateTwo(x, y, angle, 0);
-    else if(chance < 77)
+    else if(chance < 70)
         dropItem = new ChestPlateThree(x, y, angle, 0);
-    else if (chance < 87)
+    else if (chance < 80)
         dropItem = new HelmetOne(x, y, angle);
-    else if(chance < 90)
+    else if(chance < 85)
         dropItem = new HelmetTwo(x, y, angle);
-    else if(chance < 92)
+    else if(chance < 86)
         dropItem = new HelmetThree(x, y, angle);
-    else if(chance < 96)
+    else if(chance < 93)
         dropItem = new BlueAmmo(x, y, angle, 0);
     else
         dropItem = new RedAmmo(x, y, angle, 0);
