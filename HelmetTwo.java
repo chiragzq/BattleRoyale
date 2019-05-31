@@ -1,4 +1,7 @@
 import java.awt.*;
+/**
+ * A helmet level two dropped
+ */
 public class HelmetTwo extends Armor 
 {
     public HelmetTwo(int x, int y) {

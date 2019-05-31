@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class BlackBullet here.
+ *A bullet with the color black
  * 
  * @author (your name) 
  * @version (a version number or a date)

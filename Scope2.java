@@ -3,6 +3,9 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+/**
+ * The 2X scope
+ */
 public class Scope2 extends Scope {
     public Scope2(int x, int y) {
         super(x, y);

@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Pistol here.
+ * a drawn pistol from the player
  * 
  * @author (your name) 
  * @version (a version number or a date)

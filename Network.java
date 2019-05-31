@@ -10,6 +10,9 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import java.awt.*;
 
+/**
+ * This communicates between clients and the server
+ */
 public class Network {
     private Socket socket;
     private Game game;

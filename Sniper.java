@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Sniper here.
+ * Draws the sniper class
  * 
  * @author (your name) 
  * @version (a version number or a date)

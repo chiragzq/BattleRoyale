@@ -1,5 +1,7 @@
 import java.awt.*;
-
+/**
+ * This is the Ammo class which draws blue or red Ammo
+ */
 public class Ammo extends Item 
 {
     private Color color;

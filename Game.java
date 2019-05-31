@@ -13,6 +13,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.awt.MouseInfo;
 import java.awt.Image;
 
+/**
+ * The client class
+ */
 public class Game extends JComponent implements KeyListener, MouseListener {
     public enum State {
         CONNECTING, CONNECT_FAILURE, WAITING, PLAYING, DEAD
@@ -98,8 +101,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
         gameState = State.CONNECTING;
         
         //network = new Network("http://localhost:5000", this, lock);
-        //network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
-        network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
+        network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
+        //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
        
         
         new Timer().scheduleAtFixedRate(new TimerTask(){

@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Medkit here.
+ * Dropped medkits that heals
  * 
  * @author (your name) 
  * @version (a version number or a date)

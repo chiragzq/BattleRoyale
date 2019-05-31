@@ -1,9 +1,8 @@
 import java.awt.*;
 /**
- * Write a description of class Bandage here.
+ * Draws the bandage image
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Aaron Lo
  */
 public class Bandage extends RoundItem
 {

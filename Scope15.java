@@ -1,4 +1,7 @@
 import java.awt.*;
+/**
+ * 15X Scope
+ */
 public class Scope15 extends Scope {
     public Scope15(int x, int y) {
         super(x, y);

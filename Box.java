@@ -1,7 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 /**
- * Write a description of class Box here.
+ * Draws the box
  * 
  * @author (your name) 
  * @version (a version number or a date)

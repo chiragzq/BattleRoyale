@@ -1,4 +1,7 @@
 import java.awt.*;
+/**
+ * the 4X Scope
+ */
 public class Scope4 extends Scope {
     public Scope4(int x, int y) {
         super(x, y);

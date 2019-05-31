@@ -1,4 +1,7 @@
 import java.awt.*;
+/**
+ * Dropped Item that others call
+ */
 public abstract class Item 
 {
     private int x;

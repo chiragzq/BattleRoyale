@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class RoundItem here.
+ * A round Items
  * 
  * @author (your name) 
  * @version (a version number or a date)

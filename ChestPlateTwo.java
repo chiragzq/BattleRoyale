@@ -1,5 +1,9 @@
 import java.awt.*;
 
+
+/**
+ * Draws the chest plate level two
+ */
 public class ChestPlateTwo extends Armor
 {
     public ChestPlateTwo(int x, int y)

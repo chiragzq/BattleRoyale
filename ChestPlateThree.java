@@ -1,5 +1,8 @@
 import java.awt.*;
 
+/**
+ * Draws the chestplate level three
+ */
 public class ChestPlateThree extends Armor
 {
     public ChestPlateThree(int x, int y)

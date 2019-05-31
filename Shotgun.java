@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Shotgun here.
+ * draws the shotgun
  * 
  * @author (your name) 
  * @version (a version number or a date)

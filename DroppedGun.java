@@ -1,6 +1,6 @@
 
 /**
- *A Start
+ *A Start of a dropped weapons
  * 
  * @author (your name) 
  * @version (a version number or a date)

@@ -1,4 +1,7 @@
 import java.awt.*;
+/**
+ * 8X Scope
+ */
 public class Scope8 extends Scope {
     public Scope8(int x, int y) {
         super(x, y);

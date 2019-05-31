@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Rifle here.
+ * a drawn rifle
  * 
  * @author (your name) 
  * @version (a version number or a date)

@@ -1,7 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class DroppedSniper here.
- * 
+ * A Sniper gun that is dropped
  * @author (your name) 
  * @version (a version number or a date)
  */

@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class DroppedRifle here.
+ * A rifle that is dropped
  * 
  * @author (your name) 
  * @version (a version number or a date)

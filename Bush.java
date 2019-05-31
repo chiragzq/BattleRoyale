@@ -1,6 +1,6 @@
 import java.awt.*;
 /**
- * Write a description of class Bush here.
+ * A bush
  * 
  * @author Aaorn Lo
  * @version (a version number or a date)
