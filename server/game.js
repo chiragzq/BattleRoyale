@@ -499,8 +499,12 @@ class Player {
                     if(item.type.indexOf("helmet") != -1) {
                         helm = true;
                         largness = item.type.substring(6);
-                        if(this.helmet >= largness)
+                        if(this.helmet >= largness) {
+                            item.angle = Math.random() * 360;
+                            item.start = Date.now();
                             return false;
+                        }
+                            
                         else {
                             this.totalHealth += (largness - this.helmet) * 25;
                             this.health += (largness - this.helmet) * 25;
@@ -509,8 +513,11 @@ class Player {
                     else {
                         helm = false;
                         largness = item.type.substring(10);
-                        if(this.chestplate >= largness)
+                        if(this.chestplate >= largness) {
+                            item.angle = Math.random() * 360;
+                            item.start = Date.now();
                             return false;
+                        }
                         else {
                             this.totalHealth += (largness - this.chestplate) * 25;
                             this.health += (largness - this.chestplate) * 25;
@@ -545,8 +552,11 @@ class Player {
                     return true;
                 }
                 else if(item.type.indexOf("scope") != -1) {
-                    if(this.currentScope >= parseInt(item.type.substring(5)))
+                    if(this.currentScope >= parseInt(item.type.substring(5))) {
+                        item.angle = Math.random() * 360;
+                        item.start = Date.now();
                         return false;
+                    }
                     this.currentScope = parseInt(item.type.substring(5));
                     this.game.updates.push({
                         type: "remove_item",
@@ -635,6 +645,8 @@ class Player {
                         this.game.items.push(ammo);
                     }
                 } else {
+                    item.angle = Math.random() * 360;
+                    item.start = Date.now();
                     return false;
                 }
                 this.game.updates.push({
