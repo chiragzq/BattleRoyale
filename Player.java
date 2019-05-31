@@ -24,6 +24,9 @@ public class Player
     private boolean isCurrentlyPunching;
     private boolean isRightPunching;
     private int xPunch;
+
+    private boolean healing;
+
     //The x of the punch
     private int yPunch;
     //The y of the punch
@@ -257,7 +260,7 @@ public class Player
             g2.fillRect(x - (int)((double)widthRect / 3.7), y + (int)((double)1.6*heightRect), widthRect, heightRect);
             g.setFont(new Font("Arial", 20, 17));
             g2.setColor(Color.WHITE);
-            g2.drawString("Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
+            g2.drawString(healing ? "Healing..." : "Reloading...", x - widthRect/5, y + (int)(2.3 *heightRect));
         }
     }
 
@@ -576,7 +579,8 @@ public class Player
         return guns;
     }
 
-    public void setReloading(int duration) {
+    public void setReloading(int duration, boolean healing) {
+        this.healing = healing;
         lastReloadTime = System.currentTimeMillis();
         reloadDuration = duration;
     }
