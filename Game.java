@@ -353,13 +353,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static void drawImage(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight)
     {
         if(images != null && !images.containsKey(file)) 
-            images.put(file, new ImageIcon("img/" + file + ".png").getImage());
+            images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
         g.drawImage(images.get(file), (int)(Game.GAME_SCALE * xImage), (int)(Game.GAME_SCALE * yImage), (int)(Game.GAME_SCALE * iWidth), (int)(Game.GAME_SCALE * iHeight), null);
     }
 
     public static void drawImageNoScale(Graphics g, String file, int xImage, int yImage, int iWidth, int iHeight) {
         if(images != null && !images.containsKey(file)) 
-            images.put(file, new ImageIcon("img/" + file + ".png").getImage());
+            images.put(file, new ImageIcon(Game.class.getResource("img/" + file + ".png")).getImage());
         g.drawImage(images.get(file), xImage,  yImage, iWidth,  iHeight, null);
     }
 

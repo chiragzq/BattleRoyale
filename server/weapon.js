@@ -1,6 +1,8 @@
 let timeout = setTimeout(()=>{},0);
 class Gun {
-    constructor(name, player, magSize, spread, damage, bulletSpeed, barrelLength, reloadTime, shootDelay, bulletDistance, bulletFallOff, thickness, color) {
+    constructor(name, player, magSize, spread, damage, 
+        bulletSpeed, barrelLength, reloadTime, shootDelay, 
+        bulletDistance, bulletFallOff, thickness, color) {
         this.name = name;
         this.player = player;
 
