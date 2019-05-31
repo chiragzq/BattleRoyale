@@ -63,7 +63,11 @@ class Game {
                     y: player.y,
                     dir: player.direction,
                     health: player.health,
-                    totalHealth: player.totalHealth
+                    totalHealth: player.totalHealth,
+                    helmet: player.helmet,
+                    chestplate: player.chestplate,
+                    bandages: player.bandages,
+                    medkit: player.medkits
                 })
             }
         });
@@ -117,7 +121,11 @@ class Game {
                         y: player.y,
                         dir: player.direction,
                         health: player.health,
-                        totalHealth: player.totalHealth
+                        totalHealth: player.totalHealth,
+                        helmet: player.helmet,
+                        chestplate: player.chestplate,
+                        bandages: player.bandages,
+                        medkits: player.medkits
                     });
                     if(player.isDead()) {
                         console.log("DEAD\n\n\n\n")
@@ -365,7 +373,11 @@ class Player {
                             y: player.y,
                             dir: player.direction,
                             health: player.health,
-                            totalHealth: player.totalHealth
+                            totalHealth: player.totalHealth,
+                            helmet: player.helmet,
+                            chestplate: player.chestplate,
+                            bandages: player.bandages,
+                            medkits: player.medkits
                         });
                         if(player.isDead()) {
                             killPlayer(player, this.game);
@@ -498,6 +510,7 @@ class Player {
 
 
                     if(helm) {
+                        this.helmet = largness;
                         this.socket.emit("player_updates", {
                             type: "helmet",
                             id: index,
@@ -505,6 +518,7 @@ class Player {
                         });
                     }
                     else {
+                        this.chestplate = largness;
                         this.socket.emit("player_updates", {
                             type: "chestplate",
                             id: index,
