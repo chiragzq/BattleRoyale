@@ -97,8 +97,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         gameState = State.CONNECTING;
         
-        network = new Network("http://localhost:5000", this, lock);
-        //network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
+        //network = new Network("http://localhost:5000", this, lock);
+        network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
         //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
       
         new Timer().scheduleAtFixedRate(new TimerTask(){

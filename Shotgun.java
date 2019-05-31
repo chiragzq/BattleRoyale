@@ -23,7 +23,6 @@ public class Shotgun extends Gun
         Graphics2D g2 = (Graphics2D) g;
         int x = getPlayer().getX();
         int y = getPlayer().getY();
-        x = 0; xShift = Game.GAME_WIDTH / 2; y = 0; yShift = Game.GAME_HEIGHT / 2;
         g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE *13)));
         g2.drawLine((int)(Game.GAME_SCALE *x) + xShift, (int)(Game.GAME_SCALE *y) + yShift, (int)(Game.GAME_SCALE * ((Math.cos(getDirection() * Math.PI / 180)*getBarrelLength()) + x))+ xShift, (int)(Game.GAME_SCALE * ((Math.sin(getDirection() * Math.PI / 180)*getBarrelLength()) + y)) + yShift);
 
