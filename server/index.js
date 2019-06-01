@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
             accepting = false;
             sockets.forEach((socket) => initializeSocket(socket))
         }, waitTime * 1000);
-
+        res.end();
     } else {
         res.setHeader("Content-Type", "text/html");
         res.end(`
