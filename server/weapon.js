@@ -26,6 +26,7 @@ class Gun {
         this.color = color;
 
         this.timeout = setTimeout(()=>{},0);
+        
     }
 
     fireBullet(direction) {
