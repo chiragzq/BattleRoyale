@@ -1,4 +1,3 @@
-let timeout = setTimeout(()=>{},0);
 class Gun {
     constructor(name, player, magSize, spread, damage, 
         bulletSpeed, barrelLength, reloadTime, shootDelay, 
@@ -25,6 +24,8 @@ class Gun {
         this.bulletFallOff = bulletFallOff;
         this.thickness = thickness;
         this.color = color;
+
+        this.timeout = setTimeout(()=>{},0);
     }
 
     fireBullet(direction) {
@@ -61,8 +62,8 @@ class Rifle extends Gun {
     fire() {
         if(!this.canShoot()) return [];
         this.player.speed = 5;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
         this.clipSize--;
         return [this.fireBullet(Math.round((Math.random() - 0.5) * this.spread + this.player.direction))];
     }
@@ -78,8 +79,8 @@ class Sniper extends Gun {
         if(!this.canShoot()) return [];
         this.clipSize--;
         this.player.speed = 5;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
         return [this.fireBullet(Math.round((Math.random()- 0.5) * this.spread + this.player.direction))];
     }
 
@@ -102,8 +103,8 @@ class Shotgun extends Gun {
         if(!this.canShoot()) return [];
         this.clipSize--;
         this.player.speed = 5;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
         const ret = [];
         const numBullets = 8;
         for(let i = 0;i <= numBullets;i ++) {
@@ -128,8 +129,8 @@ class Pistol extends Gun {
     fire() {
         if(!this.canShoot()) return [];
         this.player.speed = 5;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {this.player.speed = 11}, this.shootDelay + 100);
         this.clipSize--;
         return [this.fireBullet(Math.round((Math.random() - 0.5) * this.spread + this.player.direction))];
     }
