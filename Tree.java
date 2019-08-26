@@ -18,16 +18,22 @@ public class Tree extends Obstacle
     {
         super(x2, y2, HEALTH);
     }
-    
+
     public int getSize()
     {
         return (int)(SIZE * Math.sqrt((double)getHealth()/HEALTH));
     }
-    
+
+    public void draw(Graphics g, double scale, int xShift, int yShift)
+    {
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(new Color(17, 99, 43));
+        Game.fillCircle(g2, (int)(scale*(getX())) + xShift, (int)(scale*(getY())) + yShift, (int)(scale*((int)(LEAVE_SIZE * scale))), 1);
+    }
 
     public void draw(Graphics g, int xShift, int yShift)
     {
-        
+
         if(getHealth() < 25)
         {
             Graphics2D g2 = (Graphics2D)g;
@@ -38,12 +44,12 @@ public class Tree extends Obstacle
         else
         {
             Graphics2D g2 = (Graphics2D)g;
-            
+
             // g2.setColor(Color.RED);
             // int thick = (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100));
             // g2.setStroke(new BasicStroke(thick));
             // Game.fillCircle(g2, getX() + xShift, getY() + yShift, (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100)));
-            
+
             g2.setColor(new Color(17, 99, 43, 175));
             Game.fillCircle(g2, getX() + xShift, getY() + yShift, (int)(LEAVE_SIZE * Math.sqrt((double)getHealth()/100)));
             g2.setStroke(new BasicStroke((int)(Game.GAME_SCALE*5)));

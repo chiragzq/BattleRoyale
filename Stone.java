@@ -22,13 +22,18 @@ public class Stone extends Obstacle
         // initialise instance variables
         super(x, y, HEALTH);
     }
-    
+
     public int getSize()
     {
         return (int)(SIZE * Math.sqrt((double)getHealth()/HEALTH));
     }
 
-    
+    public void draw(Graphics g, double scale, int xShift, int yShift)
+    {
+        g.setColor(new Color(168, 168, 168));
+        Game.fillCircle(g, (int)(scale  * (getX()))  + xShift, (int)(scale * (getY())) + yShift, (int)(scale*SIZE), 1);
+    }
+
     public void draw(Graphics g, int xShift, int yShift)
     {
         if(getHealth() < 25)

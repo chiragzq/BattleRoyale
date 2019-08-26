@@ -20,6 +20,12 @@ public class Barrel extends Obstacle
         return (int)(SIZE * Math.sqrt((double)getHealth()/100));
     }
 
+    public void draw(Graphics g, double scale, int xShift, int yShift)
+    {
+        g.setColor(new Color(0x2E2E2E));
+        Game.fillCircle(g, (int)(scale  *(getX())) + xShift,(int)(scale  * (getY())) + yShift, (int)(scale  *SIZE), 1);
+    }
+
     public void draw(Graphics g, int xShift, int yShift)
     {
         //border:2E2E2E

@@ -20,6 +20,12 @@ public class Box extends Obstacle
         return (int)(LENGTH * Math.sqrt((double)getHealth()/100));
     }
     
+    
+    public void draw(Graphics g, double scale, int xShift, int yShift)
+    {
+        Game.drawImageNoScale(g, "box",  (int)(scale  *(getX() - LENGTH/2))  + xShift,  (int)(scale  *(getY() - LENGTH/2))  + yShift,  (int)(scale  *LENGTH),  (int)(scale  *LENGTH));
+    }
+    
     public void draw(Graphics g, int xShift, int yShift)
     {
         if(getHealth() < 25)

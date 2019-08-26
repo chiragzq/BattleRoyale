@@ -49,5 +49,7 @@ public abstract class Obstacle
 
     public abstract void draw(Graphics g, int xShift, int yShift);
     
+    public abstract void draw(Graphics g, double scale, int xShift, int yShift);
+    
     public abstract int getSize();
 }

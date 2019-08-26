@@ -22,6 +22,11 @@ public class Bush extends Obstacle
         return SIZE;
     }
 
+    public void draw(Graphics g, double scale, int xShift, int yShift)
+    {
+        Game.drawImageNoScale(g, "bush", (int)(scale * getX())  + xShift, (int)(scale * getY()) + yShift, (int)(scale * SIZE), (int)(scale * SIZE));
+    }
+
     public void draw(Graphics g, int xShift, int yShift)
     {
         if(getHealth() <= 25)

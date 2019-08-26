@@ -179,6 +179,26 @@ public class Player
         //System.out.println(direcRadian);
         //System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
     }
+    
+    public void drawMinimap(Graphics g, Map<Integer, Obstacle> map)
+    {
+        Set<Integer> set = map.keySet();
+        
+        double scale = 0.18;
+        int xShift = 300;
+        int yShift = 0;
+        int l = 20;
+        g.setColor(new Color(214, 158, 45));
+        g.fillRect(xShift - l, yShift - l, (int)(Game.MAX_X * scale) + 2 *l,(int)(Game.MAX_Y * scale) + 2*l);
+        g.setColor(new Color(0x7DAE58));
+        g.fillRect(xShift, yShift, (int)(Game.MAX_X * scale),(int)(Game.MAX_Y * scale));
+        for(Integer ob : set)
+        {
+            map.get(ob).draw(g, scale, xShift, yShift);
+        }
+        g.setColor(Color.RED);
+        Game.fillCircle(g, (int)(getX() * scale) + xShift, (int)(getY() * scale) + yShift, (int)(Game.PLAYER_SIZE * scale), 1);
+    }
 
     /**
      * This draws the player

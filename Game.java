@@ -54,8 +54,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     
     private static final int MIN_X = 0;
     private static final int MIN_Y = 0;
-    private static final int MAX_X = 4000;
-    private static final int MAX_Y = 4000;
+    public static final int MAX_X = 4000;
+    public static final int MAX_Y = 4000;
+    
+    private boolean isMini = false;
 
     private JFrame frame;
     private Map<Integer, Player> players;
@@ -104,9 +106,9 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
         gameState = State.CONNECTING;
         
-        //network = new Network("http://localhost:5000", this, lock);
+        network = new Network("http://localhost:5000", this, lock);
         //network = new Network("http://apcs-survivio.herokuapp.com/", this, lock);
-        network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
+        //network = new Network("https://chiragzq-survivio.dev.harker.org", this, lock);
        
         
         new Timer().scheduleAtFixedRate(new TimerTask(){
@@ -223,6 +225,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.fPressed();
         else if (code == KeyEvent.VK_Z) 
             network.click();
+        else if(code == KeyEvent.VK_M)
+            isMini = !isMini;
     }
     
 
@@ -293,6 +297,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                    ob.draw(g, xShift, yShift);
             }
             thisPlayer.drawEssentials(g);
+            if(isMini)
+                thisPlayer.drawMinimap(g, obstacles);
 
             lock.readLock().unlock();
 
@@ -345,6 +351,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
 
     public static void fillCircle(Graphics g, int x, int y, int r) {
         fillOval(g, x, y, r, r);
+    }
+    
+    public static void fillCircle(Graphics g, int x, int y, int width, int r) {
+        int height = width;
+        x = x - width / 2;
+        y = y - height / 2;
+        g.fillOval((int)(x), (int)(y), (int)(width), (int)(height));
     }
 
     public static void fillOval(Graphics g, int x, int y, int width, int height) {
