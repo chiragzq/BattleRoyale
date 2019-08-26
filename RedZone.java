@@ -34,7 +34,7 @@ public class RedZone
         
         Game.drawImage(g, "redCircle", x - r + xShift, y - r + yShift, 2 * r, 2 * r);
         
-        int constan = Game.GAME_WIDTH;
+        int constan = Game.MAX_X;
         
         
         Game.drawImage(g, "redBox", x - r + xShift - constan, y - r + yShift - constan, constan,  constan);
@@ -43,9 +43,9 @@ public class RedZone
         //Left Side
         Game.drawImage(g, "redBox", x - r + xShift, y + r + yShift, 2 * r, constan);
         //Bottom
-        Game.drawImage(g, "redBox", x + r + xShift, y - r + yShift, constan, constan);
-        Game.drawImage(g, "redBox", x + r+ xShift, y + r + yShift, constan, 2 * r);
-        Game.drawImage(g, "redBox", x + r + xShift, y + r + yShift + constan, constan, constan);
+        Game.drawImage(g, "redBox", x + r + xShift, y - r + yShift - constan, constan, constan);
+        Game.drawImage(g, "redBox", x + r+ xShift, y - r + yShift, constan, 2 * r);
+        Game.drawImage(g, "redBox", x + r + xShift, y + r + yShift, constan, constan);
         //RightSide
         
         Game.drawImage(g, "redBox", x - r+ xShift, y - r + yShift - constan, 2 * r, constan);

@@ -20,6 +20,7 @@ public class Tester extends JComponent implements MouseListener
     private ArrayList<Obstacle> ob;
     private Player player;
     private ArrayList<Item> ite;
+    private RedZone redZone = new RedZone(100, 100, 50);
     /**
      * The constructor for SolitaireDisplay
      * @param game the game of Solitaire
@@ -65,6 +66,7 @@ public class Tester extends JComponent implements MouseListener
         Image image = new ImageIcon("img/scope2.png").getImage();
          g.drawImage(image, 400, 400, 30, 30, null);
         ite.get(3).draw(g, 0, 0);
+        redZone.draw(g, 0, 0);
 //         for(int i = 0; i < items.size(); i++)
 //         {
 //             items.get(i).draw(g, 0, 0);
