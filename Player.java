@@ -180,7 +180,7 @@ public class Player
         //System.out.println(xSide + " " + ySide + ": " + direcRadian + ", " + direction);
     }
     
-    public void drawMinimap(Graphics g, Map<Integer, Obstacle> map)
+    public void drawMinimap(Graphics g, Map<Integer, Obstacle> map, RedZone redZone)
     {
         Set<Integer> set = map.keySet();
         
@@ -198,6 +198,10 @@ public class Player
         }
         g.setColor(Color.RED);
         Game.fillCircle(g, (int)(getX() * scale) + xShift, (int)(getY() * scale) + yShift, (int)(Game.PLAYER_SIZE * scale), 1);
+        
+        //redZone.draw(g, scale, xShift, yShift);
+        //g.setColor(Color.WHITE);
+        //Game.drawCircle(g, 0, 0, 10);
     }
 
     /**

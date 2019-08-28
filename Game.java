@@ -68,7 +68,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     
     private Map<Integer, Item> items;
     
-    private RedZone redZone = new RedZone(50, 50, 100);
+    private RedZone redZone = new RedZone(2000, 2000, 4000);
 
     
     private Network network;
@@ -299,11 +299,13 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                    ob.draw(g, xShift, yShift);
             }
             
+            redZone.setRadius(redZone.getRadius() - 10);
+            
             redZone.draw(g, xShift, yShift);
             
             thisPlayer.drawEssentials(g);
             if(isMini)
-                thisPlayer.drawMinimap(g, obstacles);
+                thisPlayer.drawMinimap(g, obstacles, redZone);
 
             lock.readLock().unlock();
 
