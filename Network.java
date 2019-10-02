@@ -418,6 +418,11 @@ public class Network {
             socket.emit("click", nil);
     }
 
+    public void teleport() {
+        if(game.gameState == Game.State.PLAYING)
+            socket.emit("teleport", nil);
+    }
+
     public void num1() {
         if(game.gameState == Game.State.PLAYING)
             socket.emit("1", nil);

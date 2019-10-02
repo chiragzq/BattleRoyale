@@ -699,6 +699,24 @@ class Player {
         }
     }
 
+    teleport() {
+        this.x = this.x + (this.mouse.x - 1280/2);
+        this.y = this.y + (this.mouse.y - 720/2);
+        this.game.updates.push({
+            type: "player",
+            id: this.index,
+            x: this.x,
+            y: this.y,
+            dir: this.direction,
+            health: this.health,
+            totalHealth: this.totalHealth,
+            helmet: this.helmet,
+            chestplate: this.chestplate,
+            bandages: this.bandages,
+            medkit: this.medkits
+        })
+    }
+
     click() {
         if(this.isHealing) return;
         if(this.isReloading()) {

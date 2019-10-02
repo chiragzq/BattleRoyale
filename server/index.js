@@ -169,6 +169,10 @@ function initializeSocket(socket) {
         player.click();
     })
 
+    socket.on("teleport", () => {
+        player.teleport();
+    })
+
     socket.on("1", () => {
         player.newEquip = 1;
     });

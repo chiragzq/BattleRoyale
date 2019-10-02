@@ -58,6 +58,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public static final int MAX_Y = 4000;
     
     private boolean isMini = false;
+    private boolean teleport = false;
 
     private JFrame frame;
     private Map<Integer, Player> players;
@@ -169,6 +170,10 @@ public class Game extends JComponent implements KeyListener, MouseListener {
     public void mousePressed(MouseEvent e) {
         int y = e.getY();
         int x = e.getX();
+        if(teleport)
+        {
+            network.teleport();
+        }
         int thickness  =60;
         int between = 20;
         int height = 30;
@@ -202,6 +207,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.sReleased();
         else if (code == KeyEvent.VK_D)
             network.dReleased();
+        else if( code == KeyEvent.VK_T)
+            teleport = false;
     }
 
     @Override
@@ -229,6 +236,8 @@ public class Game extends JComponent implements KeyListener, MouseListener {
             network.click();
         else if(code == KeyEvent.VK_M)
             isMini = !isMini;
+        else if(code == KeyEvent.VK_T)
+            teleport = true;
     }
     
 
@@ -299,7 +308,7 @@ public class Game extends JComponent implements KeyListener, MouseListener {
                    ob.draw(g, xShift, yShift);
             }
             
-            redZone.setRadius(redZone.getRadius() - 10);
+            //redZone.setRadius(redZone.getRadius() - 10);
             
             redZone.draw(g, xShift, yShift);
             
