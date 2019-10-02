@@ -212,6 +212,11 @@ class Player {
             y: 0
         }
 
+        this.scale = {
+            x: 1,
+            y: 0
+        }
+
         this.weapons = [];
         this.equippedWeapon = -1;
 
@@ -700,8 +705,8 @@ class Player {
     }
 
     teleport() {
-        this.x = this.x + (this.mouse.x - 1280/2);
-        this.y = this.y + (this.mouse.y - 720/2);
+        this.x = this.x + (this.mouse.x - 1280/2)/this.scale.x;
+        this.y = this.y + (this.mouse.y - 720/2)/this.scale.x;
         this.game.updates.push({
             type: "player",
             id: this.index,

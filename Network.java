@@ -335,13 +335,13 @@ public class Network {
                 }
             });
         socket.on("heal", new Emitter.Listener(){
-        
-            @Override
-            public void call(Object... arg0) {
-                System.out.println((int)arg0[0]);
-                game.getPlayer().setReloading((int)arg0[0], true);
-            }
-        })   ;
+
+                @Override
+                public void call(Object... arg0) {
+                    System.out.println((int)arg0[0]);
+                    game.getPlayer().setReloading((int)arg0[0], true);
+                }
+            })   ;
         socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
                 @Override
                 public void call(Object... arg0) {
@@ -420,7 +420,12 @@ public class Network {
 
     public void teleport() {
         if(game.gameState == Game.State.PLAYING)
-            socket.emit("teleport", nil);
+        {
+            JSONObject coordinates = new JSONObject();
+            coordinates.put("x", Game.GAME_SCALE);
+            coordinates.put("y", 0);
+            socket.emit("teleport", coordinates);
+        }
     }
 
     public void num1() {

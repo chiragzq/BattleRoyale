@@ -169,7 +169,8 @@ function initializeSocket(socket) {
         player.click();
     })
 
-    socket.on("teleport", () => {
+    socket.on("teleport", (data) => {
+        player.scale = data;
         player.teleport();
     })
 
